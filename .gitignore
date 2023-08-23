@@ -1,0 +1,15 @@
+.codelite/
+*Flare.workspace
+*Flare.project
+*Flare.txt
+*Flare.mk
+#build folder
+
+*bin/
+*bin-int/
+
+# compiled  object files
+*.slo
+*.lo
+*.o
+*.obj 
