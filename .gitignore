@@ -3,8 +3,8 @@
 *Flare.project
 *Flare.txt
 *Flare.mk
-#build folder
 
+#build folder
 *bin/
 *bin-int/
 
@@ -13,3 +13,5 @@
 *.lo
 *.o
 *.obj 
+
+Makefile
