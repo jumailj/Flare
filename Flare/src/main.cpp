@@ -1,7 +1,10 @@
 #include <stdio.h>
+#include "spdlog/spdlog.h"
 
 int main(int argc, char **argv)
 {
-	printf("hello world\n");
-	return 0;
+    
+    spdlog::info("Flare");
+
+    return 0;
 }
