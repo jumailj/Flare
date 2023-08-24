@@ -4,9 +4,7 @@ workspace "Flare"
     configurations {"Debug", "Release", "Ship"}
     startproject "Flare"
 
-
     outputdir= "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
-
 
 project "Flare" 
     location "Flare"
@@ -19,12 +17,17 @@ project "Flare"
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files {
-        "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
+        "%{prj.name}/**.h",
+        "%{prj.name}/**.cpp"
+    }
+    -- removeing vendor files from source
+    removefiles {
+        "%{prj.name}/vendor/**h",
+        "%{prj.name}/vendor/**cpp"
     }
 
     -- includedirs { "/home/jumail/Documents/Flare/Flare/vendor/spdlog/include", "/home/world" }
-    includedirs { "Flare/vendor/spdlog/include"}
+    includedirs { "%{prj.name}/src",   "Flare/vendor/spdlog/include" }
 
     -- externalincludedirs { "../lua/include", "../zlib" }
 
@@ -36,9 +39,9 @@ project "Flare"
         symbols  "on"
 
         filter "configurations:Release"
-        defines "ENGINE_DEBUG"
-        runtime "Debug"
-        symbols  "on"
+        defines "ENGINE_RELEASE"
+        runtime "Release"
+        symbols  "off"
 
 
         filter "configurations:Ship"

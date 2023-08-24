@@ -7,11 +7,13 @@
 #build folder
 *bin/
 *bin-int/
+*.ctagsd/
 
 # compiled  object files
 *.slo
 *.lo
 *.o
 *.obj 
+
 
 Makefile
