@@ -6,11 +6,20 @@ workspace "Flare"
 
     outputdir= "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+    IncludeDir = {}
+    IncludeDir["glfw"] = "Flare/vendor/glfw/include"
+
+    group "Dependencies"
+        include "Flare/vendor/glfw"
+    group ""
+
 project "Flare" 
     location "Flare"
     kind "ConsoleApp"
     language "C++"
+    staticruntime "on"
     cppdialect "c++17"
+    systemversion "latest"
 
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}") 
@@ -27,25 +36,27 @@ project "Flare"
     }
 
     -- includedirs { "/home/jumail/Documents/Flare/Flare/vendor/spdlog/include", "/home/world" }
-    includedirs { "%{prj.name}/src",   "Flare/vendor/spdlog/include" }
+    includedirs { "%{prj.name}/src",   "Flare/vendor/spdlog/include", "%{IncludeDir.glfw}" }
 
     -- externalincludedirs { "../lua/include", "../zlib" }
 
+    -- links{"glfw", "Xrandr", "Xi", "GLU", "GL", "X11", "dl", "pthread", "stdc++fs" }
+       links{ "GL", "GLU" , "glfw" ,"m" ,"dl" ,"X11" ,"pthread" ,"Xi" ,"Xrandr" ,"Xinerama" ,"Xxf86vm" ,"Xcursor"}
 
 
-    filter "configurations:Debug"
-        defines "ENGINE_DEBUG"
-        runtime "Debug"
-        symbols  "on"
+       filter "configurations:Debug"
+       defines "FLARE_DEBUG"
+       runtime "Debug"
+       symbols  "on"
 
-        filter "configurations:Release"
-        defines "ENGINE_RELEASE"
-        runtime "Release"
-        symbols  "off"
+   filter "configurations:Release"
+       defines "FLARE_RELEASE"
+       runtime "Release"
+       symbols  "off"
 
 
-        filter "configurations:Ship"
-        defines "ENGINE_DEBUG"
-        runtime "Debug"
-        symbols  "on"
-        
+   filter "configurations:Ship"
+       defines "FLARE_DEBUG"
+       runtime "Release"
+       symbols  "off"
+       

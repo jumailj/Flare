@@ -1,3 +1,7 @@
 [submodule "Flare/vendor/spdlog"]
 	path = Flare/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "Flare/vendor/glfw"]
+	path = Flare/vendor/glfw
+	url = https://github.com/jumailj/glfw
+	branch = flare

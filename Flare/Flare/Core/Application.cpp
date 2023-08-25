@@ -16,7 +16,6 @@ namespace Flare {
         
     }
     
-    
     void Application::Close(){
         m_Running = false;
         LOG_WARN("application exited");
@@ -31,5 +30,4 @@ namespace Flare {
 
         }
     }
-    
 }
