@@ -1,6 +1,12 @@
 #pragma once
 
 #include <string>  //later change it to precompiled header.
+#include <memory>
+
+#include <Flare/Core/Window.h>
+
+// for codelite
+#include "Window.h"
 
 namespace Flare {
     
@@ -13,9 +19,14 @@ namespace Flare {
             void Run();
             void Close();
             
-        private:
-            bool m_Running = true;
+    private:
+    
+            std::unique_ptr<Window> m_Window;
         
+            bool m_Running = true;
+            
+            // instance;
+            static Application* s_Instance;
     };
 
 }

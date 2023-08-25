@@ -2,16 +2,21 @@
 #include "Application.h"
 #include <Flare/Core/Log.h>
 
+
+// termprory solution for codelite
 #include "Flare/Core/Log.h" //codelite
 
 namespace Flare {
     
-    //constructor;
-    Application::Application(const std::string&name) {
-        LOG_ERROR("application created created");
+    Application* Application::s_Instance = nullptr;
+
+    Application::Application(const std::string&name)
+   {
+       s_Instance = this;
+       m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(name)));
     }
     
-    // destructor;
+
     Application::~Application() {
         
     }
@@ -26,7 +31,9 @@ namespace Flare {
         
         while(m_Running) {
 
-        //    LOG_CORE_INFO("hello wrld");
+         //   LOG_TRACE("in Loop");
+            
+            m_Window->OnUpdate();
 
         }
     }
