@@ -14,6 +14,8 @@ namespace Flare {
     public:
 
         LinuxWindow(const WindowProps& props);
+        
+        // this virtual is used because the base class destructor should call first.
         virtual ~LinuxWindow();
         
         void OnUpdate() override;

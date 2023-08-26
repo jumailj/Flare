@@ -1,7 +1,6 @@
 
 #include <Flare/Core/Application.h>
 #include <Flare/Core/Log.h>
-#include <GLFW/glfw3.h>
 
 /* it's temprory solution for codelite*/
 #include "../Flare/Core/Application.h" //for codelite;
@@ -10,29 +9,37 @@
 
 Flare::Application* CreateApplication();
 
+/*
+ * using a derived class like 'Sandbox' instead of directly returning a new 
+ * Flare::Applicaiton, instance provides a structured and flexible way to 
+ * implement and extend the behavior of Application. 
+*/
 class Sandbox: public Flare::Application {
-    
+    /* 
+     * sandbox is place where implement and customize  various things.
+     * like UserInterface, Netowking, Audio...
+    */
 public:
      Sandbox() 
     {
-                // it's where the applciaiton layers are pushed!
     }
     
     ~Sandbox()
     {
-        
     }
-
 };
-
+/*
+ * Sandbox is returning to a Application. so you can only use methods related
+ * to Application
+ */  
 Flare::Application* CreateApplication() {
     return new Sandbox();
 }
 
 int main(int argc, char**argv) {
-    Flare::Log::Init(); // always initilized the logger for futher use;
-
+    // always initilized the logger, if it's not init, logger will be null.
+    Flare::Log::Init(); 
     Flare::Application* app  = CreateApplication();
-
+    
     app->Run();
 }

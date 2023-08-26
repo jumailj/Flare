@@ -40,6 +40,7 @@ namespace Flare{
                 LOG_WARN("glfw not init");
             }
     
+            // to avoid reinit glfw.
             s_GLFWInitialized = true;
             
         }
@@ -55,9 +56,7 @@ namespace Flare{
     
     void LinuxWindow::OnUpdate(){
         glfwPollEvents();
-
-//        // it's where swap buffer happens;
-
+       // it's where swap buffer happens;
     }
     
 }

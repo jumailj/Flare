@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <GLFW/glfw3.h>
 
 namespace Flare {
     /* contain properties of window's title, width, height*/
@@ -16,19 +17,20 @@ namespace Flare {
         }
     };
     
-
-    // Window interface
+    // Window interface, abstract class.
     class Window{
     public:
 
-        virtual ~Window() {}
+        virtual ~Window() {
+            //before delete the parent object, this should be destruct.
+        }
         
         virtual void OnUpdate() = 0;
         
         virtual uint32_t GetWidth() const = 0;
         virtual uint32_t GetHeight() const = 0;
         
-        virtual void* GetNativeWindow() const = 0;
+        virtual void* GetNativeWindow() const = 0; // didn't implemented.
         
         static Window* Create(const WindowProps& props = WindowProps()); // here is the where the window is created. linux, windows, mac
     };
