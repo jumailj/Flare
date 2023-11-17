@@ -8,9 +8,11 @@ workspace "Flare"
 
     IncludeDir = {}
     IncludeDir["glfw"] = "Flare/vendor/glfw/include"
+    IncludeDir["glad"] = "Flare/vendor/glad/include"
 
     group "Dependencies"
         include "Flare/vendor/glfw"
+        include "Flare/vendor/glad"
     group ""
 
 project "Flare" 

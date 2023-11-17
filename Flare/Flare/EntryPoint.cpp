@@ -1,8 +1,4 @@
 
-#include <Flare/Core/Application.h>
-#include <Flare/Core/Log.h>
-
-/* it's temprory solution for codelite*/
 #include "../Flare/Core/Application.h" //for codelite;
 #include "../Flare/Core/Log.h" //for codelite;
 #include "../../Flare/vendor/glfw/include/GLFW/glfw3.h" // for codelite;

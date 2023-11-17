@@ -2,8 +2,7 @@
 
 
 namespace Flare{
-    
-    
+
     enum class EventType{
       None=0,
       WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
@@ -11,8 +10,5 @@ namespace Flare{
       KeyPressed, KeyReleased, KeyTyped,
       MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
     };
-    
-    
-    
     
 }

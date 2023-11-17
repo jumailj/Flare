@@ -5,7 +5,8 @@
 #include <Flare/Core/Application.h>
 #include <Flare/Core/Log.h>
 
-#include <GLFW/glfw3.h>
+
+#include "../../../vendor/glfw/include/GLFW/glfw3.h"
 
 ///codelite
 #include "../../Core/Input.h"

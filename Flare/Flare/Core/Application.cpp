@@ -32,8 +32,8 @@ namespace Flare {
     // it's where the core of the application;
     void Application::Run(){
         
-       LOG_INFO("window widht: {0}", m_Window->GetWidth());
-       LOG_INFO("window height: {0}", m_Window->GetHeight());
+//       LOG_INFO("window widht: {0}", m_Window->GetWidth());
+//       LOG_INFO("window height: {0}", m_Window->GetHeight());
 
         bool x = Input::IsMouseButtonPressed(MOUSE_BUTTON_0);
         bool y = Input::IsKeyPressed(KEY_A);
@@ -41,26 +41,26 @@ namespace Flare {
         std::pair<float,float> mousePos;
  
         
-        LOG_INFO("mouse value = {0}", int(x));
-        LOG_INFO("key value = {0}", int(y));
+//        LOG_INFO("mouse value = {0}", int(x));
+//        LOG_INFO("key value = {0}", int(y));
         
         while(m_Running) {
             m_Window->OnUpdate();
             
             //test;
-            mousePos =  Input::GetMousePosition();
-            LOG_ERROR("x {0} y {0}", (int)mousePos.first, (int)mousePos.second);
+          //  mousePos =  Input::GetMousePosition();
+          //  LOG_ERROR("x {0} y {0}", (int)mousePos.first, (int)mousePos.second);
             
             // test;
-            if(Input::IsKeyPressed(KEY_A)){
-                LOG_WARN("a key presed");
-            }
+           // if(Input::IsKeyPressed(KEY_A)){
+           //     LOG_WARN("a key presed");
+           //  }
             
             // test;
-            if(Input::IsMouseButtonPressed(MOUSE_BUTTON_0)){
-                LOG_WARN("left mouse button pressed!");
+         //    if(Input::IsMouseButtonPressed(MOUSE_BUTTON_0)){
+          //      LOG_WARN("left mouse button pressed!");
             }
             
-        }
+        
     }
 }

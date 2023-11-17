@@ -1,11 +1,10 @@
 #pragma once
 
-#include <Flare/Core/Window.h>
-#include <GLFW/glfw3.h>
-
 //codelite termperory solution
 #include "../../Core/Window.h"
 #include "../../../vendor/glfw/include/GLFW/glfw3.h"
+
+
 
 namespace Flare {
     

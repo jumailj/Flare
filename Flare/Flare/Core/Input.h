@@ -1,8 +1,5 @@
 #pragma once
 
-#include <Flare/Core/MouseCodes.h>
-//#include <Flare/Core/KeyCodes.h>
-
 //codelite
 #include "MouseCodes.h"
 #include "KeyCodes.h"
