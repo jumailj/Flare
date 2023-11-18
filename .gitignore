@@ -1,14 +1,20 @@
 .codelite/
 *Flare.workspace
 *Flare.project
+
 *Flare.txt
+*Glad.txt
 *Flare.mk
 
+
+**.mk
+**.project
+
 #build folder
-*bin/
-*bin-int/
-*.ctagsd/
-*.build-debug/
+**bin/
+**bin-int/
+**.ctagsd/
+**.build-debug/
 
 # compiled  object files
 *.slo

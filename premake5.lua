@@ -8,9 +8,11 @@ workspace "Flare"
 
     IncludeDir = {}
     IncludeDir["glfw"] = "Flare/vendor/glfw/include"
+    IncludeDir["glad"] = "Flare/vendor/glad/include"
 
     group "Dependencies"
         include "Flare/vendor/glfw"
+        include "Flare/vendor/glad"
     group ""
 
 project "Flare" 
@@ -36,12 +38,12 @@ project "Flare"
     }
 
     -- includedirs { "/home/jumail/Documents/Flare/Flare/vendor/spdlog/include", "/home/world" }
-    includedirs { "%{prj.name}/src",   "Flare/vendor/spdlog/include", "%{IncludeDir.glfw}" }
+    includedirs { "%{prj.name}/src",   "Flare/vendor/spdlog/include", "%{IncludeDir.glfw}", "%{IncludeDir.glad}" }
 
     -- externalincludedirs { "../lua/include", "../zlib" }
 
-    -- links{"glfw", "Xrandr", "Xi", "GLU", "GL", "X11", "dl", "pthread", "stdc++fs" }
-    links{ "GL", "GLU", "glfw" ,"m" ,"dl" ,"X11" ,"pthread" ,"Xi" ,"Xrandr" ,"Xinerama" ,"Xxf86vm" ,"Xcursor"}
+    -- links{"glfw", "Xrandr", "Xi", "GLU", "GL", "X11", "dl", "pthread", "stdc++fs" }, new -ldl -lGL (adding this can cause crashes)
+    links{ "GL", "GLU", "glfw", "glad" ,"m" ,"dl" ,"X11" ,"pthread" ,"Xi" ,"Xrandr" ,"Xinerama" ,"Xxf86vm" ,"Xcursor"}
 
 
        filter "configurations:Debug"

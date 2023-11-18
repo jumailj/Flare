@@ -32,16 +32,16 @@ namespace Flare{
         {
             int success = glfwInit();
             // set opengl version;
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+            glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);      
+ 
+
             
-            //TODO as of now it's on compat profile, it will change later.
-            glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
-            
-//           std::cout << glGetString(GL_VERSION)<<std::endl;
-            
-            if (!success) {
-                LOG_WARN("glfw not init");
+            if (success) {
+                LOG_INFO("glfw init");
+            }else {
+                LOG_ERROR("glfw not init!");
             }
     
             // to avoid reinit glfw.
@@ -62,11 +62,20 @@ namespace Flare{
        
        glfwSetWindowUserPointer(m_Window, &m_Data);
        glfwMakeContextCurrent(m_Window);
+       
+       //init glad
+        int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+        if(status){
+                LOG_INFO("glad init", status);
+        }else {
+                LOG_ERROR("glad not init!");
+        }
+
     
        //setting up viewport size;
        glViewport(0,0,m_Data.Width, m_Data.Height);
        
-    //    LOG_INFO("opengl version: {0}", (const char*) glGetString(GL_VERSION) );
+            LOG_INFO("opengl version: {0}", (const char*) glGetString(GL_VERSION) );
     }
     
     void LinuxWindow::ShutDown() {
@@ -83,19 +92,15 @@ namespace Flare{
         }
         
          glClear(GL_COLOR_BUFFER_BIT);
-         glClearColor(0.83f, 0.63f, 0.23f, 1.0f);
-
+         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
          
-         
-        glBegin(GL_POLYGON);
-        glColor3f(1, 0, 0); glVertex3f(-0.6, -0.75, 0.5);
-        glColor3f(0, 1, 0); glVertex3f(0.6, -0.75, 0);
-        glColor3f(0, 0, 1); glVertex3f(0, 0.75, 0);
-        glEnd();
-        
+//        glBegin(GL_POLYGON);
+//        glColor3f(1, 0, 0); glVertex3f(-0.6, -0.75, 0.5);
+//        glColor3f(0, 1, 0); glVertex3f(0.6, -0.75, 0);
+//        glColor3f(0, 0, 1); glVertex3f(0, 0.75, 0);
+//        glEnd();
         
         glfwSwapBuffers(m_Window);
-        
         glfwPollEvents();
         
        // it's where swap buffer happens;
