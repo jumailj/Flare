@@ -50,14 +50,29 @@ namespace Flare{
             s_GLFWInitialized = true;
         }
 
+
        // generate window
+
+       
+
+       
        
        m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
        if(!m_Window){
            LOG_ERROR("window not initiated");
        }
        
+       
+    
        LOG_INFO("Window Created {0} [ {1}, {2} ]", props.Title, props.Width, props.Height);
+       
+       
+       int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+       LOG_TRACE("STATUS OF GLAD:");
+       
+       // check for the gald is load or not
+       
+       
        
        glfwSetWindowUserPointer(m_Window, &m_Data);
        glfwMakeContextCurrent(m_Window);

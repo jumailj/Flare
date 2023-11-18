@@ -1,4 +1,3 @@
-
 #include "Application.h"
 
 // termprory solution for codelite
@@ -33,28 +32,30 @@ namespace Flare {
 //       LOG_INFO("window widht: {0}", m_Window->GetWidth());
 //       LOG_INFO("window height: {0}", m_Window->GetHeight());
 
-
-
         bool x = Input::IsMouseButtonPressed(MOUSE_BUTTON_0);
         bool y = Input::IsKeyPressed(KEY_A);
         
         std::pair<float,float> mousePos;
- 
+
         
 //        LOG_INFO("mouse value = {0}", int(x));
 //        LOG_INFO("key value = {0}", int(y));
         
         while(m_Running) {
             m_Window->OnUpdate();
+
+                    if (Input::IsKeyPressed(KeyCode::A)){
+            LOG_WARN("a key is pressed");
+        }
             
             //test;
           //  mousePos =  Input::GetMousePosition();
           //  LOG_ERROR("x {0} y {0}", (int)mousePos.first, (int)mousePos.second);
             
-            // test;
-           // if(Input::IsKeyPressed(KEY_A)){
-           //     LOG_WARN("a key presed");
-           //  }
+ 
+           if(Input::IsKeyPressed(KEY_A)){
+               LOG_WARN("a key presed");
+            }
             
             // test;
          //    if(Input::IsMouseButtonPressed(MOUSE_BUTTON_0)){

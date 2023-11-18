@@ -38,12 +38,12 @@ project "Flare"
     }
 
     -- includedirs { "/home/jumail/Documents/Flare/Flare/vendor/spdlog/include", "/home/world" }
-    includedirs { "%{prj.name}/src",   "Flare/vendor/spdlog/include", "%{IncludeDir.glfw}" }
+    includedirs { "%{prj.name}/src",   "Flare/vendor/spdlog/include", "%{IncludeDir.glfw}", "${IncludeDir.glad}" }
 
     -- externalincludedirs { "../lua/include", "../zlib" }
 
     -- links{"glfw", "Xrandr", "Xi", "GLU", "GL", "X11", "dl", "pthread", "stdc++fs" }
-       links{ "GL", "GLU" , "glfw" ,"m" ,"dl" ,"X11" ,"pthread" ,"Xi" ,"Xrandr" ,"Xinerama" ,"Xxf86vm" ,"Xcursor"}
+    links{ "GL", "GLU" , "glfw" ,"m" ,"dl" ,"X11" ,"pthread" ,"Xi" ,"Xrandr" ,"Xinerama" ,"Xxf86vm" ,"Xcursor"}
 
 
        filter "configurations:Debug"

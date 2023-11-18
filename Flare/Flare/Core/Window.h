@@ -34,7 +34,6 @@ namespace Flare {
         virtual uint32_t GetHeight() const = 0;
         
         virtual void* GetNativeWindow() const = 0; // didn't implemented.
-        
         static Window* Create(const WindowProps& props = WindowProps()); // here is the where the window is created. linux, windows, mac
     };
     

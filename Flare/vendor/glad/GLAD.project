@@ -3,6 +3,9 @@
   <Description/>
   <VirtualDirectory Name="GLAD">
     <VirtualDirectory Name="include">
+      <VirtualDirectory Name="KHR">
+        <File Name="include/KHR/khrplatform.h"/>
+      </VirtualDirectory>
       <VirtualDirectory Name="glad">
         <File Name="include/glad/glad.h"/>
       </VirtualDirectory>
@@ -26,6 +29,7 @@
     </GlobalSettings>
     <Configuration Name="Debug" CompilerType="gnu gcc" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-m64;-g;-w" C_Options="-m64;-g;-w" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="1">
+        <IncludePath Value="include"/>
         <Preprocessor Value="_GLFW_X11"/>
         <Preprocessor Value="FLARE_DEBUG"/>
       </Compiler>
@@ -66,6 +70,7 @@
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu gcc" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-m64;-w" C_Options="-m64;-w" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="1">
+        <IncludePath Value="include"/>
         <Preprocessor Value="_GLFW_X11"/>
         <Preprocessor Value="FLARE_RELEASE"/>
       </Compiler>
@@ -106,6 +111,7 @@
     </Configuration>
     <Configuration Name="Ship" CompilerType="gnu gcc" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-m64;-w" C_Options="-m64;-w" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="1">
+        <IncludePath Value="include"/>
         <Preprocessor Value="_GLFW_X11"/>
         <Preprocessor Value="FLARE_DEBUG"/>
       </Compiler>
