@@ -16,12 +16,10 @@ namespace Flare{
             Init(props);
     }
     
-    
     //destructor;
     LinuxWindow::~LinuxWindow() {
             ShutDown();
     }
-    
     
     void LinuxWindow::Init(const WindowProps&props){
         
@@ -50,38 +48,25 @@ namespace Flare{
             s_GLFWInitialized = true;
         }
 
-
        // generate window
-
-       
-
-       
        
        m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
        if(!m_Window){
            LOG_ERROR("window not initiated");
        }
        
-       
     
        LOG_INFO("Window Created {0} [ {1}, {2} ]", props.Title, props.Width, props.Height);
        
-       
-       int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-       LOG_TRACE("STATUS OF GLAD:");
-       
        // check for the gald is load or not
-       
-       
        
        glfwSetWindowUserPointer(m_Window, &m_Data);
        glfwMakeContextCurrent(m_Window);
-       
     
        //setting up viewport size;
        glViewport(0,0,m_Data.Width, m_Data.Height);
        
-       LOG_INFO("opengl version: {0}", (const char*) glGetString(GL_VERSION) );
+    //    LOG_INFO("opengl version: {0}", (const char*) glGetString(GL_VERSION) );
     }
     
     void LinuxWindow::ShutDown() {
@@ -98,7 +83,9 @@ namespace Flare{
         }
         
          glClear(GL_COLOR_BUFFER_BIT);
-         glClearColor(0.23f, 0.23f, 0.23f, 1.0f);
+         glClearColor(0.83f, 0.63f, 0.23f, 1.0f);
+
+         
          
         glBegin(GL_POLYGON);
         glColor3f(1, 0, 0); glVertex3f(-0.6, -0.75, 0.5);
