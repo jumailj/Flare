@@ -3,7 +3,10 @@
 #include <string>  //later change it to precompiled header.
 #include <memory>
 
-#include <Flare/Core/Window.h>
+#include "Window.h"
+
+#include "../Events/Event.h"
+#include "../Events/ApplicationEvent.h"
 
 // for codelite
 #include "Window.h"
@@ -21,9 +24,9 @@ namespace Flare {
             
             // return this windows
             inline Window& GetWindow() {return *m_Window;}
-            
             // return this instance;
             inline static Application& Get() {return *s_Instance;}
+            
             
     private:
             // actual window object;
@@ -33,5 +36,4 @@ namespace Flare {
             // instance , singleton;
             static Application* s_Instance;
     };
-
 }

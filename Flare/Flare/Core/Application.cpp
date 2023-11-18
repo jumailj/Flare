@@ -1,10 +1,8 @@
 
 #include "Application.h"
-#include <Flare/Core/Log.h>
-#include <Flare/Core/Input.h>
 
 // termprory solution for codelite
-#include "Flare/Core/Log.h" //codelite
+#include "Log.h"
 #include "Input.h"
 
 namespace Flare {
@@ -35,6 +33,8 @@ namespace Flare {
 //       LOG_INFO("window widht: {0}", m_Window->GetWidth());
 //       LOG_INFO("window height: {0}", m_Window->GetHeight());
 
+
+
         bool x = Input::IsMouseButtonPressed(MOUSE_BUTTON_0);
         bool y = Input::IsKeyPressed(KEY_A);
         
@@ -60,7 +60,6 @@ namespace Flare {
          //    if(Input::IsMouseButtonPressed(MOUSE_BUTTON_0)){
           //      LOG_WARN("left mouse button pressed!");
             }
-            
-        
     }
+    
 }
