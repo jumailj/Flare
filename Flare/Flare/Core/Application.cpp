@@ -3,6 +3,13 @@
 // termprory solution for codelite
 #include "Log.h"
 #include "Input.h"
+#include "Core.h"
+
+#include <iostream>
+
+//#include "../Events/ApplicationEvent.h"
+
+
 
 namespace Flare {
     // static pointer to a instance, singleton- behavior
@@ -14,7 +21,9 @@ namespace Flare {
        // simply points to the current Application Object.
        s_Instance = this;
        // if you didn't pass any argument. then if will used default window title, width, height.
-       m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(name)));
+       m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(name))); // can we avoid WindowProps here.. ?TODO
+       m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+       
     }
     
     Application::~Application() 
@@ -28,6 +37,12 @@ namespace Flare {
     
     // it's where the core of the application;
     void Application::Run(){
+        
+        
+        // event checking..
+        
+//        WindowResizeEvent e(1280, 720);
+        
         
 //       LOG_INFO("window widht: {0}", m_Window->GetWidth());
 //       LOG_INFO("window height: {0}", m_Window->GetHeight());
@@ -43,24 +58,59 @@ namespace Flare {
         
         while(m_Running) {
             m_Window->OnUpdate();
-
-                    if (Input::IsKeyPressed(KeyCode::A)){
+            
+            
+            // mouse cords;
+            auto [x,y] = Flare::Input::GetMousePosition();
+//            LOG_INFO("{0} {1} ", x, y);
+            
+            
+            if (Input::IsKeyPressed(KeyCode::A)){
             LOG_WARN("a key is pressed");
-        }
-            
-            //test;
-          //  mousePos =  Input::GetMousePosition();
-          //  LOG_ERROR("x {0} y {0}", (int)mousePos.first, (int)mousePos.second);
-            
- 
-           if(Input::IsKeyPressed(KEY_A)){
-               LOG_WARN("a key presed");
             }
             
-            // test;
-         //    if(Input::IsMouseButtonPressed(MOUSE_BUTTON_0)){
-          //      LOG_WARN("left mouse button pressed!");
             }
     }
+    
+    
+	void Application::OnEvent(Event& e)
+	{
+        // eventing loging.
+        LOG_INFO("EVENT: {0}", e.ToString());
+
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Flare::Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Flare::Application::OnWindowResize));
+
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
+		{
+			(*--it)->OnEvent(e);
+			if (e.Handled)
+				break;
+		}
+	}
+    
+    
+    bool Application::OnWindowClose(WindowCloseEvent& e){
+        m_Running = false;
+        return true;
+    }
+    
+    bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+
+		if (e.GetWidth() == 0 || e.GetHeight() == 0) {
+
+			m_Minimized = true;
+			return false;
+		}
+        
+		m_Minimized = false;
+        // todo change windows resize for opengl
+		// Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
+		return false;
+	}
+    
     
 }

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include "../Events/Event.h"
+
 //#include <GLFW/glfw3.h>
 
 /*do't knwo it's okay to remove form herer*/
@@ -17,12 +19,15 @@ namespace Flare {
         WindowProps(const std::string& title = "Flare", uint32_t width=1280, uint32_t height = 720) 
             :Title{title}, Width{width}, Height{height}
         {
+            
         }
     };
     
     // Window interface, abstract class.
     class Window{
     public:
+    
+        using EventCallbackFn = std::function<void(Event&)>; //::Engine::
 
         virtual ~Window() {
             //before delete the parent object, this should be destruct.
@@ -33,8 +38,17 @@ namespace Flare {
         virtual uint32_t GetWidth() const = 0;
         virtual uint32_t GetHeight() const = 0;
         
-        virtual void* GetNativeWindow() const = 0; // didn't implemented.
+        virtual void Init(const WindowProps& props) = 0;
+        virtual void Shutdown() = 0;
+        
+        virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
+        
+        virtual void SetVSync(bool enabled) = 0;
+		virtual bool IsVSync() const = 0;
+        virtual void* GetNativeWindow() const = 0;  
+        
         static Window* Create(const WindowProps& props = WindowProps()); // here is the where the window is created. linux, windows, mac
+        
     };
     
 }
