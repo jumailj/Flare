@@ -9,11 +9,6 @@
 #include "LayerStack.h"
 #include "../Events/ApplicationEvent.h"
 
-
-
-// for codelite
-#include "Window.h"
-
 namespace Flare {
     
     class Application 

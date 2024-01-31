@@ -9,8 +9,6 @@
 
 //#include "../Events/ApplicationEvent.h"
 
-
-
 namespace Flare {
     // static pointer to a instance, singleton- behavior
     Application* Application::s_Instance = nullptr;
@@ -38,12 +36,8 @@ namespace Flare {
     // it's where the core of the application;
     void Application::Run(){
         
-        
         // event checking..
-        
 //        WindowResizeEvent e(1280, 720);
-        
-        
 //       LOG_INFO("window widht: {0}", m_Window->GetWidth());
 //       LOG_INFO("window height: {0}", m_Window->GetHeight());
 
@@ -64,11 +58,11 @@ namespace Flare {
             auto [x,y] = Flare::Input::GetMousePosition();
 //            LOG_INFO("{0} {1} ", x, y);
             
-            
-            if (Input::IsKeyPressed(KeyCode::A)){
-            LOG_WARN("a key is pressed");
-            }
-            
+            // keyboard input
+            /*
+            if (Input::IsKeyPressed(KeyCode::A)){}
+            */
+
             }
     }
     
@@ -76,7 +70,7 @@ namespace Flare {
 	void Application::OnEvent(Event& e)
 	{
         // eventing loging.
-        LOG_INFO("EVENT: {0}", e.ToString());
+        // LOG_INFO("EVENT: {0}", e.ToString());
 
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Flare::Application::OnWindowClose));

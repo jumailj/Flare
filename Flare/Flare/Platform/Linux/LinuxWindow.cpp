@@ -9,6 +9,7 @@
 
 namespace Flare{
     
+    // check if glfw is init or not!
     static bool s_GLFWInitialized = false;
     
     static void GLFWErrorCallback(int error, const char* description) 
@@ -27,6 +28,7 @@ namespace Flare{
     LinuxWindow::~LinuxWindow() {
       Shutdown();
     } 
+
     void LinuxWindow::Init(const WindowProps&props){
         
         m_Data.Title = props.Title;
@@ -41,6 +43,7 @@ namespace Flare{
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
             
+            // set opengl to core-Profile
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);      
  
             if (success) {
@@ -102,6 +105,8 @@ namespace Flare{
 			WindowCloseEvent event;
 			data.EventCallback(event);
 		});
+
+
 
 		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
 		
@@ -184,11 +189,8 @@ namespace Flare{
             Shutdown();
         }
         
-        
          glClear(GL_COLOR_BUFFER_BIT);
          glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-         
-
 
         
         glfwSwapBuffers(m_Window);

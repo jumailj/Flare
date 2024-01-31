@@ -9,7 +9,9 @@ namespace Flare{
     
     class Input {
     public:
+    	//keyboard
         static bool IsKeyPressed(KeyCode key);
+        // mouse
 		static bool IsMouseButtonPressed(MouseCode button);
 		static std::pair<float, float> GetMousePosition();
 		static float GetMouseX();

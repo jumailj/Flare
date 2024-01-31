@@ -27,7 +27,7 @@ namespace Flare {
     class Window{
     public:
     
-        using EventCallbackFn = std::function<void(Event&)>; //::Engine::
+        using EventCallbackFn = std::function<void(Event&)>; //::Flare::
 
         virtual ~Window() {
             //before delete the parent object, this should be destruct.
@@ -47,8 +47,7 @@ namespace Flare {
 		virtual bool IsVSync() const = 0;
         virtual void* GetNativeWindow() const = 0;  
         
-        static Window* Create(const WindowProps& props = WindowProps()); // here is the where the window is created. linux, windows, mac
-        
+        static Window* Create(const WindowProps& props = WindowProps()); // where windows is created. linux, windows, mac
     };
     
 }

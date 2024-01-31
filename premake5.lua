@@ -1,10 +1,10 @@
 workspace "Flare"
     architecture"x64"
-    toolset "gcc"
+    toolset "gcc"  --use c++ compiler
     configurations {"Debug", "Release", "Ship"}
     startproject "Flare"
 
-    outputdir= "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+    outputdir= "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}" -- Folder Name: Debug/Relese/Ship | Linux | 32x/64x
 
     IncludeDir = {}
     IncludeDir["glfw"] = "Flare/vendor/glfw/include"
@@ -27,11 +27,16 @@ project "Flare"
     targetdir ("bin/" .. outputdir .. "/%{prj.name}") 
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+    --pchheader "Flare/stdafx.h"
+    --pchsource "Flare/stdafx.cpp"
+
     files {
         "%{prj.name}/**.h",
         "%{prj.name}/**.cpp"
     }
-    -- removeing vendor files from source
+
+
+    -- removing vendor files from source
     removefiles {
         "%{prj.name}/vendor/**h",
         "%{prj.name}/vendor/**cpp"
@@ -42,11 +47,10 @@ project "Flare"
 
     -- externalincludedirs { "../lua/include", "../zlib" }
 
-    -- links{"glfw", "Xrandr", "Xi", "GLU", "GL", "X11", "dl", "pthread", "stdc++fs" }, new -ldl -lGL (adding this can cause crashes)
+    -- links{"glfw", "Xrandr", "Xi", "GLU", "GL", "X11", "dl", "pthread", "stdc++fs" }, [new -ldl -lGL (adding this can cause crashes)]
     links{ "GL", "GLU", "glfw", "glad" ,"m" ,"dl" ,"X11" ,"pthread" ,"Xi" ,"Xrandr" ,"Xinerama" ,"Xxf86vm" ,"Xcursor"}
 
-
-       filter "configurations:Debug"
+    filter "configurations:Debug"
        defines "FLARE_DEBUG"
        runtime "Debug"
        symbols  "on"
@@ -62,3 +66,6 @@ project "Flare"
        runtime "Release"
        symbols  "off"
        
+ postbuildcommands { --todo, postbuild commands not work on gmake
+    "./run.sh"
+    }

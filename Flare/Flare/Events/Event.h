@@ -49,7 +49,7 @@ namespace Flare{
     
     class Event
     {
-        friend class EventDispatcher; // to get access it's private and protected memebers;
+        friend class EventDispatcher; // to get access it's private and protected members;
         
     public:
         bool Handled = false;
@@ -101,7 +101,3 @@ namespace Flare{
         
     };
 }
-
-
-
-

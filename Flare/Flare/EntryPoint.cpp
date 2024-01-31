@@ -1,7 +1,9 @@
 
-#include "../Flare/Core/Application.h" //for codelite;
-#include "../Flare/Core/Log.h" //for codelite;
-#include "../../Flare/vendor/glfw/include/GLFW/glfw3.h" // for codelite;
+
+#include "../../Flare/vendor/glfw/include/GLFW/glfw3.h"
+#include "Core/Application.h"
+#include "Core/Log.h"
+
 
 Flare::Application* CreateApplication();
 
