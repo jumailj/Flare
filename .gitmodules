@@ -5,3 +5,7 @@
 	path = Flare/vendor/glfw
 	url = https://github.com/jumailj/glfw
 	branch = flare
+[submodule "Flare/vendor/imgui"]
+	path = Flare/vendor/imgui
+	url = git@github.com:jumailj/imgui.git
+	branch = docking
