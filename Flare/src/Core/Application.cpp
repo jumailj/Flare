@@ -28,7 +28,20 @@ namespace Flare {
     {
         // used to clearn up the memeory.
     }
-    
+
+    void Application::PushLayer(Layer* layer)
+	{
+		m_LayerStack.PushLayer(layer);
+		layer->OnAttach();
+	}
+
+	void Application::PushOverlay(Layer* layer)
+	{
+		m_LayerStack.PushOverlay(layer);
+		layer->OnAttach();
+	}
+
+
     void Application::Close(){
         m_Running = false;
     }
@@ -51,6 +64,7 @@ namespace Flare {
 //        LOG_INFO("key value = {0}", int(y));
         
         while(m_Running) {
+            
             m_Window->OnUpdate();
             
             

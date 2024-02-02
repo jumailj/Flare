@@ -21,6 +21,9 @@ namespace Flare {
             void Close();
             
             void OnEvent(Event& e);
+
+            void PushLayer(Layer* layer);
+            void PushOverlay(Layer*layer);
             
             // return this windows
             inline Window& GetWindow() {return *m_Window;}
@@ -40,4 +43,7 @@ namespace Flare {
             LayerStack m_LayerStack;
             static Application* s_Instance;
     };
+
+    //to be defined in application
+    Application* CreateApplication();
 }

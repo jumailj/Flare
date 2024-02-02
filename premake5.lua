@@ -31,8 +31,10 @@ project "Flare"
     --pchsource "Flare/stdafx.cpp"
 
     files {
-        "%{prj.name}/**.h",
-        "%{prj.name}/**.cpp"
+        -- "%{prj.name}/**.h",
+        -- "%{prj.name}/**.cpp"
+        "%{prj.name}/src/**.h",
+        "%{prj.name}/src/**.cpp"
     }
 
 
@@ -65,7 +67,3 @@ project "Flare"
        defines "FLARE_DEBUG"
        runtime "Release"
        symbols  "off"
-       
- postbuildcommands { --todo, postbuild commands not work on gmake
-    "./run.sh"
-    }
