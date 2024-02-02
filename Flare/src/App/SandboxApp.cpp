@@ -1,6 +1,8 @@
 #include "../Flare.h"
 #include "../EntryPoint.h"
 
+
+#include "TestLayer.h"
 /*
  * using a derived class like 'Sandbox' instead of directly returning a new 
  * Flare::Applicaiton, instance provides a structured and flexible way to 
@@ -15,6 +17,8 @@ class Sandbox:public Flare::Application{
     Sandbox()
     {
         // push layer;
+        PushLayer(new TestLayer);
+        LOG_INFO("layer added");
     }
 
     ~Sandbox() 
