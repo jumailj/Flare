@@ -65,7 +65,13 @@ namespace Flare {
         
         while(m_Running) {
             
-            m_Window->OnUpdate();
+            /* updall from all the layers*/
+
+
+            for (Layer* layer: m_LayerStack) {
+               layer->OnUpdate();
+            }
+
             
             
             // mouse cords;
@@ -76,6 +82,9 @@ namespace Flare {
             /*
             if (Input::IsKeyPressed(KeyCode::A)){}
             */
+
+             m_Window->OnUpdate();
+
 
             }
     }

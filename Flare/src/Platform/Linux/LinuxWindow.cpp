@@ -40,11 +40,11 @@ namespace Flare{
             // init
             int success = glfwInit();
             // set opengl version;
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
             
             // set opengl to core-Profile
-            glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);      
+            glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  
  
             if (success) {
                 LOG_INFO("glfw init");
@@ -85,6 +85,7 @@ namespace Flare{
        glViewport(0,0,m_Data.Width, m_Data.Height);
        
        LOG_INFO("opengl version: {0}", (const char*) glGetString(GL_VERSION) );
+	   LOG_ERROR("GLSL Version: {0}", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
        
        
        // set glfw callbacks;(lam)
