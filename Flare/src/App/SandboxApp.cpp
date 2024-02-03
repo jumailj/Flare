@@ -1,5 +1,5 @@
 // #include "../Flare.h"
-// #include "../EntryPoint.h"
+#include "../EntryPoint.h"
 
 
 // #include "TestLayer.h"

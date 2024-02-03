@@ -1,24 +1,24 @@
-#pragma once
+// #pragma once
 
-//#include "../Core/Layer.h"
+// //#include "../Core/Layer.h"
 
-namespace Flare{
+// namespace Flare{
 
 
-    class ImGuiLayer : public Layer {
+//     class ImGuiLayer : public Layer {
 
-    public:
-         ImGuiLayer();
-        ~ImGuiLayer();
+//     public:
+//          ImGuiLayer();
+//         ~ImGuiLayer();
 
-          void OnAttach();
-          void OnDetach();
-          void OnUpdate();
-          void OnEvent(Event& event);
+//           void OnAttach();
+//           void OnDetach();
+//           void OnUpdate();
+//           void OnEvent(Event& event);
 
-    private:
+//     private:
 
-        float m_Time;
-    };
+//         float m_Time;
+//     };
 
-}
+// }
