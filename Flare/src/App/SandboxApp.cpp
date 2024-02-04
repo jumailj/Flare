@@ -1,7 +1,38 @@
 // #include "../Flare.h"
 #include "../EntryPoint.h"
-#include "TestLayer.h"
+#include <Core/Layer.h>
 #include <ImGui/ImGuiLayer.h>
+#include <Core/KeyCodes.h>
+
+#include <imgui.h>
+
+class TestLayer : public Flare::Layer{
+
+public:
+
+    TestLayer()
+    :  Layer("test layer"){
+
+    }
+
+    void OnUpdate() override
+	{
+		// if (Flare::Input::IsKeyPressed(KEY_A))
+		// 	LOG_TRACE("Tab key is pressed (poll)!");
+	}
+
+	virtual void OnImGuiRender() override
+	{
+
+		ImGui::Begin("Test");
+		ImGui::Text("Hello World");
+		ImGui::End();
+	}
+
+    private:
+
+};
+
 
 
 /*
@@ -17,12 +48,12 @@ class Sandbox:public Flare::Application{
     public:
     Sandbox()
     {
-        // push layer;
+       // push layer;
        //  PushLayer(new TestLayer);
-        PushLayer(new Flare::ImGuiLayer());
+        PushLayer(new TestLayer());
+       // PushLayer(new Flare::ImGuiLayer()); // i'm guil will atomatically run.
         LOG_INFO("layer added"); // no updated.
-
-
+        
     }
 
     ~Sandbox() 

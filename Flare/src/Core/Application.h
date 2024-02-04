@@ -43,10 +43,8 @@ namespace Flare {
             
             // instance , singleton;
             LayerStack m_LayerStack;
-            static Application* s_Instance; // should be private;
-
-            // new imgui Layer
             ImGuiLayer* m_ImGuiLayer;
+            static Application* s_Instance; // should be private;
             
     };
 
