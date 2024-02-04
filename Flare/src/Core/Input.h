@@ -5,6 +5,7 @@
 #include "KeyCodes.h"
 
 
+// input will be static
 namespace Flare{
     
     class Input {
@@ -16,6 +17,5 @@ namespace Flare{
 		static std::pair<float, float> GetMousePosition();
 		static float GetMouseX();
 		static float GetMouseY();
-    };
-    
+    }; 
 }

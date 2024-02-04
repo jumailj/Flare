@@ -137,5 +137,4 @@ namespace Flare {
 		return false;
 	}
     
-    
 }

@@ -94,7 +94,6 @@ namespace Flare
 	void ImGuiLayer::OnEvent(Event& event) // run in loop
 	{
 		// EventDispatcher dispatcher(Event);
-
 		EventDispatcher dispatcher(event);
 
 		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(ImGuiLayer::OnMouseButtonPressedEvent));
@@ -102,7 +101,7 @@ namespace Flare
 		dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(ImGuiLayer::OnMouseMovedEvent));
 		dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FN(ImGuiLayer::OnMouseScrolledEvent));
 		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(ImGuiLayer::OnKeyPressedEvent));
-		// dispatcher.Dispatch<KeyTypedEvent>(BIND_EVENT_FN(ImGuiLayer::OnKeyTypedEvent));
+		dispatcher.Dispatch<KeyTypedEvent>(BIND_EVENT_FN(ImGuiLayer::OnKeyTypedEvent));
 		dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(ImGuiLayer::OnKeyReleasedEvent));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(ImGuiLayer::OnWindowResizeEvent));
 	}
@@ -126,10 +125,7 @@ namespace Flare
 	}
 
 	
-
-
 	// EVENTS: 
-
 	bool ImGuiLayer::OnMouseButtonPressedEvent(MouseButtonPressedEvent& e)
 	{
 		ImGuiIO& io = ImGui::GetIO();
@@ -183,15 +179,15 @@ namespace Flare
 		return false;
 	}
 
-	// bool ImGuiLayer::OnKeyTypedEvent(KeyTypedEvent& e)
-	// {
-	// 	ImGuiIO& io = ImGui::GetIO();
-	// 	int keycode = e.GetKeyCode();
-	// 	if (keycode > 0 && keycode < 0x10000)
-	// 		io.AddInputCharacter((unsigned short)keycode);
+	bool ImGuiLayer::OnKeyTypedEvent(KeyTypedEvent& e)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		int keycode = e.GetKeyCode();
+		if (keycode > 0 && keycode < 0x10000)
+			io.AddInputCharacter((unsigned short)keycode);
 
-	// 	return false;
-	// }
+		return false;
+	}
 
 	bool ImGuiLayer::OnWindowResizeEvent(WindowResizeEvent& e)
 	{

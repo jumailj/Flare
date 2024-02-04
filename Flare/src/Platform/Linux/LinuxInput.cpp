@@ -1,7 +1,7 @@
 
 #include <utility>
 
-#include "../../Core/Log.h"
+
 #include "../../Core/Input.h"
 #include "../../Core/Application.h"
 
@@ -18,17 +18,17 @@ namespace Flare{
     
     //mouse 
     bool Input::IsMouseButtonPressed(MouseCode button){
-        GLFWwindow*window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
+        // return the current windows;
+		GLFWwindow*window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
         int state = glfwGetMouseButton(window, static_cast<int32_t>(button));
         return state == GLFW_PRESS;
     }
     // current mouse-pos
 	std::pair<float, float> Input::GetMousePosition()
 	{
-		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
+		GLFWwindow* window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
-
 		return { (float)xpos, (float)ypos };
 	}
 
