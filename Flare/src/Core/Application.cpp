@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Core.h"
 
+#include <glad/glad.h>
 #include <iostream>
 
 //#include "../Events/ApplicationEvent.h"
@@ -66,13 +67,22 @@ namespace Flare {
         while(m_Running) {
             
             /* updall from all the layers*/
-
+            glClearColor(1, 0, 1, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
 
             for (Layer* layer: m_LayerStack) {
                layer->OnUpdate();
             }
 
+
+            m_ImGuiLayer->Begin();
+            {
+                for (Layer* layer: m_LayerStack){
+                    layer->OnImGuiRender();
+                }
+            }
             
+            m_ImGuiLayer->End();
             
             // mouse cords;
             auto [x,y] = Flare::Input::GetMousePosition();
@@ -84,8 +94,6 @@ namespace Flare {
             */
 
              m_Window->OnUpdate();
-
-
             }
     }
     

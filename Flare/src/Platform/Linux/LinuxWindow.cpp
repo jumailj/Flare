@@ -47,45 +47,44 @@ namespace Flare{
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  
  
             if (success) {
-                LOG_INFO("glfw init");
+                LOG_TRACE("GLFW init");
+
             }else {
-                LOG_ERROR("glfw not init!");
+                LOG_ERROR("GLFW not init!");
             }
     
             // to avoid reinit glfw.
             s_GLFWInitialized = true;
         }
 
-       // generate window
-       
-        //init glad
-       
+       // generate window, withn given width,height,title
        m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
        if(!m_Window){
            LOG_ERROR("window not initiated");
+			// program crash will occure, not error handling.
        }
        
-    
-       LOG_INFO("Window Created {0} [ {1}, {2} ]", props.Title, props.Width, props.Height);
+       LOG_TRACE("Window Created {0} [{1}, {2}]", props.Title, props.Width, props.Height);
        
-       // check for the gald is load or not
-       
+	   // set windows context for initlized glad.
+	   // glad will initlized after creating context window;
        glfwSetWindowUserPointer(m_Window, &m_Data);
        glfwMakeContextCurrent(m_Window);
        SetVSync(true);
        
         int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
         if(status){
-                LOG_INFO("glad init", status);
+                LOG_TRACE("GLAD init", status);
         }else {
-                LOG_ERROR("glad not init!");
+                LOG_ERROR("GLAD not init!");
         }
        
-                  //setting up viewport size;
+        //setting up viewport size;
        glViewport(0,0,m_Data.Width, m_Data.Height);
        
-       LOG_INFO("opengl version: {0}", (const char*) glGetString(GL_VERSION) );
-	   LOG_ERROR("GLSL Version: {0}", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+	   //graphic versions;
+       LOG_TRACE("OPENGL version, {0}", (const char*) glGetString(GL_VERSION) );
+	   LOG_TRACE("GLSL Version, {0}", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
        
        
        // set glfw callbacks;(lam)
@@ -185,17 +184,8 @@ namespace Flare{
     
     void LinuxWindow::OnUpdate(){
         //check if the windows is close:
-        if(glfwWindowShouldClose(m_Window)){
-            LOG_INFO("Window Closed!");
-            Shutdown();
-        }
-        
-         glClear(GL_COLOR_BUFFER_BIT);
-         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-
-        
-        glfwSwapBuffers(m_Window);
         glfwPollEvents();
+        glfwSwapBuffers(m_Window);
         
        // it's where swap buffer happens;
     }

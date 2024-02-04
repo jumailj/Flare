@@ -1,4 +1,4 @@
-
+#pragma once
 #include "Event.h"
 #include "../Core/Log.h"
 

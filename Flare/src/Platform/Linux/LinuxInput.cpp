@@ -22,7 +22,7 @@ namespace Flare{
         int state = glfwGetMouseButton(window, static_cast<int32_t>(button));
         return state == GLFW_PRESS;
     }
-    
+    // current mouse-pos
 	std::pair<float, float> Input::GetMousePosition()
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
@@ -32,12 +32,14 @@ namespace Flare{
 		return { (float)xpos, (float)ypos };
 	}
 
+	// mouse -x
 	float Input::GetMouseX()
 	{
 		auto [x, y] = GetMousePosition();
 		return x;
 	}
 
+	// mouse -y
 	float Input::GetMouseY()
 	{
 		auto [x, y] = GetMousePosition();

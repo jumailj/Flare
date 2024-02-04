@@ -9,6 +9,8 @@
 #include "LayerStack.h"
 #include "../Events/ApplicationEvent.h"
 
+#include<ImGui/ImGuiLayer.h>
+
 namespace Flare {
     
     class Application 
@@ -41,7 +43,11 @@ namespace Flare {
             
             // instance , singleton;
             LayerStack m_LayerStack;
-            static Application* s_Instance;
+            static Application* s_Instance; // should be private;
+
+            // new imgui Layer
+            ImGuiLayer* m_ImGuiLayer;
+            
     };
 
     //to be defined in application

@@ -1,13 +1,13 @@
+#pragma once
 #include "../../Flare/vendor/glfw/include/GLFW/glfw3.h"
 #include "Core/Application.h"
 #include "Core/Log.h"
-
 
 /*
  * Sandbox is returning to a Application. so you can only use methods related
  * to Application
  */  
-/*
+
 extern Flare::Application * Flare::CreateApplication();
 
 int main(int argc, char**argv) {
@@ -20,21 +20,8 @@ int main(int argc, char**argv) {
     delete app;
 }
 
-*/
+/*
 
-
-// Dear ImGui: standalone example application for GLFW + OpenGL 3, using programmable pipeline
-// (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan/Metal graphics context creation, etc.)
-
-// Learn about Dear ImGui:
-// - FAQ                  https://dearimgui.com/faq
-// - Getting Started      https://dearimgui.com/getting-started
-// - Documentation        https://dearimgui.com/docs (same as your local docs/ folder).
-// - Introduction, links and more at the top of imgui.cpp
-
-#include <imgui.h>
-#include <backends/imgui_impl_glfw.h>
-#include <backends/imgui_impl_opengl3.h>
 
 #include <stdio.h>
 #define GL_SILENCE_DEPRECATION
@@ -43,12 +30,7 @@ int main(int argc, char**argv) {
 #endif
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
 
-// [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
-// To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
-// Your own project should not be affected, as you are likely to link with a newer binary of GLFW that is adequate for your version of Visual Studio.
-#if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
-#pragma comment(lib, "legacy_stdio_definitions")
-#endif
+
 
 // This example can also compile and run with Emscripten! See 'Makefile.emscripten' for details.
 #ifdef __EMSCRIPTEN__
@@ -244,3 +226,4 @@ int main(int, char**)
 
     return 0;
 }
+*/
