@@ -59,13 +59,13 @@ namespace Flare
 		io.KeyMap[ImGuiKey_Y] = GLFW_KEY_Y;
 		io.KeyMap[ImGuiKey_Z] = GLFW_KEY_Z;
 
-		ImGui_ImplOpenGL3_Init("#version 330"); // dont' sure about it, default working version, need to change to 330
+		//flare currenlty supported in 3.3.0 
+		ImGui_ImplOpenGL3_Init("#version 330");
 
 	}
 
 	void ImGuiLayer::OnUpdate()
 	{
-		LOG_INFO("ONUPDATE");
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::Get();
 		io.DisplaySize = ImVec2(app.GetWindow().GetWidth(), app.GetWindow().GetHeight());
@@ -93,7 +93,6 @@ namespace Flare
 	// working greate;
 	void ImGuiLayer::OnEvent(Event& event) // run in loop
 	{
-		// EventDispatcher dispatcher(Event);
 		EventDispatcher dispatcher(event);
 
 		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(ImGuiLayer::OnMouseButtonPressedEvent));
@@ -198,7 +197,5 @@ namespace Flare
 
 		return false;
 	}
-
-
 
 }

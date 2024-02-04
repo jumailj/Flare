@@ -10,6 +10,7 @@ workspace "Flare"
     IncludeDir["glfw"] = "Flare/vendor/glfw/include"
     IncludeDir["glad"] = "Flare/vendor/glad/include"
     IncludeDir["ImGui"] = "Flare/vendor/imgui"
+    IncludeDir["glm"] = "Flare/vendor/glm"
 
     group "Dependencies"
         include "Flare/vendor/glfw"
@@ -47,7 +48,7 @@ project "Flare"
     }
 
     -- includedirs { "/home/jumail/Documents/Flare/Flare/vendor/spdlog/include", "/home/world" }
-    includedirs { "%{prj.name}/src",   "Flare/vendor/spdlog/include", "%{IncludeDir.glfw}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}" }
+    includedirs { "%{prj.name}/src",   "Flare/vendor/spdlog/include", "%{IncludeDir.glfw}", "%{IncludeDir.glad}", "%{IncludeDir.glm}", "%{IncludeDir.ImGui}" }
 
     -- externalincludedirs { "../lua/include", "../zlib" }
 

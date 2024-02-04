@@ -30,12 +30,16 @@ namespace Flare {
         // used to clearn up the memeory.
     }
 
+
+    // for renderer etc..
     void Application::PushLayer(Layer* layer)
 	{
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
 
+
+    //eg. Imgui etc.
 	void Application::PushOverlay(Layer* layer)
 	{
 		m_LayerStack.PushOverlay(layer);
