@@ -8,7 +8,6 @@
 #include <glad/glad.h>
 #include <iostream>
 
-//#include "../Events/ApplicationEvent.h"
 
 namespace Flare {
     // static pointer to a instance, singleton- behavior
@@ -73,7 +72,7 @@ namespace Flare {
         while(m_Running) {
             
             /* updall from all the layers*/
-            glClearColor(1, 0, 1, 1);
+            glClearColor(0.50f, .052f, 0.133f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
             for (Layer* layer: m_LayerStack) {

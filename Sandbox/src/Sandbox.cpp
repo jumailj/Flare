@@ -1,13 +1,14 @@
 
-#include <EntryPoint.h>
+#include <EntryPoint.h> 
 
 #include "Sandbox.h"
 
-#include <Core/Layer.h>
-#include <ImGui/ImGuiLayer.h>
-#include <Core/Input.h>
-#include <Core/KeyCodes.h>
-#include <Core/Log.h>
+// #include <Core/Layer.h>
+// #include <Core/Input.h>
+// #include <Core/KeyCodes.h>
+// #include <Core/Log.h>
+
+#include <Flare.h>
 
 #include <imgui.h>
 
@@ -40,17 +41,15 @@ public:
 	virtual void OnImGuiRender() override
 	{
         if(keypresse){
-                ImGui::Begin("Test");
+        ImGui::Begin("Test");
         ImGui::Text("Hello World");
         ImGui::Button("helloworld",ImVec2(20,34));
 		ImGui::End();
-        }
-		
+        }	
 	}
  
     private:
 };
-
 
 
 /*
@@ -70,7 +69,6 @@ class Sandbox:public Flare::Application{
        //  PushLayer(new TestLayer);
         PushLayer(new TestLayer());
        // PushLayer(new Flare::ImGuiLayer()); // i'm guil will atomatically run.
-       LOG_INFO("layer added"); // no updated.
         
     }
 
