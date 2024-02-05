@@ -1,1 +1,1 @@
- ./bin/Debug-linux-x86_64/Flare/Flare
+ ./bin/Debug-linux-x86_64/Sandbox/Sandbox

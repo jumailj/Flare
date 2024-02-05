@@ -103,7 +103,7 @@ namespace Flare
 	// working great;
 	void ImGuiLayer::OnImGuiRender() // run in loop
 	{
-		static bool show = true;
+		static bool show = false;
 		ImGui::ShowDemoWindow(&show);
 
 	}
