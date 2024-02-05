@@ -53,7 +53,7 @@ project "Flare"
     -- externalincludedirs { "../lua/include", "../zlib" }
 
     -- links{"glfw", "Xrandr", "Xi", "GLU", "GL", "X11", "dl", "pthread", "stdc++fs" }, [new -ldl -lGL (adding this can cause crashes)]
-    links{ "GL", "GLU", "glfw", "glad","ImGui", "m" ,"dl" ,"X11" ,"pthread" ,"Xi" ,"Xrandr" ,"Xinerama" ,"Xxf86vm" ,"Xcursor"}
+    links{ "GL", "glfw", "glad","ImGui","X11" ,"pthread"} 
 
     filter "configurations:Debug"
        defines "FLARE_DEBUG"
