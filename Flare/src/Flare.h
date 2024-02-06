@@ -1,16 +1,16 @@
 #pragma once
 
 //for use by Flare Applications;
-#include "Core/Application.h"
-#include "Core/Layer.h"
-#include "Core/Log.h"
+#include "Flare/Core/Application.h"
+#include "Flare/Core/Layer.h"
+#include "Flare/Core/Log.h"
 
 //-- controlls-----
-#include "Core/Input.h"
-#include "Core/KeyCodes.h"
-#include "Core/MouseCodes.h"
+#include "Flare/Core/Input.h"
+#include "Flare/Core/KeyCodes.h"
+#include "Flare/Core/MouseCodes.h"
 
-#include "ImGui/ImGuiLayer.h"
+#include "Flare/ImGui/ImGuiLayer.h"
 
 
 // -- Renderer ---

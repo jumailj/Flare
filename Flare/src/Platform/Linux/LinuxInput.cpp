@@ -1,11 +1,9 @@
 
 #include <utility>
 
-
-#include "../../Core/Input.h"
-#include "../../Core/Application.h"
-
-#include "../../../vendor/glfw/include/GLFW/glfw3.h"
+#include <Flare/Core/Input.h>
+#include <Flare/Core/Application.h>
+#include <GLFW/glfw3.h>
 
 namespace Flare{
     //keybaord 

@@ -1,10 +1,12 @@
 #include "LinuxWindow.h"
 
-#include "../../Core/Log.h"
+#include <Flare/Core/Log.h>
+#include <Flare/Events/ApplicationEvent.h>
+#include <Flare/Events/MouseEvent.h>
+#include <Flare/Events/KeyEvent.h>
 
-#include "../../Events/ApplicationEvent.h"
-#include "../../Events/MouseEvent.h"
-#include "../../Events/KeyEvent.h"
+#include <Platform/OpenGL/OpenGLContext.h>
+
 
 
 namespace Flare{
@@ -29,64 +31,56 @@ namespace Flare{
       Shutdown();
     } 
 
+	// init new window, with Given props
     void LinuxWindow::Init(const WindowProps&props){
         
         m_Data.Title = props.Title;
         m_Data.Width = props.Width;
         m_Data.Height = props.Height;
+
+		LOG_INFO("CREATING VIDEO {0} ({1}, {2})", props.Title, props.Width, props.Height);
         
         if(!s_GLFWInitialized) 
         {
             // init
             int success = glfwInit();
+			/*
             // set opengl version;
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-            
             // set opengl to core-Profile
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  
- 
+			*/
+
             if (success) {
                 LOG_TRACE("GLFW init");
 
             }else {
                 LOG_ERROR("GLFW not init!");
             }
+			glfwSetErrorCallback(GLFWErrorCallback);
     
             // to avoid reinit glfw.
             s_GLFWInitialized = true;
         }
 
+	
        // generate window, withn given width,height,title
        m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
        if(!m_Window){
            LOG_ERROR("window not initiated");
 			// program crash will occure, not error handling.
        }
-       
        LOG_TRACE("Window Created {0} [{1}, {2}]", props.Title, props.Width, props.Height);
        
-	   // set windows context for initlized glad.
-	   // glad will initlized after creating context window;
-       glfwSetWindowUserPointer(m_Window, &m_Data);
-       glfwMakeContextCurrent(m_Window);
-       SetVSync(true);
+	   m_Context = new OpenGLContext(m_Window);
+	   m_Context->Init();
+	   
+
+	   glfwSetWindowUserPointer(m_Window, &m_Data);
+	   SetVSync(true);
        
-        int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-        if(status){
-                LOG_TRACE("GLAD init", status);
-        }else {
-                LOG_ERROR("GLAD not init!");
-        }
-       
-        //setting up viewport size;
-       glViewport(0,0,m_Data.Width, m_Data.Height);
-       
-	   //graphic versions;
-       LOG_TRACE("OPENGL version, {0}", (const char*) glGetString(GL_VERSION) );
-	   LOG_TRACE("GLSL Version, {0}", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
-       
-       
+
        // set glfw callbacks;(lam)
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
 			{
@@ -193,7 +187,8 @@ namespace Flare{
     void LinuxWindow::OnUpdate(){
         //check if the windows is close:
         glfwPollEvents();
-        glfwSwapBuffers(m_Window);
+        //glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffers();
         
        // it's where swap buffer happens;
     }

@@ -1,16 +1,8 @@
-
-#include <EntryPoint.h> 
-
-#include "Sandbox.h"
-
-// #include <Core/Layer.h>
-// #include <Core/Input.h>
-// #include <Core/KeyCodes.h>
-// #include <Core/Log.h>
-
+#include <Flare/Core/EntryPoint.h>
+#include <Flare/Events/Event.h>
 #include <Flare.h>
-
 #include <imgui.h>
+
 
 int test = 10;
 
@@ -47,7 +39,12 @@ public:
 		ImGui::End();
         }	
 	}
- 
+
+    void OnEvent(Flare::Event& e) override{
+       // LOG_INFO("{0}", e.ToString());
+    }
+
+
     private:
 };
 

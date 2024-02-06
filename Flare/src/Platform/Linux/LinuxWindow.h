@@ -1,14 +1,14 @@
 #pragma once
 
 //codelite termperory solution
-#include "../../Core/Window.h"
+#include <Flare/Core/Window.h>
+#include <Flare/Renderer/GraphicContext.h>
 
 
 #define GLFW_INCLUDE_NONE
 
-#include "../../../vendor/glfw/include/GLFW/glfw3.h"
-#include "../../../vendor/glad/include/glad/glad.h"
-
+#include <GLFW/glfw3.h>
+// #include <glad/glad.h>
 
 
 namespace Flare {
@@ -38,6 +38,7 @@ private:
 
 private:
     GLFWwindow* m_Window;
+    GraphicContext * m_Context;
 
     struct WindowData
     {

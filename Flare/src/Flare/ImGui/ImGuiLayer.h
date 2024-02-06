@@ -1,10 +1,9 @@
 #pragma once
 
-#include <Core/Layer.h>
-
-#include <Events/ApplicationEvent.h>
-#include <Events/KeyEvent.h>
-#include <Events/MouseEvent.h>
+#include <Flare/Core/Layer.h>
+#include <Flare/Events/ApplicationEvent.h>
+#include <Flare/Events/KeyEvent.h>
+#include <Flare/Events/MouseEvent.h>
 
 namespace Flare {
 

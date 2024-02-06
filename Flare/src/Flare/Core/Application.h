@@ -4,12 +4,11 @@
 #include <memory>
 
 #include "Window.h"
-
-#include "../Events/Event.h"
 #include "LayerStack.h"
-#include "../Events/ApplicationEvent.h"
 
-#include<ImGui/ImGuiLayer.h>
+#include <Flare/Events/Event.h>
+#include <Flare/Events/ApplicationEvent.h>
+#include <Flare/ImGui/ImGuiLayer.h>
 
 namespace Flare {
     
@@ -45,6 +44,11 @@ namespace Flare {
             LayerStack m_LayerStack;
             ImGuiLayer* m_ImGuiLayer;
             static Application* s_Instance; // should be private;
+
+
+        unsigned int m_VertexArray;
+		unsigned int m_VertexBuffer;
+		unsigned int m_IndexBuffer;
             
     };
 

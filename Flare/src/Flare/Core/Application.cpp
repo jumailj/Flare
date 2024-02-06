@@ -5,8 +5,10 @@
 #include "Input.h"
 #include "Core.h"
 
+#include <Flare/Renderer/GraphicContext.h>
 #include <glad/glad.h>
-#include <iostream>
+
+
 
 
 namespace Flare {
@@ -18,12 +20,44 @@ namespace Flare {
    {
        // simply points to the current Application Object.
        s_Instance = this;
-       // if you didn't pass any argument. then if will used default window title, width, height.
-       m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(name))); // can we avoid WindowProps here.. ?TODO
+       // if you didn't pass any argument. then if will used default window (title, width, height).
+       // Create New Window;
+       m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(name)));
        m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
        
+       //create a new imgui layer;
        m_ImGuiLayer = new ImGuiLayer();
        PushOverlay(m_ImGuiLayer);
+
+    // VERTEX ARRAY
+    // INDEX  BUFFER
+
+        glGenVertexArrays(1, &m_VertexArray);
+		glBindVertexArray(m_VertexArray);
+
+		glGenBuffers(1, &m_VertexBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
+
+		float vertices[3 * 3] = {
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.0f,  0.5f, 0.0f
+		};
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 3* sizeof(float), nullptr);
+
+		glGenBuffers(1, &m_IndexBuffer);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
+
+		unsigned int indices[3] = {
+			0,1,2
+		};
+
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
     }
     
     Application::~Application() 
@@ -51,29 +85,38 @@ namespace Flare {
     void Application::Close(){
         m_Running = false;
     }
+
+
+    void Application::OnEvent(Event& e)
+	{
+        // eventing loging.
+        // LOG_INFO("EVENT: {0}", e.ToString());
+
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Flare::Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Flare::Application::OnWindowResize));
+
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
+		{
+			(*--it)->OnEvent(e);
+			if (e.Handled)
+				break;
+		}
+	}
+
+
     
     // it's where the core of the application;
     void Application::Run(){
-        
-        // event checking..
-//        WindowResizeEvent e(1280, 720);
-//       LOG_INFO("window widht: {0}", m_Window->GetWidth());
-//       LOG_INFO("window height: {0}", m_Window->GetHeight());
-
-        bool x = Input::IsMouseButtonPressed(MOUSE_BUTTON_0);
-        bool y = Input::IsKeyPressed(KEY_A);
-        
-        std::pair<float,float> mousePos;
-
-        
-//        LOG_INFO("mouse value = {0}", int(x));
-//        LOG_INFO("key value = {0}", int(y));
         
         while(m_Running) {
             
             /* updall from all the layers*/
             glClearColor(0.50f, .052f, 0.133f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
+
+            glBindVertexArray(m_VertexArray);
+			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
 
             for (Layer* layer: m_LayerStack) {
                layer->OnUpdate();
@@ -90,37 +133,11 @@ namespace Flare {
             
             m_ImGuiLayer->End();
             
-            // mouse cords;
-            auto [x,y] = Flare::Input::GetMousePosition();
-//            LOG_INFO("{0} {1} ", x, y);
-            
-            // keyboard input
-            /*
-            if (Input::IsKeyPressed(KeyCode::A)){}
-            */
 
              m_Window->OnUpdate();
             }
     }
-    
-    
-	void Application::OnEvent(Event& e)
-	{
-        // eventing loging.
-        // LOG_INFO("EVENT: {0}", e.ToString());
-
-		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Flare::Application::OnWindowClose));
-		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Flare::Application::OnWindowResize));
-
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
-		{
-			(*--it)->OnEvent(e);
-			if (e.Handled)
-				break;
-		}
-	}
-    
+      
     
     bool Application::OnWindowClose(WindowCloseEvent& e){
         m_Running = false;
