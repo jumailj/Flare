@@ -3,7 +3,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <Flare/Core/Log.h>
-#include <GL/gl.h>
 
 namespace Flare{
 

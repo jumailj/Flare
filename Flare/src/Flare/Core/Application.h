@@ -10,6 +10,9 @@
 #include <Flare/Events/ApplicationEvent.h>
 #include <Flare/ImGui/ImGuiLayer.h>
 
+//temporary
+#include <Flare/Renderer/Shader.h>
+
 namespace Flare {
     
     class Application 
@@ -49,6 +52,8 @@ namespace Flare {
         unsigned int m_VertexArray;
 		unsigned int m_VertexBuffer;
 		unsigned int m_IndexBuffer;
+
+        std::unique_ptr<Shader> m_Shader;
             
     };
 

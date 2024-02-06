@@ -22,22 +22,15 @@ public:
 
 		// if (Flare::Input::IsKeyPressed(KEY_A))
 		// 	LOG_TRACE("Tab key is pressed (poll)!");
-
-        if(Flare::Input::IsKeyPressed(KEY_A)) {
-            keypresse = true;
-        }else {
-            keypresse = false;
-        }
 	}
 
 	virtual void OnImGuiRender() override
 	{
-        if(keypresse){
+
         ImGui::Begin("Test");
         ImGui::Text("Hello World");
-        ImGui::Button("helloworld",ImVec2(20,34));
 		ImGui::End();
-        }	
+        
 	}
 
     void OnEvent(Flare::Event& e) override{
