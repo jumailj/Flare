@@ -70,5 +70,5 @@ class Sandbox:public Flare::Application{
 
 // create new application, and return new app(sandbox)
 Flare::Application* Flare::CreateApplication() {
-    return new Sandbox();
+     return new Sandbox();
 }
