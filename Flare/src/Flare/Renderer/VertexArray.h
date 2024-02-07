@@ -8,6 +8,7 @@ namespace Flare{
     class VertexArray{
 
     public:
+        
         virtual ~VertexArray(){}
 
         virtual void Bind() const = 0;

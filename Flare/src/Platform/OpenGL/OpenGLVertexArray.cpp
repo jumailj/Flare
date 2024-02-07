@@ -25,7 +25,6 @@ namespace Flare{
         }
 
 
-
         OpenGLVertexArray::OpenGLVertexArray() 
         {
             glCreateVertexArrays(1, &m_RendererID);
@@ -42,7 +41,7 @@ namespace Flare{
             glBindVertexArray(0);
         }
 
-        void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexArray>& vertexBuffer)
+        void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
         {
             glBindVertexArray(m_RendererID);
             vertexBuffer->Bind();
