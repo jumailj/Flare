@@ -11,24 +11,7 @@ namespace Flare {
     // static pointer to a instance, singleton- behavior
     Application* Application::s_Instance = nullptr;
 
-    static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type) {
-        switch(type) 
-        {
-            case ShaderDataType::Float: return  GL_FLOAT;
-            case ShaderDataType::Float2: return GL_FLOAT;
-            case ShaderDataType::Float3: return GL_FLOAT;
-            case ShaderDataType::Float4: return GL_FLOAT;
-            case ShaderDataType::Mat3: return  GL_FLOAT;
-            case ShaderDataType::Mat4: return GL_FLOAT;;
-            case ShaderDataType::Int: return GL_INT;
-            case ShaderDataType::Int2: return GL_INT;
-            case ShaderDataType::Int3: return GL_INT;
-            case ShaderDataType::Int4: return GL_INT;
-            case ShaderDataType::Bool : return GL_BOOL;
-        }
-        LOG_ERROR("UNKNOW SHADERDATA TYPE!");
-        return 0;
-    }
+
 
 
     Application::Application(const std::string&name)
@@ -44,16 +27,7 @@ namespace Flare {
        m_ImGuiLayer = new ImGuiLayer();
        PushOverlay(m_ImGuiLayer);
 
-
-
-    // VERTEX ARRAY
-    // INDEX  BUFFER
-
-        glGenVertexArrays(1, &m_VertexArray);
-		glBindVertexArray(m_VertexArray);
-
-		// glGenBuffers(1, &m_VertexBuffer);
-		// glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
+        m_VertexArray.reset(VertexArray::Create());
 
 		float vertices[3 * 7] = {
 			-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
@@ -62,35 +36,19 @@ namespace Flare {
 		};
 
         m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices) ));
+        
+        BufferLayout layout= {
+        {ShaderDataType::Float3, "a_Position"},
+        {ShaderDataType::Float4, "a_Color"},
+        };
 
-        {
-            BufferLayout layout= {
-            {ShaderDataType::Float3, "a_Position"},
-            {ShaderDataType::Float4, "a_Color"},
-            };
-            m_VertexBuffer->SetLayout(layout);  
-            
-        }
+        m_VertexBuffer->SetLayout(layout);  
+        m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 
-
-        uint32_t index = 0;
-        const auto& layout = m_VertexBuffer->GetLayout();
-
-        for (const auto& element: layout)
-        {
-            glEnableVertexAttribArray(index);
-		    glVertexAttribPointer(index,element.GetComponentCount(), ShaderDataTypeToOpenGLBaseType(element.Type), element.Normalized ? GL_TRUE : GL_FALSE, layout.GetStride(), reinterpret_cast<const void*>(static_cast<uintptr_t>(element.Offset)));  
-            index++;
-        }
-
-	
-
-		unsigned int indices[3] = {
-			0,1,2
-		};
-
+		unsigned int indices[3] = {0,1,2};
         m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices)/sizeof(uint32_t)));
-		
+		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
+
 
         std::string vertexSrc = R"(
             #version 330 core
@@ -125,9 +83,8 @@ namespace Flare {
             }
         )";
 
-
-
         m_Shader.reset( new Shader(vertexSrc,fragmentSrc));
+
     }
     
     Application::~Application() 
@@ -183,15 +140,14 @@ namespace Flare {
             glClearColor(0.129f, 0.14f, 0.16f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-            m_Shader->Bind();
 
-            glBindVertexArray(m_VertexArray);
-			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+            m_Shader->Bind();
+            m_VertexArray->Bind();
+			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(),GL_UNSIGNED_INT , nullptr);
 
             for (Layer* layer: m_LayerStack) {
                layer->OnUpdate();
             }
-
 
             // later it will be on renderer thread.
             m_ImGuiLayer->Begin();

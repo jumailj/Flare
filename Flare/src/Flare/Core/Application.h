@@ -13,6 +13,7 @@
 //temporary
 #include <Flare/Renderer/Shader.h>
 #include <Flare/Renderer/Buffer.h>
+#include <Flare/Renderer/VertexArray.h>
 
 namespace Flare {
     
@@ -49,15 +50,16 @@ namespace Flare {
             ImGuiLayer* m_ImGuiLayer;
             static Application* s_Instance; // should be private;
 
-
-        unsigned int m_VertexArray;
         
-        std::unique_ptr<Shader> m_Shader;
+        std::shared_ptr<Shader> m_Shader;
+        std::shared_ptr<VertexBuffer> m_VertexBuffer;
+        std::shared_ptr<VertexArray> m_VertexArray;
+        std::shared_ptr<IndexBuffer> m_IndexBuffer;
 
-        std::unique_ptr<VertexBuffer> m_VertexBuffer;
-        std::unique_ptr<IndexBuffer> m_IndexBuffer;
+        std::shared_ptr<Shader> m_BlueShader;
+        std::shared_ptr<VertexArray> m_SquareVA;
 
-            
+
     };
 
     //to be defined in application
