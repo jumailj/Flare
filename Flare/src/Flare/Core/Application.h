@@ -12,6 +12,7 @@
 
 //temporary
 #include <Flare/Renderer/Shader.h>
+#include <Flare/Renderer/Buffer.h>
 
 namespace Flare {
     
@@ -50,10 +51,12 @@ namespace Flare {
 
 
         unsigned int m_VertexArray;
-		unsigned int m_VertexBuffer;
-		unsigned int m_IndexBuffer;
-
+        
         std::unique_ptr<Shader> m_Shader;
+
+        std::unique_ptr<VertexBuffer> m_VertexBuffer;
+        std::unique_ptr<IndexBuffer> m_IndexBuffer;
+
             
     };
 
