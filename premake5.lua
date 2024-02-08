@@ -105,7 +105,7 @@ project "Sandbox"
        -- includedirs { "/home/jumail/Documents/Flare/Flare/vendor/spdlog/include", "/home/world" }
        -- includedirs { "%{prj.name}/src",   "Flare/vendor/spdlog/include", "%{IncludeDir.glfw}", "%{IncludeDir.glad}", "%{IncludeDir.glm}", "%{IncludeDir.ImGui}" }
 
-       includedirs {"Flare/vendor/spdlog/include", "{prj.name}/src", "Flare/src", "%{IncludeDir.ImGui}"}
+       includedirs {"Flare/vendor/spdlog/include", "{prj.name}/src", "Flare/src", "%{IncludeDir.ImGui}", "%{IncludeDir.glm}"}
    
        -- externalincludedirs { "../lua/include", "../zlib" }
    

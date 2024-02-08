@@ -15,6 +15,9 @@
 #include <Flare/Renderer/Buffer.h>
 #include <Flare/Renderer/VertexArray.h>
 
+#include <Flare/Renderer/OrthographicCamera.h>
+
+
 namespace Flare {
     
     class Application 
@@ -39,6 +42,7 @@ namespace Flare {
     private:
             bool OnWindowResize(WindowResizeEvent& e);
             bool OnWindowClose(WindowCloseEvent& e);
+
             // actual window object;
             std::unique_ptr<Window> m_Window;
             
@@ -51,12 +55,13 @@ namespace Flare {
             static Application* s_Instance; // should be private;
 
         
-        std::shared_ptr<Shader> m_Shader;
-        std::shared_ptr<VertexArray> m_VertexArray;
+            std::shared_ptr<Shader> m_Shader;
+            std::shared_ptr<VertexArray> m_VertexArray;
 
-        std::shared_ptr<Shader> m_BlueShader;
-        std::shared_ptr<VertexArray> m_SquareVA;
+            std::shared_ptr<Shader> m_BlueShader;
+            std::shared_ptr<VertexArray> m_SquareVA;
 
+            OrthographicCamera m_Camera;
 
     };
 

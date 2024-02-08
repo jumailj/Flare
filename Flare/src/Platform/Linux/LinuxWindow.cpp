@@ -73,14 +73,13 @@ namespace Flare{
        }
        LOG_TRACE("Window Created {0} [{1}, {2}]", props.Title, props.Width, props.Height);
        
+	   // geting context, with current windo, init glad.
 	   m_Context = new OpenGLContext(m_Window);
 	   m_Context->Init();
 	   
-
 	   glfwSetWindowUserPointer(m_Window, &m_Data);
 	   SetVSync(true);
        
-
        // set glfw callbacks;(lam)
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
 			{

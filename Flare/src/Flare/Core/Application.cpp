@@ -1,9 +1,9 @@
 #include "Application.h"
 
 #include "Log.h"
-#include "Input.h"
 #include "Core.h"
-
+#include "Input.h"
+#include "KeyCodes.h"
 #include <Flare/Renderer/Renderer.h>
 
 
@@ -12,18 +12,22 @@ namespace Flare {
     Application* Application::s_Instance = nullptr;
 
     Application::Application(const std::string&name)
+    :m_Camera{-1.6f, 1.6f, -0.9f, 0.9f}
    {
-       // simply points to the current Application Object.
+       // points to the current Application Object.
        s_Instance = this;
+      
        // if you didn't pass any argument. then if will used default window (title, width, height).
        // Create New Window;
        m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(name)));
+       // adding eventscallbacks
        m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
        
        //create a new imgui layer;
        m_ImGuiLayer = new ImGuiLayer();
        //pushing to layerstack
        PushOverlay(m_ImGuiLayer);
+
 
         m_VertexArray.reset(VertexArray::Create());
 
@@ -74,54 +78,55 @@ namespace Flare {
 
 
 
-
-        std::string vertexSrc = R"(
-            #version 330 core
-
-            layout(location = 0) in vec3 a_Position;
-            layout(location = 1) in vec4 a_Color;
-
-            out vec3 v_Position;
-            out vec4 v_Color;
-
-            void main() 
-            {
-                v_Position = a_Position;
-                v_Color = a_Color;
-                gl_Position = vec4( a_Position, 1.0);
-            }
-        )";
-
-
-        std::string fragmentSrc = R"(
-            #version 330 core
-
-            layout(location = 0) out vec4 color;
-
-            in vec3 v_Position;
-            in vec4 v_Color;
-
-            void main() 
-            {
-                color = vec4(v_Position * 0.5 + 0.5, 1.0);
-                color = v_Color;
-            }
-        )";
-
-        m_Shader.reset( new Shader(vertexSrc,fragmentSrc));
-
-
-        std::string blueShaderVertexSrc = R"(
+		std::string vertexSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) in vec3 a_Position;
+			layout(location = 1) in vec4 a_Color;
+
+			uniform mat4 u_ViewProjection;
+
+			out vec3 v_Position;
+			out vec4 v_Color;
+
+			void main()
+			{
+				v_Position = a_Position;
+				v_Color = a_Color;
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);	
+			}
+		)";
+
+		std::string fragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 color;
+
+			in vec3 v_Position;
+			in vec4 v_Color;
+
+			void main()
+			{
+				color = vec4(v_Position * 0.5 + 0.5, 1.0);
+				color = v_Color;
+			}
+		)";
+
+		m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
+
+		std::string blueShaderVertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 a_Position;
+
+			uniform mat4 u_ViewProjection;
 
 			out vec3 v_Position;
 
 			void main()
 			{
 				v_Position = a_Position;
-				gl_Position = vec4(a_Position, 1.0);	
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);	
 			}
 		)";
 
@@ -188,27 +193,37 @@ namespace Flare {
 
     // it's where the core of the application;
     void Application::Run(){
+
+        float val = 0.0f;
         
         while(m_Running) {
-            
-            // /* updall from all the layers*/
-            // glClearColor(0.129f, 0.14f, 0.16f, 1);
-			// glClear(GL_COLOR_BUFFER_BIT);
 
+            if(Flare::Input::IsKeyPressed(KEY_A)) {
+                val++;
+            } else if (Flare::Input::IsKeyPressed(KEY_D)) {
+                val--;
+            }
             
             RendereCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
             RendereCommand::Clear();
 
-            Renderer::BeginScene();
 
-                m_BlueShader->Bind();
-                Renderer::Submit(m_SquareVA);
+            m_Camera.SetRotation(val);
 
-                m_Shader->Bind();
-                Renderer::Submit(m_VertexArray);
+            Renderer::BeginScene(m_Camera);
+
+                    Renderer::Submit(m_BlueShader, m_SquareVA);
+                    Renderer::Submit(m_Shader, m_VertexArray);
+
+                // m_BlueShader->Bind();
+                // Renderer::Submit(m_SquareVA);
+
+                // m_Shader->Bind();
+                // Renderer::Submit(m_VertexArray);
 
             Renderer::EndScene();
             
+
 
 
             for (Layer* layer: m_LayerStack) {
@@ -217,13 +232,14 @@ namespace Flare {
 
             // later it will be on renderer thread.
             m_ImGuiLayer->Begin();
+
             {
                 for (Layer* layer: m_LayerStack){
                     layer->OnImGuiRender();
                 }
-            }
-            
+            }    
             m_ImGuiLayer->End();
+
             
 
              m_Window->OnUpdate();
