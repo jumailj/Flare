@@ -10,11 +10,11 @@ namespace Flare{
     {
         switch (Renderer::GetAPI())
         {
-            case RendererAPI::None : LOG_ERROR("RendererAPI::None is currenlty not supported!"); return nullptr;
-            case RendererAPI::OpenGL : return new OpenGLVertexArray();
+            case RendererAPI::API::None : LOG_ERROR("RendererAPI::None is currenlty not supported!"); return nullptr;
+            case RendererAPI::API::OpenGL : return new OpenGLVertexArray();
         }
 
-        LOG_ERROR("unknown RendereAPI");
+        LOG_ERROR("[VERTEX ARRAY] Unknown RendereAPI");
         return nullptr;
 
     }

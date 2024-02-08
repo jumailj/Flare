@@ -12,8 +12,8 @@ namespace Flare{
     {
         switch (Renderer::GetAPI())
         {
-        case RendererAPI::None : LOG_ERROR("RendererAPI::None is currenlty not supported!"); return nullptr;
-        case RendererAPI::OpenGL : return new OpenGLVertexBuffer(vertices, size);
+        case RendererAPI::API::None : LOG_ERROR("RendererAPI::None is currenlty not supported!"); return nullptr;
+        case RendererAPI::API::OpenGL : return new OpenGLVertexBuffer(vertices, size);
         }
 
         LOG_ERROR("unknown RendereAPI");
@@ -25,8 +25,8 @@ namespace Flare{
     {
         switch (Renderer::GetAPI())
         {
-        case RendererAPI::None : LOG_ERROR("RendererAPI::None is currenlty not supported!"); return nullptr;
-        case RendererAPI::OpenGL : return new OpenGLIndexBuffer(indices, size);
+        case RendererAPI::API::None : LOG_ERROR("RendererAPI::None is currenlty not supported!"); return nullptr;
+        case RendererAPI::API::OpenGL : return new OpenGLIndexBuffer(indices, size);
         }
 
         LOG_ERROR("unknown RendereAPI");

@@ -38,7 +38,7 @@ namespace Flare{
             // we don't need the shader anymore.
             glDeleteShader(vertexShader);
             // use the infolog as you see fit.
-            LOG_ERROR("vertex shader compilation failure");
+            LOG_ERROR("[VERTEX SHADER] compilation failure");
             LOG_ERROR("{0}", infoLog.data());
 
             // no error handling..
@@ -70,7 +70,7 @@ namespace Flare{
             glDeleteShader(fragmentShader);
             glDeleteShader(vertexShader); // if fragmentshader get error then don't need vertex
 
-            LOG_ERROR("fragment shader compilation failure");
+            LOG_ERROR("compilation failure");
             LOG_ERROR("{0}", infoLog.data());
             
             //no error handling..

@@ -4,8 +4,8 @@
 #include "Input.h"
 #include "Core.h"
 
-#include <Flare/Renderer/GraphicContext.h>
-#include <glad/glad.h>
+#include <Flare/Renderer/Renderer.h>
+
 
 namespace Flare {
     // static pointer to a instance, singleton- behavior
@@ -22,6 +22,7 @@ namespace Flare {
        
        //create a new imgui layer;
        m_ImGuiLayer = new ImGuiLayer();
+       //pushing to layerstack
        PushOverlay(m_ImGuiLayer);
 
         m_VertexArray.reset(VertexArray::Create());
@@ -190,19 +191,25 @@ namespace Flare {
         
         while(m_Running) {
             
-            /* updall from all the layers*/
-            glClearColor(0.129f, 0.14f, 0.16f, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+            // /* updall from all the layers*/
+            // glClearColor(0.129f, 0.14f, 0.16f, 1);
+			// glClear(GL_COLOR_BUFFER_BIT);
 
+            
+            RendereCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
+            RendereCommand::Clear();
 
-			m_BlueShader->Bind();
-			m_SquareVA->Bind();
-			glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+            Renderer::BeginScene();
 
+                m_BlueShader->Bind();
+                Renderer::Submit(m_SquareVA);
 
-            m_Shader->Bind();
-            m_VertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(),GL_UNSIGNED_INT , nullptr);
+                m_Shader->Bind();
+                Renderer::Submit(m_VertexArray);
+
+            Renderer::EndScene();
+            
+
 
             for (Layer* layer: m_LayerStack) {
                layer->OnUpdate();
