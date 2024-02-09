@@ -1,7 +1,8 @@
 #pragma once 
 
+#include <Flare/Core/Timestep.h>
 #include "Core.h"
-#include "../Events/Event.h"
+#include <Flare/Events/Event.h>
 
 namespace Flare{
     
@@ -14,7 +15,7 @@ namespace Flare{
         
         virtual void OnAttach(){}
         virtual void OnDetach(){}
-        virtual void OnUpdate() {}
+        virtual void OnUpdate(Timestep ts) {}
         virtual void OnImGuiRender() {}
         virtual void OnEvent(Event& event){}
         

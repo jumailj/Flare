@@ -5,6 +5,8 @@
 #include "Flare/Core/Layer.h"
 #include "Flare/Core/Log.h"
 
+#include "Flare/Core/Timestep.h"
+
 //-- controlls-----
 #include "Flare/Core/Input.h"
 #include "Flare/Core/KeyCodes.h"

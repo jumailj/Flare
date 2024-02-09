@@ -6,6 +6,8 @@
 #include "KeyCodes.h"
 #include <Flare/Renderer/Renderer.h>
 
+#include <GLFW/glfw3.h>
+
 
 namespace Flare {
     // static pointer to a instance, singleton- behavior
@@ -79,9 +81,13 @@ namespace Flare {
         float val = 0.0f;
         
         while(m_Running) {
+			float time = (float) glfwGetTime();
+			Timestep timestep = time - m_LastFrameTime;
+			m_LastFrameTime = time;
+
 
             for (Layer* layer: m_LayerStack) {
-               layer->OnUpdate();
+               layer->OnUpdate(timestep);
             }
 
             // later it will be on renderer thread.

@@ -121,31 +121,33 @@ public:
 
 	}
 	// mainupdate loop;
-	void OnUpdate() override {
+	void OnUpdate(Flare::Timestep ts) override {
+
+        //    LOG_INFO("DELTA time: {0}s", ts.GetSeconds());
 
 		if (Flare::Input::IsKeyPressed( KEY_LEFT))
 		{
-			m_CameraPosition.x -= m_CameraSpeed;
+			m_CameraPosition.x -= m_CameraSpeed * ts;
 		}
 		else if (Flare::Input::IsKeyPressed(KEY_RIGHT))
 		{
-			m_CameraPosition.x += m_CameraSpeed;
+			m_CameraPosition.x += m_CameraSpeed* ts;
 		}
 
 		if (Flare::Input::IsKeyPressed(KEY_UP))
 		{
-			m_CameraPosition.y += m_CameraSpeed;
+			m_CameraPosition.y += m_CameraSpeed* ts;
 		}
 		else if (Flare::Input::IsKeyPressed(KEY_DOWN))
 		{
-			m_CameraPosition.y -= m_CameraSpeed;
+			m_CameraPosition.y -= m_CameraSpeed* ts;
 		}
 
 		if (Flare::Input::IsKeyPressed(KEY_A)) {
-			m_CameraRotation += 2.0f;
+			m_CameraRotation += 2.0f * ts;
 		}
 		if (Flare::Input::IsKeyPressed(KEY_D)) {
-			m_CameraRotation -= 2.0f;
+			m_CameraRotation -= 2.0f * ts;
 		}
 
 
@@ -160,7 +162,7 @@ public:
 		Flare::Renderer::BeginScene(m_Camera);
 
 		Flare::Renderer::Submit(m_BlueShader, m_SquareVA);
-		Flare::Renderer::Submit(m_Shader, m_VertexArray);
+	 	Flare::Renderer::Submit(m_Shader, m_VertexArray);
 
 		Flare::Renderer::EndScene();
 

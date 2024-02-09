@@ -10,13 +10,6 @@
 #include <Flare/Events/ApplicationEvent.h>
 #include <Flare/ImGui/ImGuiLayer.h>
 
-//temporary
-#include <Flare/Renderer/Shader.h>
-#include <Flare/Renderer/Buffer.h>
-#include <Flare/Renderer/VertexArray.h>
-
-#include <Flare/Renderer/OrthographicCamera.h>
-
 
 namespace Flare {
     
@@ -54,7 +47,8 @@ namespace Flare {
             ImGuiLayer* m_ImGuiLayer;
 
     private:
-            static Application* s_Instance; // should be private;
+            static Application* s_Instance; // core
+            float m_LastFrameTime = 0.0f;
 
     };
 
