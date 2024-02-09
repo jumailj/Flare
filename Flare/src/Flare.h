@@ -14,4 +14,14 @@
 
 
 // -- Renderer ---
+#include <Flare/Renderer/Renderer.h>
+#include <Flare/Renderer/RenderCommand.h>
 
+#include <Flare/Renderer/Buffer.h>
+#include <Flare/Renderer/Shader.h>
+#include <Flare/Renderer/VertexArray.h>
+
+#include <Flare/Renderer/OrthographicCamera.h>
+
+//----------------------------------------//
+#include <Flare/Core/EntryPoint.h>
