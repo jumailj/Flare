@@ -1,10 +1,14 @@
 #include <Flare.h>
 #include <Flare/Events/Event.h>
 
+#include <Flare/Renderer/Shader.h>
+#include <Platform/OpenGL/OpenGLShader.h>
+
 #include <imgui.h>
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 
 class ExampleLayer : public Flare::Layer {
@@ -91,7 +95,7 @@ public:
 			}
 		)";
 
-		m_Shader.reset(new Flare::Shader(vertexSrc, fragmentSrc));
+		m_Shader.reset(Flare::Shader::Create(vertexSrc, fragmentSrc));
 
 		std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
@@ -117,15 +121,15 @@ public:
 
 			in vec3 v_Position;
 
-			uniform vec4 u_Color;
+			uniform vec3 u_Color;
 
 			void main()
 			{
-				color = u_Color;
+				color = vec4(u_Color, 1.0);
 			}
 		)";
 
-		m_FlatColorShader.reset(new Flare::Shader(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+		m_FlatColorShader.reset(Flare::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
 
 	}
 	// mainupdate loop;
@@ -160,8 +164,8 @@ public:
 
 
         //todo change to renderCommand
-		Flare::RendereCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
-		Flare::RendereCommand::Clear();
+		Flare::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+		Flare::RenderCommand::Clear();
 
 
 		m_Camera.SetPosition(m_CameraPosition);
@@ -173,9 +177,8 @@ public:
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
 
-		glm::vec4 redColor(0.0f,0.2f,0.3f,1.0f);
-		glm::vec4 bludColor(0.2f, 0.3f, 0.8f, 1.0f);
-
+		std::dynamic_pointer_cast<Flare::OpenGLShader>(m_FlatColorShader)->Bind();
+		std::dynamic_pointer_cast<Flare::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat3("u_Color", m_SquareColor);
 
 		for (int y = 0; y < 10; y++) {
 
@@ -184,19 +187,12 @@ public:
 				glm::vec3 pos(x * 0.11f, y*0.11f, 0.0f);
 				glm::mat4 transfrom = glm::translate(glm::mat4(1.0f), pos) * scale;
 
-				if(x % 2 == 0) {
-					m_FlatColorShader->UploadUniformFloat4("u_Color", redColor);
-				}else {
-					m_FlatColorShader->UploadUniformFloat4("u_Color",bludColor);
-
-				}
-
 				Flare::Renderer::Submit(m_FlatColorShader, m_SquareVA, transfrom);
 			}
 
 		}
 
-		Flare::Renderer::Submit(m_Shader, m_VertexArray);
+		// Flare::Renderer::Submit(m_Shader, m_VertexArray);
 
 		Flare::Renderer::EndScene();
 	}
@@ -204,15 +200,16 @@ public:
 	// graphics;
 	virtual void OnImGuiRender() override {
 		
-		ImGui::Text("OpenGL");
-
+		ImGui::Begin("settigns");
+		ImGui::ColorEdit3("square color:", glm::value_ptr(m_SquareColor));
+		ImGui::End();
 	}
 
     // events;
 	virtual void OnEvent(Flare::Event& event) override {
 
-        Flare::EventDispatcher dispatcher(event);
-        dispatcher.Dispatch<Flare::KeyPressedEvent>(BIND_EVENT_FN(OnKeyPressedEvent));
+      Flare::EventDispatcher dispatcher(event);
+	  dispatcher.Dispatch<Flare::KeyPressedEvent>(BIND_EVENT_FN(ExampleLayer::OnKeyPressedEvent));
 
 	}
 
@@ -227,16 +224,18 @@ public:
 
 
 public:
-	std::shared_ptr<Flare::Shader> m_Shader;
-	std::shared_ptr<Flare::VertexArray> m_VertexArray;
+	Flare::Ref<Flare::Shader> m_Shader;
+	Flare::Ref<Flare::VertexArray> m_VertexArray;
 
-	std::shared_ptr<Flare::Shader> m_FlatColorShader;
-	std::shared_ptr<Flare::VertexArray> m_SquareVA;
+	Flare::Ref<Flare::Shader> m_FlatColorShader;
+	Flare::Ref<Flare::VertexArray> m_SquareVA;
 
 	Flare::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
 	float m_CameraRotation = 0.0f;
 	float m_CameraSpeed = 0.1f;
+
+	glm::vec3 m_SquareColor = {0.2f, 0.3f, 0.78f};
 
 };
 

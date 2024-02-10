@@ -46,9 +46,6 @@ namespace Flare{
             glBindVertexArray(m_RendererID);
             vertexBuffer->Bind();
 
-            // loging errors
-            LOG_ERROR("");
-
             uint32_t index = 0;
             const auto& layout = vertexBuffer->GetLayout();
 

@@ -2,6 +2,7 @@
 
 namespace Flare{
     
+    // don't need to use Ref.
      std::shared_ptr<spdlog::logger> Log::s_Logger;
     
     void Log::Init(){

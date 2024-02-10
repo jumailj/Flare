@@ -4,7 +4,7 @@
 
 namespace Flare{
 
-    class RendereCommand
+    class RenderCommand
     {
 
     public:
