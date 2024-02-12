@@ -6,7 +6,6 @@ namespace Flare{
 
 
     ////// VERTEX-BUFFER /////
-
     OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size) 
     {
            glCreateBuffers(1, &m_RenderID);

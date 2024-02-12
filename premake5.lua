@@ -11,6 +11,7 @@ workspace "Flare"
     IncludeDir["glad"] = "Flare/vendor/glad/include"
     IncludeDir["ImGui"] = "Flare/vendor/imgui"
     IncludeDir["glm"] = "Flare/vendor/glm"
+    IncludeDir["stb_image"] = "Flare/vendor/stb_image"
 
     group "Dependencies"
         include "Flare/vendor/glfw"
@@ -37,15 +38,17 @@ project "Flare"
         -- "%{prj.name}/**.h",
         -- "%{prj.name}/**.cpp"
         "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
+        "%{prj.name}/src/**.cpp",
+        "%{prj.name}/vendor/stb_image/stb_image.h",
+        "%{prj.name}/vendor/stb_image/stb_image.cpp"
     }
 
 
     -- removing vendor files from source
-    removefiles {
-        "%{prj.name}/vendor/**h",
-        "%{prj.name}/vendor/**cpp"
-    }
+    -- removefiles {
+    --     "%{prj.name}/vendor/**h",
+    --     "%{prj.name}/vendor/**cpp"
+    -- }
 
     -- includedirs { "/home/jumail/Documents/Flare/Flare/vendor/spdlog/include", "/home/world" }
     includedirs { 
@@ -54,12 +57,14 @@ project "Flare"
         "%{IncludeDir.glfw}", 
         "%{IncludeDir.glad}", 
         "%{IncludeDir.glm}", 
-        "%{IncludeDir.ImGui}" }
+        "%{IncludeDir.ImGui}",
+        "%{IncludeDir.stb_image}"
+    }
 
     -- externalincludedirs { "../lua/include", "../zlib" }
 
     -- links{"glfw", "Xrandr", "Xi", "GLU", "GL", "X11", "dl", "pthread", "stdc++fs" }, [new -ldl -lGL (adding this can cause crashes)]
-    links{ "GL", "glfw", "glad","ImGui" ,"pthread"} 
+    links{ "GL", "glfw", "glad","ImGui" ,"pthread", "libpng", "libjpeg"} 
 
     filter "configurations:Debug"
        defines "FLARE_DEBUG"
@@ -101,7 +106,7 @@ project "Sandbox"
            "%{prj.name}/src/**.h",
            "%{prj.name}/src/**.cpp"
        }
-   
+
        -- includedirs { "/home/jumail/Documents/Flare/Flare/vendor/spdlog/include", "/home/world" }
        -- includedirs { "%{prj.name}/src",   "Flare/vendor/spdlog/include", "%{IncludeDir.glfw}", "%{IncludeDir.glad}", "%{IncludeDir.glm}", "%{IncludeDir.ImGui}" }
 
@@ -109,7 +114,9 @@ project "Sandbox"
    
        -- externalincludedirs { "../lua/include", "../zlib" }
    
-       links{"Flare", "glfw", "glad", "ImGui"}  
+        links{"Flare", "glfw", "glad", "ImGui", "png", "libpng", "libjpeg"}  
+
+
 
 
 

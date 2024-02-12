@@ -21,6 +21,7 @@
 
 #include <Flare/Renderer/Buffer.h>
 #include <Flare/Renderer/Shader.h>
+#include <Flare/Renderer/Texture.h>
 #include <Flare/Renderer/VertexArray.h>
 
 #include <Flare/Renderer/OrthographicCamera.h>

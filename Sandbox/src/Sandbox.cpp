@@ -3,6 +3,7 @@
 
 #include <Flare/Renderer/Shader.h>
 #include <Platform/OpenGL/OpenGLShader.h>
+#include <Flare/Renderer/Texture.h>
 
 #include <imgui.h>
 
@@ -41,17 +42,18 @@ public:
 
 		m_SquareVA.reset(Flare::VertexArray::Create());
 
-		float squareVertices[3 * 4] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
+		float squareVertices[5 * 4] = {
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
 
 		Flare::Ref<Flare::VertexBuffer> squareVB;
 		squareVB.reset(Flare::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 		squareVB->SetLayout({
-			{ Flare::ShaderDataType::Float3, "a_Position" }
+			{ Flare::ShaderDataType::Float3, "a_Position" },
+			{ Flare::ShaderDataType::Float2, "a_TexCoord" }
 			});
 		m_SquareVA->AddVertexBuffer(squareVB);
 
@@ -131,6 +133,51 @@ public:
 
 		m_FlatColorShader.reset(Flare::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
 
+
+		//square-texture;
+
+				std::string textureShaderVertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 a_Position;
+			layout(location = 1) in vec2 a_TexCoord;
+
+			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
+
+			out vec2 v_TexCoord;
+
+			void main()
+			{
+				v_TexCoord = a_TexCoord;
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);	
+			}
+		)";
+
+		std::string textureShaderFragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 color;
+
+			in vec2 v_TexCoord;
+
+			uniform sampler2D u_Texture;
+
+			void main()
+			{
+				color = texture(u_Texture,v_TexCoord);
+			}
+		)";
+
+
+		m_TextureShader.reset(Flare::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
+		
+		m_Texture = (Flare::Texture2D::Create("/home/jumail/Documents/jumail.github/Flare/bin/Debug-linux-x86_64/Sandbox/tik.png"));
+
+
+		std::dynamic_pointer_cast <Flare::OpenGLShader>(m_TextureShader)->Bind();
+		std::dynamic_pointer_cast <Flare::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+
 	}
 	// mainupdate loop;
 	void OnUpdate(Flare::Timestep ts) override {
@@ -187,10 +234,13 @@ public:
 				glm::vec3 pos(x * 0.11f, y*0.11f, 0.0f);
 				glm::mat4 transfrom = glm::translate(glm::mat4(1.0f), pos) * scale;
 
-				Flare::Renderer::Submit(m_FlatColorShader, m_SquareVA, transfrom);
+			//	Flare::Renderer::Submit(m_FlatColorShader, m_SquareVA, transfrom);
 			}
 
 		}
+
+		m_Texture->Bind();
+		Flare::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.3f)));
 
 		// Flare::Renderer::Submit(m_Shader, m_VertexArray);
 
@@ -227,8 +277,10 @@ public:
 	Flare::Ref<Flare::Shader> m_Shader;
 	Flare::Ref<Flare::VertexArray> m_VertexArray;
 
-	Flare::Ref<Flare::Shader> m_FlatColorShader;
+	Flare::Ref<Flare::Shader> m_FlatColorShader, m_TextureShader;
 	Flare::Ref<Flare::VertexArray> m_SquareVA;
+
+	Flare::Ref<Flare::Texture2D> m_Texture;
 
 	Flare::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
