@@ -7,7 +7,6 @@
 #include "../../vendor/spdlog/include/spdlog/sinks/stdout_color_sinks.h" // for codelite;
 
 
-
 namespace Flare{
     
     class Log {

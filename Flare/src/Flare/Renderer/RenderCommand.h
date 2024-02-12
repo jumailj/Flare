@@ -1,6 +1,8 @@
 #pragma once
 
+#include <Flare/Core/Core.h>
 #include "RendererAPI.h"
+
 
 namespace Flare{
 
@@ -16,11 +18,10 @@ namespace Flare{
 
         inline static void Clear() 
         {
-            // don't sure about is why it's not working..
             s_RendererAPI->Clear();
         }
 
-        inline static void DrawIndexed(const std::shared_ptr<VertexArray> & vertexArray)
+        inline static void DrawIndexed(const Ref<VertexArray> & vertexArray)
         {
             s_RendererAPI->DrawIndexed(vertexArray);
         }

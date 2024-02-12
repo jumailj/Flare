@@ -25,7 +25,7 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
-		std::shared_ptr<Flare::VertexBuffer> vertexBuffer;
+		Flare::Ref<Flare::VertexBuffer> vertexBuffer;
 		vertexBuffer.reset(Flare::VertexBuffer::Create(vertices, sizeof(vertices)));
 		Flare::BufferLayout layout = {
 			{ Flare::ShaderDataType::Float3, "a_Position" },
@@ -35,7 +35,7 @@ public:
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		std::shared_ptr<Flare::IndexBuffer> indexBuffer;
+		Flare::Ref<Flare::IndexBuffer> indexBuffer;
 		indexBuffer.reset(Flare::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
@@ -48,7 +48,7 @@ public:
 			-0.5f,  0.5f, 0.0f
 		};
 
-		std::shared_ptr<Flare::VertexBuffer> squareVB;
+		Flare::Ref<Flare::VertexBuffer> squareVB;
 		squareVB.reset(Flare::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 		squareVB->SetLayout({
 			{ Flare::ShaderDataType::Float3, "a_Position" }
@@ -56,7 +56,7 @@ public:
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		std::shared_ptr<Flare::IndexBuffer> squareIB;
+		Flare::Ref<Flare::IndexBuffer> squareIB;
 		squareIB.reset(Flare::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
@@ -235,7 +235,7 @@ public:
 	float m_CameraRotation = 0.0f;
 	float m_CameraSpeed = 0.1f;
 
-	glm::vec3 m_SquareColor = {0.2f, 0.3f, 0.78f};
+	glm::vec3 m_SquareColor = {0.45f, 0.354f, 0.783f};
 
 };
 
