@@ -172,8 +172,9 @@ public:
 
 		m_TextureShader.reset(Flare::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
 		
+		//currenlty using absolute path
 		m_Texture = (Flare::Texture2D::Create("/home/jumail/Documents/jumail.github/Flare/bin/Debug-linux-x86_64/Sandbox/tik.png"));
-
+		m_Texture1 = (Flare::Texture2D::Create("/home/jumail/Documents/jumail.github/Flare/bin/Debug-linux-x86_64/Sandbox/jumail.png"));
 
 		std::dynamic_pointer_cast <Flare::OpenGLShader>(m_TextureShader)->Bind();
 		std::dynamic_pointer_cast <Flare::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
@@ -242,6 +243,13 @@ public:
 		m_Texture->Bind();
 		Flare::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.3f)));
 
+
+		m_Texture1->Bind();
+		Flare::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.3f)));
+
+
+
+
 		// Flare::Renderer::Submit(m_Shader, m_VertexArray);
 
 		Flare::Renderer::EndScene();
@@ -280,7 +288,7 @@ public:
 	Flare::Ref<Flare::Shader> m_FlatColorShader, m_TextureShader;
 	Flare::Ref<Flare::VertexArray> m_SquareVA;
 
-	Flare::Ref<Flare::Texture2D> m_Texture;
+	Flare::Ref<Flare::Texture2D> m_Texture, m_Texture1;
 
 	Flare::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;

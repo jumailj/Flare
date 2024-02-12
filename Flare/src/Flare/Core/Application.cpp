@@ -21,8 +21,12 @@ namespace Flare {
        // if you didn't pass any argument. then if will used default window (title, width, height).
        // Create New Window;
        m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(name)));
+       
        // adding eventscallbacks
        m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+
+       // init renderer settings
+       Renderer::Init();
        
        //create a new imgui layer;
        m_ImGuiLayer = new ImGuiLayer();
@@ -93,14 +97,13 @@ namespace Flare {
             // later it will be on renderer thread.
             m_ImGuiLayer->Begin();
 
-            {
-                for (Layer* layer: m_LayerStack){
-                    layer->OnImGuiRender();
-                }
-            }    
-            m_ImGuiLayer->End();
+                {
+                    for (Layer* layer: m_LayerStack){
+                        layer->OnImGuiRender();
+                    }
+                }   
 
-            
+            m_ImGuiLayer->End();
 
              m_Window->OnUpdate();
             }
@@ -127,5 +130,4 @@ namespace Flare {
 
 		return false;
 	}
-    
 }
