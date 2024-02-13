@@ -10,5 +10,11 @@ namespace Flare{
         s_Logger = spdlog::stdout_color_mt("Flare");
         s_Logger->set_level(spdlog::level::trace);
     }
+
+    void Log::Shutdown() {
+        s_Logger.reset();
+        spdlog::drop_all();
+    }
+
     
 };

@@ -21,6 +21,8 @@ namespace Flare {
             
             void Run();
             void Close();
+            void OnShutdown();
+
             
             void OnEvent(Event& e);
 
@@ -53,5 +55,5 @@ namespace Flare {
     };
 
     //to be defined in application
-    Application* CreateApplication();
+    Application* CreateApplication(int argc, char** argv);
 }

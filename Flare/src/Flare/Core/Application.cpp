@@ -8,7 +8,7 @@
 
 #include <GLFW/glfw3.h>
 
-
+extern bool g_ApplicationRunning;
 namespace Flare {
     // static pointer to a instance, singleton- behavior
     Application* Application::s_Instance = nullptr;
@@ -61,6 +61,10 @@ namespace Flare {
         m_Running = false;
     }
 
+    void Application::OnShutdown() {
+        g_ApplicationRunning = false;
+    }
+
 
     void Application::OnEvent(Event& e)
 	{
@@ -107,6 +111,8 @@ namespace Flare {
 
              m_Window->OnUpdate();
             }
+
+            OnShutdown();
     }
       
     

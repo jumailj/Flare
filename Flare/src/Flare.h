@@ -27,4 +27,4 @@
 #include <Flare/Renderer/OrthographicCamera.h>
 
 //-----------ENTRYPOINT-----------------------//
-#include <Flare/Core/EntryPoint.h>
+// #include <Flare/Core/EntryPoint.h>

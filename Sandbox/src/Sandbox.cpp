@@ -1,3 +1,4 @@
+#include <Flare/EntryPoint.h>
 #include <Flare.h>
 #include <Flare/Events/Event.h>
 
@@ -324,6 +325,6 @@ class Sandbox:public Flare::Application{
 };
 
 // create new application, and return new app(sandbox)
-Flare::Application* Flare::CreateApplication() {
+Flare::Application* Flare::CreateApplication(int argc, char** argv) {
      return new Sandbox();
 }

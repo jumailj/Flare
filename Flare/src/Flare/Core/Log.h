@@ -15,6 +15,7 @@ namespace Flare{
         /*always initilized the logger in entrypoint
           if it's not initilize, GetCoreLogger() will return null*/
 		static void Init();
+        static void Shutdown();
 
 		inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() {
             
