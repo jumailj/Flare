@@ -1,11 +1,14 @@
 #pragma once 
 
 #include <Flare/Renderer/Shader.h>
+#include <glad/glad.h>
+#include <glm/glm.hpp>
 
 namespace Flare
 {
     class OpenGLShader: public Shader{
 	public:
+		OpenGLShader(const std::string& filepath);
 		OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
 		virtual ~OpenGLShader();
 
@@ -25,6 +28,9 @@ namespace Flare
 
 		
 	private:
+		std::string ReadFile(const std::string& filepath);
+		std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
+		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 
 		uint32_t m_RendererID;
 

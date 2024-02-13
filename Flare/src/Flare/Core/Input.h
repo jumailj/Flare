@@ -9,7 +9,13 @@
 namespace Flare{
     
     class Input {
-    public:
+        
+    protected:
+		Input() = default;
+
+	public:
+		Input(const Input&) = delete;
+		Input& operator=(const Input&) = delete;
     	//keyboard
         static bool IsKeyPressed(KeyCode key);
         // mouse
