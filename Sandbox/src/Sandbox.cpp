@@ -97,7 +97,7 @@ public:
 			}
 		)";
 
-		m_Shader.reset(Flare::Shader::Create(vertexSrc, fragmentSrc));
+		m_Shader = (Flare::Shader::Create("VertexPosColor",vertexSrc, fragmentSrc));
 
 
 		std::string flatColorShaderVertexSrc = R"(
@@ -133,18 +133,20 @@ public:
 		)";
 
 
-		m_FlatColorShader.reset(Flare::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+		m_FlatColorShader = (Flare::Shader::Create("flatColor", flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
 
 
 		//load glsl from file, compile.
-		m_TextureShader.reset(Flare::Shader::Create("/home/jumail/Documents/jumail.github/Flare/bin/Debug-linux-x86_64/Sandbox/Texture.glsl"));
-		
+		// m_TextureShader = (Flare::Shader::Create("/home/jumail/Documents/jumail.github/Flare/bin/Debug-linux-x86_64/Sandbox/Texture.glsl"));
+		auto textureShader = m_ShaderLibrary.Load("/home/jumail/Documents/jumail.github/Flare/bin/Debug-linux-x86_64/Sandbox/shaders/Texture.glsl");
+
+
 		//currenlty using absolute path
 		m_Texture = (Flare::Texture2D::Create("/home/jumail/Documents/jumail.github/Flare/bin/Debug-linux-x86_64/Sandbox/tik.png"));
 		m_Texture1 = (Flare::Texture2D::Create("/home/jumail/Documents/jumail.github/Flare/bin/Debug-linux-x86_64/Sandbox/jumail.png"));
 
-		std::dynamic_pointer_cast <Flare::OpenGLShader>(m_TextureShader)->Bind();
-		std::dynamic_pointer_cast <Flare::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+		std::dynamic_pointer_cast <Flare::OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast <Flare::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
 
 	}
 	// mainupdate loop;
@@ -207,12 +209,14 @@ public:
 
 		}
 
+		auto textureShader = m_ShaderLibrary.Get("Texture");
+		
 		m_Texture->Bind();
-		Flare::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.3f)));
+		Flare::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.3f)));
 
 
 		m_Texture1->Bind();
-		Flare::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.3f)));
+		Flare::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.3f)));
 
 
 
@@ -249,10 +253,11 @@ public:
 
 
 public:
+	Flare::ShaderLibrary m_ShaderLibrary;
 	Flare::Ref<Flare::Shader> m_Shader;
 	Flare::Ref<Flare::VertexArray> m_VertexArray;
 
-	Flare::Ref<Flare::Shader> m_FlatColorShader, m_TextureShader;
+	Flare::Ref<Flare::Shader> m_FlatColorShader;
 	Flare::Ref<Flare::VertexArray> m_SquareVA;
 
 	Flare::Ref<Flare::Texture2D> m_Texture, m_Texture1;
