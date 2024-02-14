@@ -15,7 +15,7 @@
 class ExampleLayer : public Flare::Layer {
 public:
 	ExampleLayer()
-		:Layer("Example"), m_Camera( - 1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f)
+		:Layer("Example"), m_CameraController(1280.0f/720.0f, true)
 	{
 
 		m_VertexArray.reset(Flare::VertexArray::Create());
@@ -154,30 +154,7 @@ public:
 
         //    LOG_INFO("DELTA time: {0}s", ts.GetSeconds());
 
-		if (Flare::Input::IsKeyPressed( KEY_LEFT))
-		{
-			m_CameraPosition.x -= m_CameraSpeed * ts;
-		}
-		else if (Flare::Input::IsKeyPressed(KEY_RIGHT))
-		{
-			m_CameraPosition.x += m_CameraSpeed* ts;
-		}
-
-		if (Flare::Input::IsKeyPressed(KEY_UP))
-		{
-			m_CameraPosition.y += m_CameraSpeed* ts;
-		}
-		else if (Flare::Input::IsKeyPressed(KEY_DOWN))
-		{
-			m_CameraPosition.y -= m_CameraSpeed* ts;
-		}
-
-		if (Flare::Input::IsKeyPressed(KEY_A)) {
-			m_CameraRotation += 2.0f * ts;
-		}
-		if (Flare::Input::IsKeyPressed(KEY_D)) {
-			m_CameraRotation -= 2.0f * ts;
-		}
+		m_CameraController.OnUpdate(ts);
 
 
         //todo change to renderCommand
@@ -185,10 +162,7 @@ public:
 		Flare::RenderCommand::Clear();
 
 
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
-
-		Flare::Renderer::BeginScene(m_Camera);
+		Flare::Renderer::BeginScene(m_CameraController.GetCamera());
 
 		
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
@@ -211,8 +185,8 @@ public:
 
 		auto textureShader = m_ShaderLibrary.Get("Texture");
 		
-		m_Texture->Bind();
-		Flare::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.3f)));
+		// m_Texture->Bind();
+		// Flare::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.3f)));
 
 
 		m_Texture1->Bind();
@@ -239,14 +213,16 @@ public:
 
       Flare::EventDispatcher dispatcher(event);
 	  dispatcher.Dispatch<Flare::KeyPressedEvent>(BIND_EVENT_FN(ExampleLayer::OnKeyPressedEvent));
-
+	  
+	  m_CameraController.OnEvent(event);
+	  
 	}
 
     bool OnKeyPressedEvent(Flare::KeyPressedEvent& event)
     {
         if(event.GetKeyCode() == KEY_X)
         {
-            m_CameraPosition.x -= m_CameraSpeed;
+         //   m_CameraPosition.x -= m_CameraSpeed;
         }   
         return false;
     }
@@ -262,10 +238,10 @@ public:
 
 	Flare::Ref<Flare::Texture2D> m_Texture, m_Texture1;
 
-	Flare::OrthographicCamera m_Camera;
-	glm::vec3 m_CameraPosition;
-	float m_CameraRotation = 0.0f;
-	float m_CameraSpeed = 0.1f;
+
+	Flare::OrthographicCameraController m_CameraController;
+
+
 
 	glm::vec3 m_SquareColor = {0.45f, 0.354f, 0.783f};
 

@@ -44,7 +44,7 @@ namespace Flare {
             bool m_Running = true;
             bool m_Minimized = false;
             
-            // instance , singleton;
+            // instance
             LayerStack m_LayerStack;
             ImGuiLayer* m_ImGuiLayer;
 

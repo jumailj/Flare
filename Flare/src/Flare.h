@@ -25,6 +25,7 @@
 #include <Flare/Renderer/VertexArray.h>
 
 #include <Flare/Renderer/OrthographicCamera.h>
+#include <Flare/OrthographicCameraController.h>
 
 //-----------ENTRYPOINT-----------------------//
  #include <Flare/EntryPoint.h>

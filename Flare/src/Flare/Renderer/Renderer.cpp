@@ -14,7 +14,7 @@ namespace Flare{
         RenderCommand::Init();
     }
    
-    void Renderer::BeginScene(OrthographicCamera& camera) 
+    void Renderer::BeginScene( OrthographicCamera& camera) 
     {
         m_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
     }
