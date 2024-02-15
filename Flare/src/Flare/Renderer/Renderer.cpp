@@ -13,6 +13,12 @@ namespace Flare{
     void Renderer::Init() {
         RenderCommand::Init();
     }
+
+    void Renderer::OnWindowResize(uint32_t width, uint32_t height)
+    {
+      //   LOG_INFO("window resized w:{0}, h:{1}", width, height);
+        RenderCommand::SetViewport(0,0,width, height);
+    }
    
     void Renderer::BeginScene( OrthographicCamera& camera) 
     {

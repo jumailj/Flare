@@ -49,7 +49,6 @@ namespace Flare{
 
     bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
     {
-        LOG_INFO("mouse scrolled");
         m_ZoomLevel -= e.GetYOffset() * 0.25f;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
@@ -59,6 +58,7 @@ namespace Flare{
 
     bool OrthographicCameraController::OnWindowResize(WindowResizeEvent& e)
     {
+        LOG_INFO("orthographic camera reseized: ");
         m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;

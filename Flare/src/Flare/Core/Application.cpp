@@ -86,13 +86,12 @@ namespace Flare {
     // it's where the core of the application;
     void Application::Run(){
 
-        float val = 0.0f;
-        
         while(m_Running) {
 			float time = (float) glfwGetTime();
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
+            //todo only update whne windows is mazimized, 
 
             for (Layer* layer: m_LayerStack) {
                layer->OnUpdate(timestep);
@@ -124,6 +123,7 @@ namespace Flare {
     bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
 
+
 		if (e.GetWidth() == 0 || e.GetHeight() == 0) {
 
 			m_Minimized = true;
@@ -133,6 +133,7 @@ namespace Flare {
 		m_Minimized = false;
         // todo change windows resize for opengl
 		// Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+        Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
 
 		return false;
 	}
