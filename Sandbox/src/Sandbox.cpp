@@ -1,4 +1,4 @@
-#include <Flare.h>
+#include <Flare/Core/Flare.h>
 #include <Flare/Events/Event.h>
 
 #include <Flare/Renderer/Shader.h>
@@ -143,7 +143,7 @@ public:
 
 		//currenlty using absolute path
 		m_Texture = (Flare::Texture2D::Create("/home/jumail/Documents/jumail.github/Flare/bin/Debug-linux-x86_64/Sandbox/tik.png"));
-		m_Texture1 = (Flare::Texture2D::Create("/home/jumail/Documents/jumail.github/Flare/bin/Debug-linux-x86_64/Sandbox/jumail.png"));
+		//m_Texture1 = (Flare::Texture2D::Create("/home/jumail/Documents/jumail.github/Flare/bin/Debug-linux-x86_64/Sandbox/jumail.png"));
 
 		std::dynamic_pointer_cast <Flare::OpenGLShader>(textureShader)->Bind();
 		std::dynamic_pointer_cast <Flare::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
@@ -152,7 +152,7 @@ public:
 	// mainupdate loop;
 	void OnUpdate(Flare::Timestep ts) override {
 
-        //    LOG_INFO("DELTA time: {0}s", ts.GetSeconds());
+        // LOG_WARN("DELTA time: {0}s", ts.GetSeconds());
 
 		m_CameraController.OnUpdate(ts);
 
@@ -185,12 +185,12 @@ public:
 
 		auto textureShader = m_ShaderLibrary.Get("Texture");
 		
-		// m_Texture->Bind();
-		// Flare::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.3f)));
-
-
-		m_Texture1->Bind();
+		m_Texture->Bind();
 		Flare::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.3f)));
+
+
+		// m_Texture1->Bind();
+		// Flare::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.3f)));
 
 
 
