@@ -8,8 +8,7 @@ class Sandbox2D : public Flare::Layer{
     Sandbox2D() 
     : Layer("sandbox2d"), m_CameraController(1280.0f/720.0f, true)
     {
-
-
+		LOG_TRACE("small test for git");
 		m_SquareVA.reset(Flare::VertexArray::Create());
 
 		float squareVertices[5 * 4] = {
