@@ -1,3 +1,4 @@
+#include <Flare/EntryPoint.h>
 #include <Flare/Core/Flare.h>
 #include <Flare/Events/Event.h>
 
@@ -10,6 +11,8 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
+
+#include "Sandbox2d.h"
 
 
 class ExampleLayer : public Flare::Layer {
@@ -211,6 +214,9 @@ public:
     // events;
 	virtual void OnEvent(Flare::Event& event) override {
 
+		/*
+			example for dispatch event;
+		*/
       Flare::EventDispatcher dispatcher(event);
 	  dispatcher.Dispatch<Flare::KeyPressedEvent>(BIND_EVENT_FN(ExampleLayer::OnKeyPressedEvent));
 	  
@@ -262,7 +268,8 @@ class Sandbox:public Flare::Application{
     Sandbox()
     {
 
-        PushLayer(new ExampleLayer()); 
+        // PushLayer(new ExampleLayer()); 
+		PushLayer(new Sandbox2D());
     }
 
     ~Sandbox() 

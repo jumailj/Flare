@@ -12,6 +12,7 @@ workspace "Flare"
     IncludeDir["ImGui"] = "Flare/vendor/imgui"
     IncludeDir["glm"] = "Flare/vendor/glm"
     IncludeDir["stb_image"] = "Flare/vendor/stb_image"
+    IncludeDir["v8"] = "Flare/vendor/v8/include"
 
     group "Dependencies"
         include "Flare/vendor/glfw"
@@ -58,13 +59,18 @@ project "Flare"
         "%{IncludeDir.glad}", 
         "%{IncludeDir.glm}", 
         "%{IncludeDir.ImGui}",
-        "%{IncludeDir.stb_image}"
+        "%{IncludeDir.stb_image}",
+        "%{IncludeDir.v8}"
     }
 
     -- externalincludedirs { "../lua/include", "../zlib" }
 
+    libdirs{
+        "%{prj.name}/vendor/v8/x86-lib"
+    }
+
     -- links{"glfw", "Xrandr", "Xi", "GLU", "GL", "X11", "dl", "pthread", "stdc++fs" }, [new -ldl -lGL (adding this can cause crashes)]
-    links{ "GL", "glfw", "glad","ImGui" ,"pthread"} 
+    links{ "GL", "glfw", "glad","ImGui" ,"pthread", "v8_monolith"} 
 
     filter "configurations:Debug"
        defines "FLARE_DEBUG"
@@ -110,14 +116,25 @@ project "Sandbox"
        -- includedirs { "/home/jumail/Documents/Flare/Flare/vendor/spdlog/include", "/home/world" }
        -- includedirs { "%{prj.name}/src",   "Flare/vendor/spdlog/include", "%{IncludeDir.glfw}", "%{IncludeDir.glad}", "%{IncludeDir.glm}", "%{IncludeDir.ImGui}" }
 
-       includedirs {"Flare/vendor/spdlog/include", "{prj.name}/src", "Flare/src", "%{IncludeDir.ImGui}", "%{IncludeDir.glm}", "%{IncludeDir.glad}"}
+       includedirs {
+        "Flare/vendor/spdlog/include",
+        "{prj.name}/src", 
+        "Flare/src", 
+        "%{IncludeDir.ImGui}",
+        "%{IncludeDir.glm}", 
+        "%{IncludeDir.glad}",
+        "%{IncludeDir.v8}"
+        }
+
+        -- externalincludedirs{
+        --     "%{prj.name}/vendor/v8/x86-lib"
+        -- }
+        libdirs{
+            "Flare/vendor/v8/x86-lib"
+        }
    
        -- externalincludedirs { "../lua/include", "../zlib" }
-   
-        links{"Flare", "glfw", "glad", "ImGui", "png"}  
-
-
-
+        links{"Flare", "glfw", "glad", "ImGui", "png","v8_monolith"}  
 
 
 --findings.
@@ -129,8 +146,6 @@ project "Sandbox"
        -- removing "GLU" ?? it's working without glu //good
        -- removing "GL" ?? it's working wihout gl //good
 
-
-   
        filter "configurations:Debug"
           defines "FLARE_DEBUG"
           runtime "Debug"
@@ -146,4 +161,11 @@ project "Sandbox"
           defines "FLARE_DEBUG"
           runtime "Release"
           symbols  "off"
+
+
+-- todo, dependencies issues
+--       same dependence files are included in flare and sandbox
+--       dependences like glfw glew imgui are included in flare.
+--       but also included in sandbox, sandbox should link only
+--       with flare and remove other dependencies.
    

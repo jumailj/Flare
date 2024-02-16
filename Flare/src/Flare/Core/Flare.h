@@ -12,6 +12,7 @@
 #include "Flare/Core/KeyCodes.h"
 #include "Flare/Core/MouseCodes.h"
 
+#include "Flare/Events/Event.h"
 #include "Flare/ImGui/ImGuiLayer.h"
 
 
@@ -28,4 +29,4 @@
 #include <Flare/OrthographicCameraController.h>
 
 //-----------ENTRYPOINT-----------------------//
- #include <Flare/EntryPoint.h>
+//  #include <Flare/EntryPoint.h>

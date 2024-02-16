@@ -1,5 +1,6 @@
 #include "Application.h"
 
+#include <v8.h>
 #include "Log.h"
 #include "Core.h"
 #include "Input.h"
@@ -8,6 +9,7 @@
 
 #include <GLFW/glfw3.h>
 
+
 extern bool g_ApplicationRunning;
 namespace Flare {
     // static pointer to a instance, singleton- behavior
@@ -15,6 +17,7 @@ namespace Flare {
 
     Application::Application(const std::string&name)
    {
+
        // points to the current Application Object.
        s_Instance = this;
       
