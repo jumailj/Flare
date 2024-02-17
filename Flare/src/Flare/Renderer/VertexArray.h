@@ -22,7 +22,7 @@ namespace Flare{
 		virtual const Ref<IndexBuffer>& GetIndexBuffer() const = 0;
         
         //pointer
-        static VertexArray* Create();
+        static Ref<VertexArray> Create();
 
     };
 }

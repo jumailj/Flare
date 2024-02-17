@@ -18,6 +18,7 @@
 
 // -- Renderer ---
 #include <Flare/Renderer/Renderer.h>
+#include <Flare/Renderer/Renderer2D.h>
 #include <Flare/Renderer/RenderCommand.h>
 
 #include <Flare/Renderer/Buffer.h>

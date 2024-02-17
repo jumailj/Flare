@@ -167,5 +167,4 @@ project "Sandbox"
 --       same dependence files are included in flare and sandbox
 --       dependences like glfw glew imgui are included in flare.
 --       but also included in sandbox, sandbox should link only
---       with flare and remove other dependencies.
-   
+--       flare. no other libs.

@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <Flare/Core/Core.h>
 #include <Flare/Core/Log.h>
 
 //pure virutal interface, no implementaion, no data, zero storage. (v-table)
@@ -127,7 +128,7 @@ namespace Flare{
         virtual void SetLayout(const BufferLayout& layout) = 0;
 
         //pointer
-        static VertexBuffer* Create(float* vertices, uint32_t size);
+        static Ref<VertexBuffer> Create(float* vertices, uint32_t size);
 
         
     };
@@ -144,7 +145,7 @@ namespace Flare{
         virtual int32_t GetCount() const = 0;
 
         //pointer
-        static IndexBuffer* Create(uint32_t* indices, uint32_t size );
+        static Ref<IndexBuffer> Create(uint32_t* indices, uint32_t size );
 
     };
 

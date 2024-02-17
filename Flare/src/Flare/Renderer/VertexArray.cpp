@@ -6,12 +6,12 @@
 namespace Flare{
 
     
-    VertexArray* VertexArray::Create()
+    Ref<VertexArray> VertexArray::Create()
     {
         switch (Renderer::GetAPI())
         {
             case RendererAPI::API::None : LOG_ERROR("RendererAPI::None is currenlty not supported!"); return nullptr;
-            case RendererAPI::API::OpenGL : return new OpenGLVertexArray();
+            case RendererAPI::API::OpenGL : return std::make_shared<OpenGLVertexArray>();
         }
 
         LOG_ERROR("[VERTEX ARRAY] Unknown RendereAPI");

@@ -1,3 +1,4 @@
+
 #include <Flare/EntryPoint.h>
 #include <Flare/Core/Flare.h>
 #include <Flare/Events/Event.h>
@@ -21,7 +22,8 @@ public:
 		:Layer("Example"), m_CameraController(1280.0f/720.0f, true)
 	{
 
-		m_VertexArray.reset(Flare::VertexArray::Create());
+
+		m_VertexArray = (Flare::VertexArray::Create());
 
 		float vertices[3 * 7] = {
 			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
@@ -30,7 +32,7 @@ public:
 		};
 
 		Flare::Ref<Flare::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(Flare::VertexBuffer::Create(vertices, sizeof(vertices)));
+		vertexBuffer = Flare::VertexBuffer::Create(vertices, sizeof(vertices));
 		Flare::BufferLayout layout = {
 			{ Flare::ShaderDataType::Float3, "a_Position" },
 			{ Flare::ShaderDataType::Float4, "a_Color" }
@@ -40,10 +42,10 @@ public:
 
 		uint32_t indices[3] = { 0, 1, 2 };
 		Flare::Ref<Flare::IndexBuffer> indexBuffer;
-		indexBuffer.reset(Flare::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		indexBuffer = Flare::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
-		m_SquareVA.reset(Flare::VertexArray::Create());
+		m_SquareVA = (Flare::VertexArray::Create());
 
 		float squareVertices[5 * 4] = {
 			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
@@ -53,7 +55,7 @@ public:
 		};
 
 		Flare::Ref<Flare::VertexBuffer> squareVB;
-		squareVB.reset(Flare::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		squareVB = Flare::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout({
 			{ Flare::ShaderDataType::Float3, "a_Position" },
 			{ Flare::ShaderDataType::Float2, "a_TexCoord" }
@@ -62,7 +64,7 @@ public:
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 		Flare::Ref<Flare::IndexBuffer> squareIB;
-		squareIB.reset(Flare::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		squareIB = Flare::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
 		std::string vertexSrc = R"(

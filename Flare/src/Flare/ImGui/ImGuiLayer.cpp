@@ -41,8 +41,9 @@ namespace Flare
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
 		// Setup Dear ImGui style
-		ImGui::StyleColorsDark();
-		//ImGui::StyleColorsClassic();
+		// ImGui::StyleColorsDark();
+		// ImGui::StyleColorsLight();
+		 ImGui::StyleColorsClassic();
 
 		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
 		ImGuiStyle& style = ImGui::GetStyle();
@@ -103,8 +104,8 @@ namespace Flare
 	// working great;
 	void ImGuiLayer::OnImGuiRender() // run in loop
 	{
-		// static bool show = false;
-		// ImGui::ShowDemoWindow(&show);
+		static bool show = false;
+		ImGui::ShowDemoWindow(&show);
 
 	}
 
