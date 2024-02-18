@@ -28,6 +28,7 @@ public:
 
 	Flare::OrthographicCameraController m_CameraController;
 
-	glm::vec4 m_SquareColor = {0.45f, 0.354f, 0.783f, 0.1f};
+	glm::vec4 m_SquareColor = {0.45f, 0.354f, 0.783f, 1.0f};
+	glm::vec4 m_SquareColor1 = {0.45f, 0.354f, 0.783f, 1.0f};
 
 };

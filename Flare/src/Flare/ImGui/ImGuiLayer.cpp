@@ -100,13 +100,14 @@ namespace Flare
 		}
 
 	}
+	
 
-	// working great;
 	void ImGuiLayer::OnImGuiRender() // run in loop
 	{
-		static bool show = false;
-		ImGui::ShowDemoWindow(&show);
+		// imgui demo window;
 
+		// static bool show = false;
+		// ImGui::ShowDemoWindow(&show);
 	}
 
 }

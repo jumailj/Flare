@@ -4,7 +4,6 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-#include <Platform/OpenGL/OpenGLShader.h>
 
 Sandbox2D::Sandbox2D()
     :Layer("sandbox2d"), m_CameraController(1280.0f/720.0f, true)
@@ -54,7 +53,8 @@ void Sandbox2D::OnUpdate(Flare::Timestep ts) {
 
 
         Flare::Renderer2D::BeginScene(m_CameraController.GetCamera());
-        Flare::Renderer2D::DrawQuad({0.0f, 0.0f}, {1.0f, 1.0f},m_SquareColor);
+        Flare::Renderer2D::DrawQuad({-1.0f, 0.0f}, {0.8f, 0.8f},m_SquareColor);
+		Flare::Renderer2D::DrawQuad({0.5f, -0.5f}, {1.0f, 1.0f}, {0.234f, 0.534f, 0.23f, 1.0f});
         Flare::Renderer2D::EndScene();
 
 
@@ -65,7 +65,7 @@ void Sandbox2D::OnUpdate(Flare::Timestep ts) {
 }
 
 void Sandbox2D::OnImGuiRender() {
-    	ImGui::Begin("settigns");
+    	ImGui::Begin("settings");
 		ImGui::ColorEdit4("square color:", glm::value_ptr(m_SquareColor));
 		ImGui::End();
 }
