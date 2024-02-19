@@ -30,5 +30,6 @@ namespace Flare{
     void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& VertexArray)
     {
         glDrawElements(GL_TRIANGLES, VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 }

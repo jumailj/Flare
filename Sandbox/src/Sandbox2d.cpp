@@ -8,37 +8,7 @@
 Sandbox2D::Sandbox2D()
     :Layer("sandbox2d"), m_CameraController(1280.0f/720.0f, true)
 {
-    LOG_TRACE("small test for git");
-
-		m_SquareVA = Flare::VertexArray::Create();
-
-		float squareVertices[3 * 4] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
-		};
-
-        // new vertex buffer;
-		Flare::Ref<Flare::VertexBuffer> squareVB;
-		squareVB = Flare::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
-
-        squareVB->SetLayout({
-			{ Flare::ShaderDataType::Float3, "a_Position" }
-			});
-
-		m_SquareVA->AddVertexBuffer(squareVB);
-
-
-        // new index buffer;
-		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		Flare::Ref<Flare::IndexBuffer> squareIB;
-		squareIB = Flare::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
-		m_SquareVA->SetIndexBuffer(squareIB);
-
-
-		m_FlatColorShader = (Flare::Shader::Create("Texture.glsl"));
-
+  
 }
 
 void Sandbox2D::OnAttach() {
@@ -63,13 +33,10 @@ void Sandbox2D::OnUpdate(Flare::Timestep ts) {
 
 
         Flare::Renderer2D::BeginScene(m_CameraController.GetCamera());
-        Flare::Renderer2D::DrawQuad({-1.0f, 0.0f}, {0.8f, 0.8f},m_SquareColor);
-		Flare::Renderer2D::DrawQuad({0.5f, -0.5f}, {1.0f, 1.0f}, {0.234f, 0.534f, 0.23f, 1.0f});
 
-		Flare::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.8f }, { 5.0f, 5.0f }, m_CheckTexture);
-		
-
-
+      	Flare::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.7f, 0.5f, 1.3f, 1.0f });
+		Flare::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 1.0f, 1.0f }, { 1.7f, 0.5f, 0.3f, 1.0f });
+		Flare::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.8f }, { 5.0f, 5.0f }, m_CheckTexture);	
 
         Flare::Renderer2D::EndScene();
 
