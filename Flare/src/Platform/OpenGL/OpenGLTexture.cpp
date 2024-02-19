@@ -4,10 +4,8 @@
 #include <stb_image.h>
 #include <glad/glad.h>
 
-#include <iostream>
 #include <fstream>
 
-//#include <vendor/stb_image/stb_image.h>
 
 namespace Flare{
 
@@ -16,7 +14,7 @@ namespace Flare{
     return file.good(); // Returns true if the file exists and is readable
     }
 
-
+    /*generate texture with width and height*/
     OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height) 
         :m_Width(width), m_Height(height)
     {
@@ -35,11 +33,20 @@ namespace Flare{
     }
 
 
+    /* load texture from path */
     OpenGLTexture2D::OpenGLTexture2D(const std::string& path)
        :m_Path(path)    
     {
-      int widht, height, channels;
+        int widht, height, channels;
+        
+        /*
+          in computer graphics the orgin (0,0) is typically located at the bottom left corner of an image.
+          Which is differnt from the top left corner of an image. This can lead to a siguation where an 
+          image apperas upside down when loaded in. stbi_set_flip_vertically_load(true), will flip the 
+          image vertically so that the origin is at the top left corner.
+        */
 		stbi_set_flip_vertically_on_load(1);
+
 
 		stbi_uc* data =  stbi_load(path.c_str(),&widht, &height, &channels, 0 );
 		if(!data) {
@@ -52,6 +59,7 @@ namespace Flare{
 		m_Height = height;
 
         GLenum internalFormat = 0, dataFormat = 0;
+        //we have two channels in image, RGB and RBG with Alpha.
 		if (channels == 4) {
 			internalFormat = GL_RGBA8;
 			dataFormat = GL_RGBA;
@@ -64,7 +72,6 @@ namespace Flare{
         // setting internals
         m_InternalFormat = internalFormat;
         m_DataFormat = dataFormat;
-
 
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
@@ -86,11 +93,6 @@ namespace Flare{
 		stbi_image_free(data); // dealocate
     }
 
-    OpenGLTexture2D::~OpenGLTexture2D()
-    {
-        glDeleteTextures(1, &m_RendererID);
-    }
-
     void OpenGLTexture2D::SetData(void *data, uint32_t size)
     {
         uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3;
@@ -100,10 +102,14 @@ namespace Flare{
 		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
     }
 
-
     void OpenGLTexture2D::Bind(uint32_t slot ) const
     {
         glBindTextureUnit(slot,m_RendererID);
+    }
+
+    OpenGLTexture2D::~OpenGLTexture2D()
+    {
+        glDeleteTextures(1, &m_RendererID);
     }
 
 }

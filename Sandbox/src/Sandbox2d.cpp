@@ -12,13 +12,12 @@ Sandbox2D::Sandbox2D()
 }
 
 void Sandbox2D::OnAttach() {
-		m_CheckTexture = Flare::Texture2D::Create("check.png");
+		m_CheckTexture = Flare::Texture2D::Create("Resource/check.png");
 }
 
 void Sandbox2D::OnDetach() {
 
 }
-
 
 
 void Sandbox2D::OnUpdate(Flare::Timestep ts) {
@@ -34,22 +33,28 @@ void Sandbox2D::OnUpdate(Flare::Timestep ts) {
 
         Flare::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-      	Flare::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.7f, 0.5f, 1.3f, 1.0f });
-		Flare::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 1.0f, 1.0f }, { 1.7f, 0.5f, 0.3f, 1.0f });
-		Flare::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.8f }, { 5.0f, 5.0f }, m_CheckTexture);	
+
+   //   	Flare::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, m_SquareColor);
+		Flare::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 1.0f, 1.0f }, m_SquareColor1);
+		Flare::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.8f }, { 5.0f, 5.0f }, m_CheckTexture,3.0f);	
+
+		Flare::Renderer2D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f },30.0f, m_SquareColor);
+		
+		Flare::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, -0.8f }, { 5.0f, 5.0f },20.0f, m_CheckTexture,3.0f);	
 
         Flare::Renderer2D::EndScene();
 
-		// //todo add these functions shader::SetMat4, Sahder::setfloat4
-		// 
-		// 
 
 }
 
 void Sandbox2D::OnImGuiRender() {
-    	// ImGui::Begin("settings");
-		// ImGui::ColorEdit4("square color:", glm::value_ptr(m_SquareColor));
-		// ImGui::End();
+    	ImGui::Begin("settings");
+		ImGui::ColorEdit4("square color:", glm::value_ptr(m_SquareColor));
+		ImGui::End();
+
+		ImGui::Begin("new settings:");
+		ImGui::ColorEdit4("square color1:", glm::value_ptr(m_SquareColor1));
+		ImGui::End();
 }
 
 void Sandbox2D::OnEvent(Flare::Event& event) {
