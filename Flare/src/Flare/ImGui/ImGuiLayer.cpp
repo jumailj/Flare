@@ -105,7 +105,6 @@ namespace Flare
 	void ImGuiLayer::OnImGuiRender() // run in loop
 	{
 		// imgui demo window;
-
 		// static bool show = false;
 		// ImGui::ShowDemoWindow(&show);
 	}

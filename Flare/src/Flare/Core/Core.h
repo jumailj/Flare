@@ -2,6 +2,11 @@
 
 #include <memory>
 
+
+/*header file in same foloder use #include "header.h" */
+/*header file in different folder use #include <Flare/../..> */
+
+
 #define BIT(x) (1 <<x ) // BIT(1)00001 , BIT(2)00010, BIT(3)00100 
 
 

@@ -11,8 +11,8 @@ class Sandbox2D : public Flare::Layer{
 	virtual ~Sandbox2D() = default;
 
 
-    virtual void OnAttach(){}
-    virtual void OnDetach(){}
+    virtual void OnAttach() override;
+    virtual void OnDetach() override;
 
 	// mainupdate loop;
 	virtual void OnUpdate(Flare::Timestep ts) override;
@@ -25,6 +25,8 @@ public:
 
 	Flare::Ref<Flare::Shader> m_FlatColorShader;
 	Flare::Ref<Flare::VertexArray> m_SquareVA;
+	Flare::Ref<Flare::Texture2D>m_CheckTexture;
+	
 
 	Flare::OrthographicCameraController m_CameraController;
 

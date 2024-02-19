@@ -17,7 +17,6 @@ namespace Flare {
 
     Application::Application(const std::string&name)
    {
-
        // points to the current Application Object.
        s_Instance = this;
       
@@ -33,9 +32,9 @@ namespace Flare {
        
        //create a new imgui layer;
        m_ImGuiLayer = new ImGuiLayer();
+
        //pushing to layerstack
        PushOverlay(m_ImGuiLayer);
-
     }
     
     Application::~Application() 
@@ -118,6 +117,7 @@ namespace Flare {
     }
       
     
+    // applicaiton will shutdown.
     bool Application::OnWindowClose(WindowCloseEvent& e){
         m_Running = false;
         return true;
@@ -126,7 +126,7 @@ namespace Flare {
     bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
 
-
+        //todo fix | linux handel minimize differnt way. 
 		if (e.GetWidth() == 0 || e.GetHeight() == 0) {
 
 			m_Minimized = true;
@@ -134,8 +134,9 @@ namespace Flare {
 		}
         
 		m_Minimized = false;
-        // todo change windows resize for opengl
-		// Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
+
+        // when Resize event occure.. opengl recalculate the viewport;
         Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
 
 		return false;
