@@ -34,13 +34,11 @@ void Sandbox2D::OnUpdate(Flare::Timestep ts) {
         Flare::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
 
-   //   	Flare::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, m_SquareColor);
-		Flare::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 1.0f, 1.0f }, m_SquareColor1);
-		Flare::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.8f }, { 5.0f, 5.0f }, m_CheckTexture,3.0f);	
-
-		Flare::Renderer2D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f },30.0f, m_SquareColor);
-		
-		Flare::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, -0.8f }, { 5.0f, 5.0f },20.0f, m_CheckTexture,3.0f);	
+   //  Flare::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, m_SquareColor);
+		Flare::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, m_SquareColor);
+		Flare::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, m_SquareColor1);
+	// Flare::Renderer2D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f },30.0f, m_SquareColor);
+	// Flare::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, -0.8f }, { 5.0f, 5.0f },20.0f, m_CheckTexture,3.0f);	
 
         Flare::Renderer2D::EndScene();
 
