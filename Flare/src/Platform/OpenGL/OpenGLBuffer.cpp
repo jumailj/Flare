@@ -60,11 +60,11 @@ namespace Flare{
     }
 
     void OpenGLIndexBuffer::Bind() const {
-        glBindBuffer(GL_ELEMENT_ARRAY_BARRIER_BIT, m_RendererID);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
     }
 
     void OpenGLIndexBuffer::Unbind() const {
-        glBindBuffer(GL_ELEMENT_ARRAY_BARRIER_BIT, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
 
