@@ -89,8 +89,6 @@ project "Flare"
        symbols  "off"
 
 
-
-
 project "Sandbox" 
        location "Sandbox"
        kind "ConsoleApp"

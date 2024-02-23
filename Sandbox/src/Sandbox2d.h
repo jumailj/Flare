@@ -23,6 +23,8 @@ class Sandbox2D : public Flare::Layer{
 
 public:
 
+	float rotate = 0.0f;
+
 	Flare::Ref<Flare::Shader> m_FlatColorShader;
 	Flare::Ref<Flare::VertexArray> m_SquareVA;
 	Flare::Ref<Flare::Texture2D>m_CheckTexture;
