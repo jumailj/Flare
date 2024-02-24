@@ -30,6 +30,8 @@ public:
 	Flare::Ref<Flare::Texture2D>m_CheckTexture;
 
 	Flare::Ref<Flare::Texture2D> m_SpriteSheet;
+
+	Flare::Ref<Flare::SubTexture2D> m_TextureStairs;
 	
 
 	Flare::OrthographicCameraController m_CameraController;

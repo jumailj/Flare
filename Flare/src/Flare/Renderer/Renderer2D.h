@@ -2,7 +2,8 @@
 
 #include <Flare/Renderer/OrthographicCamera.h>
 
-#include "Texture.h"
+#include <Flare/Renderer/Texture.h>
+#include <Flare/Renderer/SubTexture2D.h>
 
 // super static class, no data storage.
 namespace Flare{
@@ -26,8 +27,13 @@ namespace Flare{
         static void DrawQuad(const glm::vec3& position, const glm::vec2&size, const glm::vec4& color);
 
         // draw quad with texture
-        static void DrawQuad(const glm::vec2& position, const glm::vec2&size, const Ref<Texture2D> texture, float tilingFactor = 1.0f,  const glm::vec4& tintColor = glm::vec4(1.0f));
-        static void DrawQuad(const glm::vec3& position, const glm::vec2&size, const Ref<Texture2D> texture, float tilingFactor = 1.0f,  const glm::vec4& tintColor = glm::vec4(1.0f));
+        static void DrawQuad(const glm::vec2& position, const glm::vec2&size, const Ref<Texture2D>& texture, float tilingFactor = 1.0f,  const glm::vec4& tintColor = glm::vec4(1.0f));
+        static void DrawQuad(const glm::vec3& position, const glm::vec2&size, const Ref<Texture2D>& texture, float tilingFactor = 1.0f,  const glm::vec4& tintColor = glm::vec4(1.0f));
+
+        // draw quda with subtexture; //todo create definitions;
+        static void DrawQuad(const glm::vec2& position, const glm::vec2&size, const Ref<SubTexture2D>& subtexture, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f));
+        static void DrawQuad(const glm::vec3& position, const glm::vec2&size, const Ref<SubTexture2D>& subtexture, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f));
+
 
 
         //draw quad with color + rotatable
@@ -35,8 +41,13 @@ namespace Flare{
         static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color);
 
         //draw quad with texture + rotatable
-        static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D> texture, float tilingFactor = 1.0f);
-        static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D> texture, float tilingFactor = 1.0f);
+        static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor = 1.0f);
+        static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor = 1.0f);
+
+        //draw quad with subtexture + rotatable
+        // static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotaiton, const Ref<SubTexture2D>& subtexture, float tilingFactor = 1.0f);
+        // static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotaiton, const Ref<SubTexture2D>& subtexture, float tilingFactor = 1.0f);
+
 
 
         //stats;
@@ -44,6 +55,7 @@ namespace Flare{
 		{
 			uint32_t DrawCalls = 0;
 			uint32_t QuadCount = 0;
+
 
 			uint32_t GetTotalVertexCount() {return QuadCount*4;}
 			uint32_t GetTotalIndexCount() {return QuadCount*6;}

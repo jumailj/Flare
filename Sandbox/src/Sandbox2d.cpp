@@ -14,6 +14,8 @@ Sandbox2D::Sandbox2D()
 void Sandbox2D::OnAttach() {
 		m_CheckTexture = Flare::Texture2D::Create("Resource/check.png");
 		m_SpriteSheet = Flare::Texture2D::Create("Resource/game/sprteSheet.png");
+
+		m_TextureStairs = Flare::SubTexture2D::CreateFromCoords(m_SpriteSheet, {2,1}, {128,128}, {1,2});
 }
 
 void Sandbox2D::OnDetach() {
@@ -45,7 +47,8 @@ void Sandbox2D::OnUpdate(Flare::Timestep ts) {
 			// Flare::Renderer2D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f },30.0f, m_SquareColor);
 			//  Flare::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotate, m_CheckTexture, 1.0f);
 
-			Flare::Renderer2D::DrawQuad({0.0f, 0.0f,0.0f}, {1.0f, 1.0f}, m_SpriteSheet);
+			// size y is 2;. 32+32;
+			Flare::Renderer2D::DrawQuad({0.0f, 0.0f,0.0f}, {1.0f, 2.0f}, m_TextureStairs);
 
 			Flare::Renderer2D::EndScene();
 
