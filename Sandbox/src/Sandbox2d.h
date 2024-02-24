@@ -28,6 +28,8 @@ public:
 	Flare::Ref<Flare::Shader> m_FlatColorShader;
 	Flare::Ref<Flare::VertexArray> m_SquareVA;
 	Flare::Ref<Flare::Texture2D>m_CheckTexture;
+
+	Flare::Ref<Flare::Texture2D> m_SpriteSheet;
 	
 
 	Flare::OrthographicCameraController m_CameraController;

@@ -21,7 +21,7 @@ namespace Flare{
     {
         while(g_ApplicationRunning) 
         {
-            // inittilize Logger sigleton
+            // initilize Logger sigleton
             Flare::Log::Init();
 
             // // cheking for v8
@@ -36,15 +36,15 @@ namespace Flare{
             //   v8::V8::Initialize();
 
 
-            
-            // create new app
+            // create new app, it's extern,definition should be created on client.
             Flare::Application * app = CreateApplication(argc, argv);
             if(!app){LOG_ERROR("Client Application NULL");}
 
             app->Run();
 
             delete app;
-            Log::Shutdown();
+            // uninitilize Logger.
+            Flare::Log::Shutdown();
             
         }
         // return 0 if applciation not started;
@@ -52,7 +52,7 @@ namespace Flare{
 
     }
 }
-
+// entry.
 int main(int argc, char**argv) {
     return Flare::Main(argc,argv);
 }

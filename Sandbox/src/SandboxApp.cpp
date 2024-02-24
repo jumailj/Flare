@@ -280,7 +280,7 @@ class Sandbox:public Flare::Application{
     }
 };
 
-// create new application, and return new app(sandbox)
+// create new application, and return new app(sandbox){member fun from Application Class}
 Flare::Application* Flare::CreateApplication(int argc, char** argv) {
      return new Sandbox();
 }

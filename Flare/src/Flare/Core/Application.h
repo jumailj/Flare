@@ -55,5 +55,5 @@ namespace Flare {
     };
 
     //to be defined in application
-    Application* CreateApplication(int argc, char** argv);
+      Application* CreateApplication(int argc, char** argv); // it will create a new Applicatio;
 }

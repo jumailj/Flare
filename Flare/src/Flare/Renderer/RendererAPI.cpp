@@ -3,7 +3,7 @@
 
 namespace Flare{
 
-    RendererAPI::API RendererAPI::s_API = RendererAPI::API::OpenGL;
+      RendererAPI::API RendererAPI::s_API = RendererAPI::API::OpenGL;
 
     	Scope<RendererAPI> RendererAPI::Create()
 	{

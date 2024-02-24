@@ -13,6 +13,7 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach() {
 		m_CheckTexture = Flare::Texture2D::Create("Resource/check.png");
+		m_SpriteSheet = Flare::Texture2D::Create("Resource/game/sprteSheet.png");
 }
 
 void Sandbox2D::OnDetach() {
@@ -40,13 +41,15 @@ void Sandbox2D::OnUpdate(Flare::Timestep ts) {
 			
 			// Flare::Renderer2D::DrawRotatedQuad({-1.0f, 0.0f}, {0.8, 0.8f}, 50.0f, m_SquareColor1);
 			// Flare::Renderer2D::DrawQuad({ 0.5f, -0.5f, 1.0f }, { 0.5f, 0.75f }, m_SquareColor1);
-			 Flare::Renderer2D::DrawQuad({-5.0f, -5.0f, -0.1f}, {10.0f, 10.0f}, m_CheckTexture, 5.0f);
+			// Flare::Renderer2D::DrawQuad({-5.0f, -5.0f, -0.1f}, {10.0f, 10.0f}, m_CheckTexture, 5.0f);
 			// Flare::Renderer2D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f },30.0f, m_SquareColor);
-			 Flare::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotate, m_CheckTexture, 1.0f);
+			//  Flare::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotate, m_CheckTexture, 1.0f);
+
+			Flare::Renderer2D::DrawQuad({0.0f, 0.0f,0.0f}, {1.0f, 1.0f}, m_SpriteSheet);
 
 			Flare::Renderer2D::EndScene();
 
-
+/*
 
 		Flare::Renderer2D::BeginScene(m_CameraController.GetCamera());
 		for (float y = -5.0f; y < 5.0f; y += 0.2f)
@@ -54,12 +57,12 @@ void Sandbox2D::OnUpdate(Flare::Timestep ts) {
 			for (float x = -5.0f; x < 5.0f; x += 0.2f)
 			{
 				glm::vec4 color = { (x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 0.5f };
-				Flare::Renderer2D::DrawRotatedQuad({ x, y }, { 0.2f, 0.2f },rotate, color);
+				Flare::Renderer2D::DrawRotatedQuad({ x, y }, { 0.2f, 0.2f },45.0f, color);
 			}
 		}
 		Flare::Renderer2D::EndScene();
 
-
+*/
 		}
      
 }

@@ -24,16 +24,14 @@ namespace Flare {
        // Create New Window;
        m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(name)));
        
-       // adding eventscallbacks
+       // adding eventscallbacks | settignup all events
        m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
        // init renderer settings
        Renderer::Init();
        
-       //create a new imgui layer;
+       //create a new imgui layer and push it.
        m_ImGuiLayer = new ImGuiLayer();
-
-       //pushing to layerstack
        PushOverlay(m_ImGuiLayer);
     }
     
@@ -89,6 +87,8 @@ namespace Flare {
     void Application::Run(){
 
         while(m_Running) {
+
+            // calculate delta time.
 			float time = (float) glfwGetTime();
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
@@ -117,16 +117,17 @@ namespace Flare {
     }
       
     
-    // applicaiton will shutdown.
+    // applicaiton  shutdown, callback
     bool Application::OnWindowClose(WindowCloseEvent& e){
         m_Running = false;
         return true;
     }
     
+    // application resize, callback
     bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
 
-        //todo fix | linux handel minimize differnt way. 
+        //TODO fix | linux handel minimize differnt way.(currenlty it's not going to work.)
 		if (e.GetWidth() == 0 || e.GetHeight() == 0) {
 
 			m_Minimized = true;

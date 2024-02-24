@@ -7,8 +7,6 @@
 
 namespace Flare{
 
-
-
     Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData;
 
     void Renderer::Init() {

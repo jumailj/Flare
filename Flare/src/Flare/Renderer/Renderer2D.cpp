@@ -227,6 +227,22 @@ namespace Flare
 
     void Renderer2D::DrawQuad(const glm::vec3 &position, const glm::vec2 &size, const Ref<Texture2D> texture, float tilingFactor, const glm::vec4& tintColor)
     {
+
+		constexpr float x = 7, y = 6;
+		constexpr float sheetWidth = 2560.0f, sheetHeight = 1664.0f;
+		constexpr float spriteWidth = 128.0f, spriteHeight = 128.0f;
+
+
+		constexpr glm::vec2 textureCoords[] = 
+		{
+			{ (x*spriteWidth)/ sheetWidth, (y*spriteHeight)/ sheetHeight}, // bottom left;
+			{ ((x+1) *spriteWidth)/ sheetWidth, (y*spriteHeight)/ sheetHeight}, // bottom right;
+			{ ((x+1)*spriteWidth)/ sheetWidth, ((y+1)*spriteHeight)/ sheetHeight}, //top right;
+			{ (x*spriteWidth)/ sheetWidth, ((y+1)*spriteHeight)/ sheetHeight} //top left;
+		};
+
+
+
 		if(s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
 		{
 			FlushAndReset();
@@ -253,28 +269,28 @@ namespace Flare
 
 		s_Data.QuadVertexBufferPtr->Position = position;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = { 0.0f, 0.0f };
+		s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[0];
 		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = { position.x + size.x, position.y, 0.0f };
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = { 1.0f, 0.0f };
+		s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[1];
 		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = { position.x + size.x, position.y + size.y, 0.0f };
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = { 1.0f, 1.0f };
+		s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[2];
 		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = { position.x, position.y + size.y, 0.0f };
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = { 0.0f, 1.0f };
+		s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[3];
 		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
