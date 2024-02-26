@@ -23,28 +23,7 @@ class Sandbox2D : public Flare::Layer{
 
 public:
 
-	float rotate = 0.0f;
-
-	Flare::Ref<Flare::Shader> m_FlatColorShader;
-	Flare::Ref<Flare::VertexArray> m_SquareVA;
 	Flare::Ref<Flare::Texture2D>m_CheckTexture;
-
-	Flare::Ref<Flare::Framebuffer>m_FrameBuffer;
-
-
-
-	Flare::Ref<Flare::Texture2D> m_SpriteSheet;
-
-	// Flare::Ref<Flare::SubTexture2D> Ground[15][3];
-	Flare::Ref<Flare::SubTexture2D> CurrentSubTexter;
-
-	std::unordered_map<std::string, Flare::Ref<Flare::SubTexture2D>> s_TextureMap;
-
-	
-
 	Flare::OrthographicCameraController m_CameraController;
-
-	glm::vec4 m_SquareColor = {0.45f, 0.354f, 0.783f, 1.0f};
-	glm::vec4 m_SquareColor1 = {0.45f, 0.354f, 0.783f, 1.0f};
-
+	
 };

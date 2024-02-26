@@ -2,7 +2,7 @@ workspace "Flare"
     architecture"x64"
     toolset "gcc"  --use c++ compiler
     configurations {"Debug", "Release", "Ship"}
-    startproject "Flare"
+    startproject "Sandbox"
 
     outputdir= "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}" -- Folder Name: Debug/Relese/Ship | Linux | 32x/64x
 
@@ -89,6 +89,74 @@ project "Flare"
        symbols  "off"
 
 
+
+--       --       Flare-Editor        --           --
+
+ project "Flare-Editor" 
+       location "Flare-Editor"
+       kind "ConsoleApp"
+       language "C++"
+       staticruntime "on"
+       cppdialect "c++17"
+       systemversion "latest"
+   
+   
+       targetdir ("bin/" .. outputdir .. "/%{prj.name}") 
+       objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+   
+       files {
+
+           "%{prj.name}/src/**.h",
+           "%{prj.name}/src/**.cpp"
+       }
+
+
+       includedirs {
+        "Flare/vendor/spdlog/include",
+        "{prj.name}/src", 
+        "Flare/src", 
+        "%{IncludeDir.ImGui}",
+        "%{IncludeDir.glm}", 
+        "%{IncludeDir.glad}",
+        "%{IncludeDir.v8}"
+        }
+
+        libdirs{
+            "Flare/vendor/v8/x86-lib"
+        }
+   
+       -- externalincludedirs { "../lua/include", "../zlib" }
+        links{"Flare", "glfw", "glad", "ImGui", "png","v8_monolith"}  
+
+
+       filter "configurations:Debug"
+          defines "FLARE_DEBUG"
+          runtime "Debug"
+          symbols  "on"
+   
+      filter "configurations:Release"
+          defines "FLARE_RELEASE"
+          runtime "Release"
+          symbols  "off"
+   
+   
+      filter "configurations:Ship"
+          defines "FLARE_DEBUG"
+          runtime "Release"
+          symbols  "off"
+
+
+-- todo, dependencies issues
+--       same dependence files are included in flare and sandbox
+--       dependences like glfw glew imgui are included in flare.
+--       but also included in sandbox, sandbox should link only
+--       flare. no other libs.
+
+--          --                               --           --
+
+
+
+--         --    SANDBOX (RUN-TIME)        --      ---
 project "Sandbox" 
        location "Sandbox"
        kind "ConsoleApp"
