@@ -29,6 +29,10 @@ public:
 	Flare::Ref<Flare::VertexArray> m_SquareVA;
 	Flare::Ref<Flare::Texture2D>m_CheckTexture;
 
+	Flare::Ref<Flare::Framebuffer>m_FrameBuffer;
+
+
+
 	Flare::Ref<Flare::Texture2D> m_SpriteSheet;
 
 	// Flare::Ref<Flare::SubTexture2D> Ground[15][3];
@@ -36,11 +40,7 @@ public:
 
 	std::unordered_map<std::string, Flare::Ref<Flare::SubTexture2D>> s_TextureMap;
 
-
-	Flare::Ref<Flare::SubTexture2D> m_TextureStairs;
-	Flare::Ref<Flare::SubTexture2D> m_TextureGrass;
 	
-	Flare::Ref<Flare::Texture2D> m_TowerDefenceTexture;
 
 	Flare::OrthographicCameraController m_CameraController;
 

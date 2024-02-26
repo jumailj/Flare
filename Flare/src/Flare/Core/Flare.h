@@ -23,6 +23,7 @@
 
 #include <Flare/Renderer/Buffer.h>
 #include <Flare/Renderer/Shader.h>
+#include <Flare/Renderer/Framebuffer.h>
 #include <Flare/Renderer/Texture.h>
 #include <Flare/Renderer/SubTexture2D.h>
 #include <Flare/Renderer/VertexArray.h>
