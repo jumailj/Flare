@@ -45,8 +45,8 @@ namespace Flare{
         static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor = 1.0f);
 
         //draw quad with subtexture + rotatable
-        // static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotaiton, const Ref<SubTexture2D>& subtexture, float tilingFactor = 1.0f);
-        // static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotaiton, const Ref<SubTexture2D>& subtexture, float tilingFactor = 1.0f);
+        static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tilingFactor = 1.0f);
+        static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tilingFactor = 1.0f);
 
 
 

@@ -31,8 +31,16 @@ public:
 
 	Flare::Ref<Flare::Texture2D> m_SpriteSheet;
 
+	// Flare::Ref<Flare::SubTexture2D> Ground[15][3];
+	Flare::Ref<Flare::SubTexture2D> CurrentSubTexter;
+
+	std::unordered_map<std::string, Flare::Ref<Flare::SubTexture2D>> s_TextureMap;
+
+
 	Flare::Ref<Flare::SubTexture2D> m_TextureStairs;
+	Flare::Ref<Flare::SubTexture2D> m_TextureGrass;
 	
+	Flare::Ref<Flare::Texture2D> m_TowerDefenceTexture;
 
 	Flare::OrthographicCameraController m_CameraController;
 
