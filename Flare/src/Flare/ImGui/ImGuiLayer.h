@@ -17,7 +17,7 @@ namespace Flare {
 		 virtual void OnDetach()override;
 		// virtual void OnUpdate()override;
 
-		//  void OnEvent(Event& e);
+		void OnEvent(Event& e)override;
 
 		void OnImGuiRender()override;
 

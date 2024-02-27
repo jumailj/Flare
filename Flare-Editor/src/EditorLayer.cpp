@@ -49,6 +49,7 @@ void EditorLayer::OnDetach() {
 void EditorLayer::OnUpdate(Flare::Timestep ts) {
     // LOG_WARN("DELTA time: {0}s", ts.GetSeconds());
 
+		if(m_ViewportFocused)
 		m_CameraController.OnUpdate(ts);
 
 		//Render 
@@ -65,10 +66,10 @@ void EditorLayer::OnUpdate(Flare::Timestep ts) {
 
 			Flare::Renderer2D::BeginScene(m_CameraController.GetCamera());
 			rotate+=(15*ts);
-			Flare::Renderer2D::DrawRotatedQuad({-1.0f, 0.0f}, {0.8, 0.8f}, 50.0f, m_SquareColor1);
-			Flare::Renderer2D::DrawQuad({ 0.5f, -0.5f, 1.0f }, { 0.5f, 0.75f }, m_SquareColor1);
+			//Flare::Renderer2D::DrawRotatedQuad({-1.0f, 0.0f}, {0.8, 0.8f}, 50.0f, m_SquareColor1);
+			//Flare::Renderer2D::DrawQuad({ 0.5f, -0.5f, 1.0f }, { 0.5f, 0.75f }, m_SquareColor1);
 			Flare::Renderer2D::DrawQuad({-5.0f, -5.0f, -0.1f}, {10.0f, 10.0f}, m_CheckTexture, 5.0f);
-			Flare::Renderer2D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f },30.0f, m_SquareColor);
+			//Flare::Renderer2D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f },30.0f, m_SquareColor);
 			Flare::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotate, m_CheckTexture, 1.0f);
 
 			// Flare::Renderer2D::DrawRotatedQuad({0.0f, 0.0f,0.0f}, {1.0f, 2.0f}, 54.0f, m_TextureStairs);
@@ -114,10 +115,6 @@ void EditorLayer::OnImGuiRender()
 			// - (4) we have a local menu bar in the host window (vs. you could use BeginMainMenuBar() + DockSpaceOverViewport()
 			//      in your code, but we don't here because we allow the window to be floating)
 
-			static bool dockingEnabled = true;
-
-			if (dockingEnabled)
-			{
 				//enable dock space;
 				static bool dockspaceOpen = true;
 				static bool opt_fullscreen = true;
@@ -172,7 +169,7 @@ void EditorLayer::OnImGuiRender()
 
 				if (ImGui::BeginMenuBar())
 				{
-					if (ImGui::BeginMenu("Options"))
+					if (ImGui::BeginMenu("File"))
 					{
 						// Disabling fullscreen would allow the window to be moved to the front of other windows,
 						// which we can't undo at the moment without finer window depth/z control.
@@ -196,22 +193,42 @@ void EditorLayer::OnImGuiRender()
 				ImGui::Text("Quads: %d", stats.QuadCount);
 				ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 				ImGui::Text("indices: %d", stats.GetTotalIndexCount());
-
-
-				// renderimage.
-				uint32_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
-				ImGui::Image(reinterpret_cast<void*>(static_cast<uintptr_t>(textureID)), ImVec2{1280.0f, 720.0f}, ImVec2{0,1}, ImVec2{1,0});		
 				ImGui::End();
 
 
+				ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0,0));
+					ImGui::Begin("Viewport");
+
+					m_ViewportFocused = ImGui::IsWindowFocused();
+					m_ViewportHovered = ImGui::IsWindowHovered();
+					Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
+
+						ImVec2 viewportPannelSize = ImGui::GetContentRegionAvail();
+
+						if(m_ViewportSize != *(glm::vec2*)&viewportPannelSize) 
+						{
+							m_FrameBuffer->Resize((uint32_t)viewportPannelSize.x, (uint32_t)viewportPannelSize.y);
+							m_ViewportSize = {viewportPannelSize.x, viewportPannelSize.y};
+							m_CameraController.OnResize(viewportPannelSize.x, viewportPannelSize.y);
+						}
+						// renderimage.
+						uint32_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
+						ImGui::Image(reinterpret_cast<void*>(static_cast<uintptr_t>(textureID)), ImVec2{m_ViewportSize.x, m_ViewportSize.y}, ImVec2{0,1}, ImVec2{1,0});		
+					ImGui::End();
+				ImGui::PopStyleVar();
+
+
+
 				ImGui::End();
-			}
+			
 }
 
 
-void EditorLayer::OnEvent(Flare::Event& event) {
-     m_CameraController.OnEvent(event);
-}
+	void EditorLayer::OnEvent(Flare::Event& event) 
+	{
+		m_CameraController.OnEvent(event);
+
+	}
 
 
 }

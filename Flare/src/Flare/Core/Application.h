@@ -33,6 +33,8 @@ namespace Flare {
             inline Window& GetWindow() {return *m_Window;}
             // return this instance;
             inline static Application& Get() {return *s_Instance;}
+
+            ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer;}
             
     private:
             bool OnWindowResize(WindowResizeEvent& e);

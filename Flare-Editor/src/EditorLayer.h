@@ -19,6 +19,7 @@ namespace Flare{
 		virtual void OnEvent(Event& event) override;
 
 	public:
+		OrthographicCameraController m_CameraController;
 
 		float rotate = 0.0f;
 
@@ -27,7 +28,8 @@ namespace Flare{
 		Ref<Texture2D>m_CheckTexture;
 
 		Ref<Framebuffer>m_FrameBuffer;
-
+		glm::vec2 m_ViewportSize= {0.0f,0.0f};
+		bool m_ViewportFocused = false, m_ViewportHovered = false;
 
 
 		Ref<Texture2D> m_SpriteSheet;
@@ -35,14 +37,9 @@ namespace Flare{
 		// Ref<SubTexture2D> Ground[15][3];
 		Ref<SubTexture2D> CurrentSubTexter;
 
-		std::unordered_map<std::string, Ref<SubTexture2D>> s_TextureMap;
+		std::unordered_map<std::string, Ref<SubTexture2D>> s_TextureMap;	
 
-		
 
-		OrthographicCameraController m_CameraController;
-
-		glm::vec4 m_SquareColor = {0.45f, 0.354f, 0.783f, 1.0f};
-		glm::vec4 m_SquareColor1 = {0.45f, 0.354f, 0.783f, 1.0f};
 
 	};
 
