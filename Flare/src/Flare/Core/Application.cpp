@@ -1,6 +1,6 @@
 #include "Application.h"
 
-#include <v8.h>
+//#include <v8.h>
 #include "Log.h"
 #include "Core.h"
 #include "Input.h"
@@ -127,7 +127,7 @@ namespace Flare {
     bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
 
-        //TODO fix | linux handel minimize differnt way.(currenlty it's not going to work.)
+        //TODO fix | linux handel minimize different way.(currenlty it's not going to work.)
 		if (e.GetWidth() == 0 || e.GetHeight() == 0) {
 
 			m_Minimized = true;

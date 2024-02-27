@@ -5,7 +5,7 @@
 
 namespace Flare{
 
-    class FlareEditor:public Flare::Application{
+    class FlareEditor:public Application{
 
         public:
         FlareEditor()

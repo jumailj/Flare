@@ -5,6 +5,8 @@
 
 namespace Flare{
 
+    static const uint32_t s_maxFrameBufferSize = 8192;
+
     OpenGLFrameBuffer::OpenGLFrameBuffer(const FramebufferSpecification& spec)
     :m_Specification(spec)
     {
@@ -75,6 +77,12 @@ namespace Flare{
 
     void OpenGLFrameBuffer::Resize(uint32_t width, uint32_t height) 
     {
+        if(width == 0 || height == 0 || width > s_maxFrameBufferSize || height > s_maxFrameBufferSize)
+        {
+            // todo a warn.(attempted to resize framember to widht, height)
+            return;
+        }
+
         m_Specification.Widht = width;
         m_Specification.Height = height;
         Invalidate();
