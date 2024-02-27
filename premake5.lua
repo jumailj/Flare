@@ -13,6 +13,7 @@ workspace "Flare"
     IncludeDir["glm"] = "Flare/vendor/glm"
     IncludeDir["stb_image"] = "Flare/vendor/stb_image"
     IncludeDir["v8"] = "Flare/vendor/v8/include"
+    IncludeDir["entt"] = "Flare/vendor/entt/include"
 
     group "Dependencies"
         include "Flare/vendor/glfw"
@@ -41,7 +42,9 @@ project "Flare"
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
         "%{prj.name}/vendor/stb_image/stb_image.h",
-        "%{prj.name}/vendor/stb_image/stb_image.cpp"
+        "%{prj.name}/vendor/stb_image/stb_image.cpp",
+        "%{prj.name}/vendor/glm/glm/**.hpp",
+        "%{prj.name}/vendor/glm/glm/**.inl"
     }
 
 
@@ -60,7 +63,8 @@ project "Flare"
         "%{IncludeDir.glm}", 
         "%{IncludeDir.ImGui}",
         "%{IncludeDir.stb_image}",
-        "%{IncludeDir.v8}"
+        "%{IncludeDir.v8}",
+        "%{IncludeDir.entt}"
     }
 
     -- externalincludedirs { "../lua/include", "../zlib" }
@@ -118,7 +122,8 @@ project "Flare"
         "%{IncludeDir.ImGui}",
         "%{IncludeDir.glm}", 
         "%{IncludeDir.glad}",
-        "%{IncludeDir.v8}"
+        "%{IncludeDir.v8}",
+        "%{IncludeDir.entt}"
         }
 
         libdirs{
