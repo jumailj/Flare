@@ -23,22 +23,15 @@ void EditorLayer::OnAttach()
 	
 	m_FrameBuffer = Flare::Framebuffer::Create(fbSpec);
 
+	m_CheckTexture = Flare::Texture2D::Create("Resource/check.png");
+	m_SpriteSheet = Flare::Texture2D::Create("Resource/game/sprteSheet.png");
 
+	m_ActiveScene = CreateRef<Scene>(); // createa a scene;
 
-		m_CheckTexture = Flare::Texture2D::Create("Resource/check.png");
-		m_SpriteSheet = Flare::Texture2D::Create("Resource/game/sprteSheet.png");
+	m_SquareEntity= m_ActiveScene->CreateEntity();
+	m_ActiveScene->Reg().emplace<TransformComponent>(m_SquareEntity);
+	m_ActiveScene->Reg().emplace<SpriteRendererComponent>(m_SquareEntity, glm::vec4{0.0f, 1.0f, 0.0f, 1.0f});
 
-			for (int y = 0 ; y <= 2 ; y++) {
-					for (int x = 0; x <=15; x++) {
-
-						std::string xval = std::to_string(x);
-						std::string yval = std::to_string(y);
-
-						std::string value = "x:"+xval+ "y:"+yval;
-						//LOG_TRACE("value= {0}", value);
-						s_TextureMap[value] = Flare::SubTexture2D::CreateFromCoords(m_SpriteSheet,{x,y+10}, {128,128}, {1,1});
-				}
-			}
 }
 
 void EditorLayer::OnDetach() {
@@ -49,50 +42,31 @@ void EditorLayer::OnDetach() {
 void EditorLayer::OnUpdate(Flare::Timestep ts) {
     // LOG_WARN("DELTA time: {0}s", ts.GetSeconds());
 
-		if(m_ViewportFocused)
-		m_CameraController.OnUpdate(ts);
+		if(m_ViewportFocused){m_CameraController.OnUpdate(ts);}
+		
 
 		//Render 
 		Flare::Renderer2D::ResetStats();
-		{
-			m_FrameBuffer->Bind();
+		
+		m_FrameBuffer->Bind();
 
-			Flare::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
-			Flare::RenderCommand::Clear();
-		}
-
-
-		{
-
-			Flare::Renderer2D::BeginScene(m_CameraController.GetCamera());
-			rotate+=(15*ts);
-			//Flare::Renderer2D::DrawRotatedQuad({-1.0f, 0.0f}, {0.8, 0.8f}, 50.0f, m_SquareColor1);
-			//Flare::Renderer2D::DrawQuad({ 0.5f, -0.5f, 1.0f }, { 0.5f, 0.75f }, m_SquareColor1);
-			Flare::Renderer2D::DrawQuad({-5.0f, -5.0f, -0.1f}, {10.0f, 10.0f}, m_CheckTexture, 5.0f);
-			//Flare::Renderer2D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f },30.0f, m_SquareColor);
-			Flare::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotate, m_CheckTexture, 1.0f);
-
-			// Flare::Renderer2D::DrawRotatedQuad({0.0f, 0.0f,0.0f}, {1.0f, 2.0f}, 54.0f, m_TextureStairs);
+		Flare::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+		Flare::RenderCommand::Clear();
+		
 
 
-			for (int y = 0 ; y <= 2 ; y++) {
-			for (int x = 0; x <=15; x++) {
+		Flare::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-						std::string xval = std::to_string(x);
-						std::string yval = std::to_string(y);
+		//update scene;
+		m_ActiveScene->OnUpdate(ts);
 
-						std::string value = "x:"+xval+ "y:"+yval;
-						//LOG_TRACE("value= {0}", value);
-				    	Flare::Renderer2D::DrawQuad({x, y, 0.0f}, {1.0f, 1.0f},s_TextureMap[value] );
+		// Flare::Renderer2D::DrawQuad({-5.0f, -5.0f, -0.1f}, {10.0f, 10.0f}, m_CheckTexture, 5.0f);
 
-				}
-			}
-			Flare::Renderer2D::EndScene();
+		Flare::Renderer2D::EndScene();
 
-			m_FrameBuffer->Unbind();
+		m_FrameBuffer->Unbind();
 			
-		}
-     
+	
 }
 
 void EditorLayer::OnImGuiRender() 
@@ -193,6 +167,9 @@ void EditorLayer::OnImGuiRender()
 				ImGui::Text("Quads: %d", stats.QuadCount);
 				ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 				ImGui::Text("indices: %d", stats.GetTotalIndexCount());
+				auto& squareColor = m_ActiveScene->Reg().get<SpriteRendererComponent>(m_SquareEntity).Color;
+				ImGui::ColorEdit4("square color", glm::value_ptr(squareColor));
+
 				ImGui::End();
 
 

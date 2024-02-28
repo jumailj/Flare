@@ -15,6 +15,8 @@
 #include "Flare/Events/Event.h"
 #include "Flare/ImGui/ImGuiLayer.h"
 
+#include "Flare/Scene/Scene.h"
+#include "Flare/Scene/Components.h"
 
 // -- Renderer ---
 #include <Flare/Renderer/Renderer.h>

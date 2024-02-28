@@ -27,6 +27,9 @@ namespace Flare{
 		Ref<VertexArray> m_SquareVA;
 		Ref<Texture2D>m_CheckTexture;
 
+		Ref<Scene> m_ActiveScene;
+		entt::entity m_SquareEntity;
+
 		Ref<Framebuffer>m_FrameBuffer;
 		glm::vec2 m_ViewportSize= {0.0f,0.0f};
 		bool m_ViewportFocused = false, m_ViewportHovered = false;

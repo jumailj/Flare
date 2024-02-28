@@ -194,7 +194,8 @@ project "Sandbox"
         "%{IncludeDir.ImGui}",
         "%{IncludeDir.glm}", 
         "%{IncludeDir.glad}",
-        "%{IncludeDir.v8}"
+        "%{IncludeDir.v8}",
+        "%{IncludeDir.entt}"
         }
 
         -- externalincludedirs{

@@ -1,42 +1,39 @@
 #include "Scene.h"
 
+#include "Components.h"
+#include <Flare/Renderer/Renderer2D.h>
 #include <glm/glm.hpp>
 
 namespace Flare{
 
-    Scene::Scene() 
-    {
-        struct TransformComponent
-        {
-            /* data */
-            glm::mat4 Transform;
+    static void DoMath(const glm::mat4& transfrom){}
 
-            TransformComponent() = default;
-            TransformComponent(const TransformComponent&) = default; //copy-const
-            TransformComponent(const glm::mat4& transform)
-            :Transform(transform) {}
+	static void OnTransformConstruct(entt::registry& registry, entt::entity entity) {}
 
-            operator const glm::mat4()  {return Transform;}
-            operator const glm::mat4() const {return Transform;}
+	Scene::Scene()
+	{
 
-        };
-        
-        // uint32_t
-        //add
-        entt::entity enity = m_Registry.create();
-        m_Registry.emplace<TransformComponent>(enity, glm::mat4(1.0f));
+	}
 
+	Scene::~Scene()
+	{
 
-        // remove
+	}
 
+	entt::entity Scene::CreateEntity()
+	{
+		return m_Registry.create();
+	}
 
-    }
+	void Scene::OnUpdate(Timestep ts) {
 
-    Scene::~Scene() 
-    {
+		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 
-    }
+		for(auto entity: group) 
+		{
+			auto[transform, sprite] = group.get<TransformComponent,SpriteRendererComponent>(entity);
+			Renderer2D::DrawQuad(transform, sprite.Color);
 
-
-
+		}
+	}
 }
