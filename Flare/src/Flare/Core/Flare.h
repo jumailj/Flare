@@ -16,6 +16,7 @@
 #include "Flare/ImGui/ImGuiLayer.h"
 
 #include "Flare/Scene/Scene.h"
+#include "Flare/Scene/Entity.h"
 #include "Flare/Scene/Components.h"
 
 // -- Renderer ---
