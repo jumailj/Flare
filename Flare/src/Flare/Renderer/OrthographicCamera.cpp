@@ -19,10 +19,10 @@ namespace Flare{
 
 	void OrthographicCamera::RecalculateViewMatrix()
 	{
-		glm::mat4 transfrom = glm::translate(glm::mat4(1.0f), m_Position) * 
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_Position) * 
 			glm::rotate(glm::mat4(1.0), glm::radians(m_Rotation), glm::vec3(0, 0, 1));
 
-		m_ViewMatrix = glm::inverse(transfrom);
+		m_ViewMatrix = glm::inverse(transform);
 		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix; // order imp
 	}
 

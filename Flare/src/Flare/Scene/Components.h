@@ -1,11 +1,11 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <Flare/Renderer/Camera.h>
+
 
 namespace Flare
 {
-
-
 	struct TagComponent
 	{
 		std::string Tag;
@@ -18,15 +18,15 @@ namespace Flare
 
 	struct TransformComponent 
 	{
-		glm::mat4 Transfrom{ 1.0f };
+		glm::mat4 Transform{ 1.0f };
 
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent&) = default;
 		TransformComponent(const glm::mat4& transform)
-			:Transfrom(transform) {}
+			:Transform(transform) {}
 
-		operator glm::mat4& () { return Transfrom; }
-		operator const glm::mat4& () const { return Transfrom; }
+		operator glm::mat4& () { return Transform; }
+		operator const glm::mat4& () const { return Transform; }
 	};
 
 
@@ -38,8 +38,22 @@ namespace Flare
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color)
 			:Color(color) {}
+	};
 
 
+	struct CameraComponent
+	{
+		Flare::Camera Camera;
+		bool primary = true; // todo later move to scene;
+		bool FixedAspectRatio = false;
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
+		CameraComponent(const glm::mat4& projection)
+		:Camera(projection)
+		{
+
+		}
 	};
 
 

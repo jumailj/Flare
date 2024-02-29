@@ -4,19 +4,21 @@
 
 #include <Flare/Renderer/Texture.h>
 #include <Flare/Renderer/SubTexture2D.h>
+#include <Flare/Renderer/Camera.h>
 
 // super static class, no data storage.
 namespace Flare{
 
     class Renderer2D
     {
-
     public:
+
 
         static void Init();
         static void ShutDown();
 
-        static void BeginScene(const OrthographicCamera & camera);
+        static void BeginScene(const Camera& camera, const glm::mat4 transform); 
+        static void BeginScene(const OrthographicCamera & camera); // todo remove
         static void EndScene();
         static void Flush();
 

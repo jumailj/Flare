@@ -181,9 +181,9 @@ public:
 			for (int x = 0; x < 10; x++) {
 
 				glm::vec3 pos(x * 0.11f, y*0.11f, 0.0f);
-				glm::mat4 transfrom = glm::translate(glm::mat4(1.0f), pos) * scale;
+				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
 
-				Flare::Renderer::Submit(m_FlatColorShader, m_SquareVA, transfrom);
+				Flare::Renderer::Submit(m_FlatColorShader, m_SquareVA, transform);
 			}
 
 		}

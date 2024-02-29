@@ -27,7 +27,7 @@ namespace Flare {
        // adding eventscallbacks | settignup all events
        m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
-       // init renderer settings
+       // init renderer settings[]
        Renderer::Init();
        
        //create a new imgui layer and push it.

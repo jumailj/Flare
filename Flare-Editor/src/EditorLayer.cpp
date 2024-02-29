@@ -29,10 +29,16 @@ void EditorLayer::OnAttach()
 	m_ActiveScene = CreateRef<Scene>(); // createa a scene;
 
 	//entity;
-	auto square = m_ActiveScene->CreateEntity("green square");
-	square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
+	auto square = m_ActiveScene->CreateEntity("green square"); // create new entity.
+	square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });  // add sprite rendere to entity.
 	m_SquareEntity = square;
 
+	m_CameraEntity = m_ActiveScene->CreateEntity("camera");
+	m_CameraEntity.AddComponent<CameraComponent>(glm::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
+
+	m_SecondCamera = m_ActiveScene->CreateEntity("clip-space Entity");
+	auto cc = m_SecondCamera.AddComponent<CameraComponent>(glm::ortho(-1.0f,1.0f, -1.0f, 1.0f, -1.0f, 1.0f));
+	cc.primary = false;
 }
 
 void EditorLayer::OnDetach() {
@@ -56,14 +62,16 @@ void EditorLayer::OnUpdate(Flare::Timestep ts) {
 		
 
 
-		Flare::Renderer2D::BeginScene(m_CameraController.GetCamera());
-
-		//update scene;
-		m_ActiveScene->OnUpdate(ts);
+		// Flare::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
 		// Flare::Renderer2D::DrawQuad({-5.0f, -5.0f, -0.1f}, {10.0f, 10.0f}, m_CheckTexture, 5.0f);
+		// Flare::Renderer2D::DrawQuad({0.0f, 0.0f, 0.0f}, {10,10}, {1.0f, 1.0f, 1.0f, 1.0f});
+		//update scene;
+		
+		m_ActiveScene->OnUpdate(ts);  // ECS
 
-		Flare::Renderer2D::EndScene();
+
+		//Flare::Renderer2D::EndScene();
 
 		m_FrameBuffer->Unbind();
 			
@@ -170,8 +178,7 @@ void EditorLayer::OnImGuiRender()
 				ImGui::Text("indices: %d", stats.GetTotalIndexCount());
 
 
-					//		if (m_SquareEntity)
-		//		{
+
 				ImGui::Separator();
 				auto& tag = m_SquareEntity.GetComponent<TagComponent>().Tag;
 				ImGui::Text("%s", tag.c_str());
@@ -179,11 +186,19 @@ void EditorLayer::OnImGuiRender()
 				auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
 				ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
 				ImGui::Separator();
-		//	}
 
 
+				ImGui::DragFloat3("camera transfrom", glm::value_ptr(m_CameraEntity.GetComponent<TransformComponent>().Transform[3]));
+				
+				if(ImGui::Checkbox("camera A", &m_primaryCamera)){
+					m_CameraEntity.GetComponent<CameraComponent>().primary =  m_primaryCamera;
+					m_SecondCamera.GetComponent<CameraComponent>().primary = !m_primaryCamera;
+				}
 
 				ImGui::End();
+
+
+				
 
 
 				ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0,0));

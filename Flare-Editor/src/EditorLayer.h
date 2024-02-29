@@ -21,14 +21,15 @@ namespace Flare{
 	public:
 		OrthographicCameraController m_CameraController;
 
-		float rotate = 0.0f;
 
-		Ref<Shader> m_FlatColorShader;
-		Ref<VertexArray> m_SquareVA;
 		Ref<Texture2D>m_CheckTexture;
 
 		Ref<Scene> m_ActiveScene;
 		Entity m_SquareEntity;
+		Entity m_CameraEntity;
+		Entity m_SecondCamera;
+
+		bool m_primaryCamera = false;
 
 		Ref<Framebuffer>m_FrameBuffer;
 		glm::vec2 m_ViewportSize= {0.0f,0.0f};
