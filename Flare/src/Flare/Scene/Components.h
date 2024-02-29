@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <Flare/Renderer/Camera.h>
+#include "SceneCamera.h"
 
 
 namespace Flare
@@ -43,17 +43,12 @@ namespace Flare
 
 	struct CameraComponent
 	{
-		Flare::Camera Camera;
-		bool primary = true; // todo later move to scene;
+		SceneCamera Camera;
+		bool Primary = true; // TODO: think about moving to Scene
 		bool FixedAspectRatio = false;
 
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
-		CameraComponent(const glm::mat4& projection)
-		:Camera(projection)
-		{
-
-		}
 	};
 
 
