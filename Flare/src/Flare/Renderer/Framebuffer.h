@@ -5,7 +5,7 @@ namespace Flare
 {
     struct FramebufferSpecification
     {
-        uint32_t Widht, Height;
+        uint32_t Widht = 0, Height = 0;
         uint32_t samples = 1;
 
         bool SwapChainTarget = false;

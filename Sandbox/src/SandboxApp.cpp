@@ -228,7 +228,7 @@ public:
 
     bool OnKeyPressedEvent(Flare::KeyPressedEvent& event)
     {
-        if(event.GetKeyCode() == KEY_X)
+        if(event.GetKeyCode() == Flare::Key::X)
         {
          //   m_CameraPosition.x -= m_CameraSpeed;
         }   

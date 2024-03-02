@@ -14,18 +14,26 @@ namespace Flare{
 
     void OpenGLContext::Init() {
         
-        glfwMakeContextCurrent(m_WindowHandle);
+        // seting current window to context. for reandering.
+       glfwMakeContextCurrent(m_WindowHandle);
        int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
-       LOG_TRACE("glad init");
+      
        if(!status){
-        LOG_TRACE("gald not init");
+        LOG_TRACE("Failed to initialize glad!");
+       }else {
+      
+         LOG_INFO("glad init");
+         LOG_INFO("---------OPENGL INFO---------");
+         LOG_INFO("Vendor: {0},", (const char*) glGetString(GL_VENDOR));
+         LOG_INFO("Renderer: {0},",(const char*) glGetString(GL_RENDERER));
+         LOG_INFO("Version: {0},", (const char*) glGetString(GL_VERSION));
+
        }
 
     }
 
     void OpenGLContext::SwapBuffers(){
-		glfwSwapBuffers(m_WindowHandle);
-
+      glfwSwapBuffers(m_WindowHandle);
     }
 
 }

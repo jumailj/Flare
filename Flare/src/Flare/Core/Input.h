@@ -1,5 +1,8 @@
 #pragma once 
 
+#include <glm/glm.hpp>
+
+
 #include "Core.h"
 #include "MouseCodes.h"
 #include "KeyCodes.h"
@@ -16,11 +19,13 @@ namespace Flare{
 	public:
 		Input(const Input&) = delete;
 		Input& operator=(const Input&) = delete;
+
+		
     	//keyboard
         static bool IsKeyPressed(KeyCode key);
         // mouse
 		static bool IsMouseButtonPressed(MouseCode button);
-		static std::pair<float, float> GetMousePosition();
+		static glm::vec2 GetMousePosition();
 		static float GetMouseX();
 		static float GetMouseY();
     }; 

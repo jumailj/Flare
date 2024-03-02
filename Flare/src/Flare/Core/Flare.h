@@ -17,6 +17,7 @@
 
 #include "Flare/Scene/Scene.h"
 #include "Flare/Scene/Entity.h"
+#include "Flare/Scene/ScriptableEntity.h"
 #include "Flare/Scene/Components.h"
 
 // -- Renderer ---

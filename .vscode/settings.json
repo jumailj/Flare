@@ -65,6 +65,8 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "list": "cpp",
+        "set": "cpp"
     }
 }

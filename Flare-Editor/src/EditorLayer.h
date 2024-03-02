@@ -2,6 +2,8 @@
 
 #include <Flare/Core/Flare.h>
 
+#include "Panels/SceneHierarchyPanel.h"
+
 namespace Flare{
 
 	class EditorLayer : public Layer{
@@ -35,15 +37,7 @@ namespace Flare{
 		glm::vec2 m_ViewportSize= {0.0f,0.0f};
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
 
-
-		Ref<Texture2D> m_SpriteSheet;
-
-		// Ref<SubTexture2D> Ground[15][3];
-		Ref<SubTexture2D> CurrentSubTexter;
-
-		std::unordered_map<std::string, Ref<SubTexture2D>> s_TextureMap;	
-
-
+		SceneHierarchyPanel m_SceneHierarchyPanel;
 
 	};
 

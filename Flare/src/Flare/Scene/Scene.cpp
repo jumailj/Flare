@@ -56,12 +56,35 @@ namespace Flare{
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
 		return entity;
+
+		LOG_INFO(" is eneity seeting name? : {0}" , tag.Tag);
+
+		return entity;
 	}
 
 	void Scene::OnUpdate(Timestep ts)
 	{
 		// group for multipler component
 		// view for single component
+
+
+		// Update scripts
+		{
+			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+				{
+					//todo move to scene. on scene play.
+					if (!nsc.Instance)
+					{
+						nsc.Instance = nsc.InstantiateScript();
+						nsc.Instance->m_Entity = Entity{ entity, this };
+						nsc.Instance->OnCreate();
+					}
+
+					nsc.Instance->OnUpdate(ts);
+				});
+		}
+
+
 
 		// Render 2D
 		Camera* mainCamera = nullptr;
@@ -70,7 +93,7 @@ namespace Flare{
 			auto view = m_Registry.view<TransformComponent, CameraComponent>();
 			for (auto entity: view) 
 			{
-				const auto& [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
+				const auto [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
 				if(camera.Primary) 
 				{
 					mainCamera = &camera.Camera;
@@ -92,7 +115,7 @@ namespace Flare{
 			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 			for (auto entity : group)
 			{
-				const auto& [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+				const auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
 				Renderer2D::DrawQuad(transform, sprite.Color);
 			}
@@ -105,6 +128,7 @@ namespace Flare{
 	{
 		m_ViewportWidth = width;
 		m_ViewportHeight = height;
+
 
 		// Resize our non-FixedAspectRatio cameras
 		auto view = m_Registry.view<CameraComponent>();

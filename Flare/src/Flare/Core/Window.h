@@ -1,12 +1,8 @@
 #pragma once
 
-#include <string>
+#include <sstream>
 #include <Flare/Events/Event.h>
 
-//#include <GLFW/glfw3.h>
-
-/*do't knwo it's okay to remove form herer*/
-//#include "../../vendor/glfw/include/GLFW/glfw3.h"
 
 namespace Flare {
     /* contain properties of window's title, width, height*/

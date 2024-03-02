@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include "SceneCamera.h"
+#include "ScriptableEntity.h"
 
 
 namespace Flare
@@ -51,7 +52,26 @@ namespace Flare
 		CameraComponent(const CameraComponent&) = default;
 	};
 
+	struct NativeScriptComponent
+	{
+		ScriptableEntity* Instance = nullptr;
 
+		
+
+
+
+		ScriptableEntity*(*InstantiateScript)(); //function pointer.
+		void(*DestroyScript)(NativeScriptComponent*);
+
+
+		template<typename T>
+		void Bind()
+		{
+			InstantiateScript = []() {  return  static_cast<ScriptableEntity*>( new T()); };
+			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr;};
+
+		}
+	};
 
     
 } // namespace Flare

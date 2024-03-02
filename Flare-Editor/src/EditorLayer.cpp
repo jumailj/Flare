@@ -24,7 +24,7 @@ void EditorLayer::OnAttach()
 	m_FrameBuffer = Flare::Framebuffer::Create(fbSpec);
 
 	m_CheckTexture = Flare::Texture2D::Create("Resource/check.png");
-	m_SpriteSheet = Flare::Texture2D::Create("Resource/game/sprteSheet.png");
+	// m_SpriteSheet = Flare::Texture2D::Create("Resource/game/sprteSheet.png");
 
 	m_ActiveScene = CreateRef<Scene>(); // createa a scene;
 
@@ -39,6 +39,46 @@ void EditorLayer::OnAttach()
 	m_SecondCamera = m_ActiveScene->CreateEntity("Clip-Space Entity");
 	auto cc = m_SecondCamera.AddComponent<CameraComponent>();
 	cc.Primary = false;
+
+	// native scripting...
+
+class CameraController : public ScriptableEntity
+		{
+		public:
+			void OnCreate()
+			{
+				auto& transform = GetComponent<TransformComponent>().Transform;
+				 transform[3][0] = rand() % 10 - 5.0f;
+			}
+
+			void OnDestroy()
+			{
+			}
+
+			void OnUpdate(Timestep ts)
+			{
+				auto& transform = GetComponent<TransformComponent>().Transform;
+				float speed = 5.0f;
+
+				if (Input::IsKeyPressed(Key::A))
+					transform[3][0] -= speed * ts;
+				if (Input::IsKeyPressed(Key::D))
+					transform[3][0] += speed * ts;
+				if (Input::IsKeyPressed(Key::W))
+					transform[3][1] += speed * ts;
+				if (Input::IsKeyPressed(Key::S))
+					transform[3][1] -= speed * ts;
+			}
+		};
+
+		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+
+
+
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+
 }
 
 void EditorLayer::OnDetach() {
@@ -182,6 +222,11 @@ void EditorLayer::OnImGuiRender()
 
 				// new imgui windows;
 
+				m_SceneHierarchyPanel.OnImGuiRender();
+
+
+
+
 				ImGui::Begin("Settings");
 
 				auto stats = Flare::Renderer2D::GetStats();
@@ -234,7 +279,7 @@ void EditorLayer::OnImGuiRender()
 					m_ViewportSize = { viewportPannelSize.x, viewportPannelSize.y };
 						
 						// renderimage.
-						uint32_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
+						uint64_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
 						ImGui::Image(reinterpret_cast<void*>(static_cast<uintptr_t>(textureID)), ImVec2{m_ViewportSize.x, m_ViewportSize.y}, ImVec2{0,1}, ImVec2{1,0});		
 					ImGui::End();
 				ImGui::PopStyleVar();
