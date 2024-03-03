@@ -21,6 +21,7 @@ namespace Flare
 	{
 		glm::mat4 Transform{ 1.0f };
 
+
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent&) = default;
 		TransformComponent(const glm::mat4& transform)
@@ -55,11 +56,6 @@ namespace Flare
 	struct NativeScriptComponent
 	{
 		ScriptableEntity* Instance = nullptr;
-
-		
-
-
-
 		ScriptableEntity*(*InstantiateScript)(); //function pointer.
 		void(*DestroyScript)(NativeScriptComponent*);
 
