@@ -13,12 +13,15 @@ workspace "Flare"
     IncludeDir["glm"] = "Flare/vendor/glm"
     IncludeDir["stb_image"] = "Flare/vendor/stb_image"
     IncludeDir["v8"] = "Flare/vendor/v8/include"
-    IncludeDir["entt"] = "Flare/vendor/entt/include"
+    IncludeDir["entt"] = "Flare/vendor/entt/include"    
+    IncludeDir["yaml-cpp"] = "Flare/vendor/yaml-cpp/include"
 
     group "Dependencies"
         include "Flare/vendor/glfw"
         include "Flare/vendor/glad"
         include "Flare/vendor/imgui"
+        include "Flare/vendor/yaml-cpp"
+
     group ""
 
 project "Flare" 
@@ -64,7 +67,8 @@ project "Flare"
         "%{IncludeDir.ImGui}",
         "%{IncludeDir.stb_image}",
         "%{IncludeDir.v8}",
-        "%{IncludeDir.entt}"
+        "%{IncludeDir.entt}",
+        "%{IncludeDir['yaml-cpp']}", -- [] becaue it's cotain hyphens
     }
 
     -- externalincludedirs { "../lua/include", "../zlib" }
@@ -74,7 +78,7 @@ project "Flare"
     }
 
     -- links{"glfw", "Xrandr", "Xi", "GLU", "GL", "X11", "dl", "pthread", "stdc++fs" }, [new -ldl -lGL (adding this can cause crashes)]
-    links{ "GL", "glfw", "glad","ImGui" ,"pthread", "v8_monolith"} 
+    links{ "GL", "glfw", "glad","ImGui" ,"pthread", "v8_monolith","yaml-cpp"} 
 
     filter "configurations:Debug"
        defines "FLARE_DEBUG"
@@ -123,7 +127,8 @@ project "Flare"
         "%{IncludeDir.glm}", 
         "%{IncludeDir.glad}",
         "%{IncludeDir.v8}",
-        "%{IncludeDir.entt}"
+        "%{IncludeDir.entt}",
+        "%{IncludeDir['yaml-cpp']}", 
         }
 
         libdirs{
@@ -131,7 +136,7 @@ project "Flare"
         }
    
        -- externalincludedirs { "../lua/include", "../zlib" }
-        links{"Flare", "glfw", "glad", "ImGui", "png","v8_monolith"}  
+        links{"Flare", "glfw", "glad", "ImGui", "png","v8_monolith", "yaml-cpp"}  
 
 
        filter "configurations:Debug"

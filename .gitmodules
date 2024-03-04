@@ -12,3 +12,6 @@
 [submodule "Flare/vendor/glm"]
 	path = Flare/vendor/glm
 	url = https://github.com/g-truc/glm
+[submodule "Flare/vendor/yaml-cpp"]
+	path = Flare/vendor/yaml-cpp
+	url = https://github.com/jumailj/yaml-cpp
