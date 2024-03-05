@@ -4,6 +4,8 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include <Flare/Scene/SceneSerializer.h>
+
 namespace Flare{
 
 
@@ -28,6 +30,8 @@ void EditorLayer::OnAttach()
 
 	m_ActiveScene = CreateRef<Scene>(); // createa a scene;
 
+
+#if 0
 	//entity;
 	auto square = m_ActiveScene->CreateEntity("green square"); // create new entity.
 	square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });  // add sprite rendere to entity.
@@ -79,10 +83,9 @@ class CameraController : public ScriptableEntity
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
-
+#endif
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-
 
 }
 
@@ -217,7 +220,24 @@ void EditorLayer::OnImGuiRender()
 						// which we can't undo at the moment without finer window depth/z control.
 						// ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
 						
-						if(ImGui::MenuItem("Exit")) Flare::Application::Get().Close();
+						if(ImGui::MenuItem("Serialize"))
+						{
+							SceneSerializer serializer(m_ActiveScene);
+							serializer.Serialize("Resource/scenes/Example.flare");
+						}
+
+						if(ImGui::MenuItem("deserialize"))
+						{
+							SceneSerializer serializer(m_ActiveScene);
+							serializer.Deserialize("Resource/scenes/Example.flare");
+						}
+
+						if(ImGui::MenuItem("Exit"))
+						{
+						
+							 Flare::Application::Get().Close();
+						}
+							
 
 						ImGui::EndMenu();
 					}

@@ -67,6 +67,10 @@
         "variant": "cpp",
         "map": "cpp",
         "list": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "any": "cpp",
+        "forward_list": "cpp",
+        "optional": "cpp",
+        "valarray": "cpp"
     }
 }
