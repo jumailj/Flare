@@ -11,7 +11,7 @@ namespace Flare {
         uint32_t Width;
         uint32_t Height;
         
-        // windows props have default values;
+        // windows props which have default values;
         WindowProps(const std::string& title = "Flare", uint32_t width=1280, uint32_t height = 720) 
             :Title{title}, Width{width}, Height{height}
         {
@@ -19,11 +19,11 @@ namespace Flare {
         }
     };
     
-    // Window interface, abstract class.
+    // Window interface, abstract class, used by the LinuxWindow Class
     class Window{
     public:
     
-        using EventCallbackFn = std::function<void(Event&)>; //::Flare::
+        using EventCallbackFn = std::function<void(Event&)>; 
 
         virtual ~Window() {
             //before delete the parent object, this should be destruct.

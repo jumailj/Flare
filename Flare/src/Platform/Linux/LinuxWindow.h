@@ -13,7 +13,7 @@
 
 namespace Flare {
     
-class LinuxWindow : public Window
+class LinuxWindow : public Window 
 {
 public:
     LinuxWindow(const WindowProps& props);

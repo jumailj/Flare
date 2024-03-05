@@ -26,7 +26,7 @@ namespace Flare {
 
 		void BlockEvents(bool block) { m_BlockEvents = block; }
 
-	 	private:
+		void SetDarkThemeColors();
 
 	private:
 		bool m_BlockEvents = true;

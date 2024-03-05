@@ -162,8 +162,8 @@ void EditorLayer::OnImGuiRender()
 
 				//enable dock space;
 				static bool dockspaceOpen = true;
-				static bool opt_fullscreen = true;
-				static bool opt_padding = false;
+				static bool opt_fullscreen_persistant = true;
+				bool opt_fullscreen = opt_fullscreen_persistant;
 				static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
 				// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
@@ -180,10 +180,7 @@ void EditorLayer::OnImGuiRender()
 					window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 					window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 				}
-				else
-				{
-					dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
-				}
+				
 
 				// When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
 				// and handle the pass-thru hole, so we ask Begin() to not render a background.
@@ -195,17 +192,21 @@ void EditorLayer::OnImGuiRender()
 				// all active windows docked into it will lose their parent and become undocked.
 				// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
 				// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
-				if (!opt_padding)
-					ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+				ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 				ImGui::Begin("DockSpace Demo", &dockspaceOpen, window_flags);
-				if (!opt_padding)
-					ImGui::PopStyleVar();
+				ImGui::PopStyleVar();
 
 				if (opt_fullscreen)
 					ImGui::PopStyleVar(2);
 
+
+
 				// Submit the DockSpace
 				ImGuiIO& io = ImGui::GetIO();
+				ImGuiStyle& style = ImGui::GetStyle();
+				float minWinSizeX = style.WindowMinSize.x;
+				style.WindowMinSize.x = 270.0f;
+
 				if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 				{
 					ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
@@ -234,12 +235,12 @@ void EditorLayer::OnImGuiRender()
 
 						if(ImGui::MenuItem("Exit"))
 						{
-						
 							 Flare::Application::Get().Close();
 						}
-							
-
+						
 						ImGui::EndMenu();
+
+
 					}
 
 					ImGui::EndMenuBar();
@@ -248,8 +249,6 @@ void EditorLayer::OnImGuiRender()
 				// new imgui windows;
 
 				m_SceneHierarchyPanel.OnImGuiRender();
-
-
 
 
 				ImGui::Begin("stats");
@@ -282,8 +281,6 @@ void EditorLayer::OnImGuiRender()
 						ImGui::Image(reinterpret_cast<void*>(static_cast<uintptr_t>(textureID)), ImVec2{m_ViewportSize.x, m_ViewportSize.y}, ImVec2{0,1}, ImVec2{1,0});		
 					ImGui::End();
 				ImGui::PopStyleVar();
-
-
 
 				ImGui::End();
 			
