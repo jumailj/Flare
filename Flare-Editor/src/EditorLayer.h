@@ -8,7 +8,6 @@ namespace Flare{
 
 	class EditorLayer : public Layer{
 
-		//todo fix acpect ration when changing camera aspect ratio.
 		public:
 		EditorLayer();
 		virtual ~EditorLayer() = default;
@@ -19,6 +18,13 @@ namespace Flare{
 		virtual void OnUpdate(Timestep ts) override;
 		virtual void OnImGuiRender() override;
 		virtual void OnEvent(Event& event) override;
+
+	private:
+		bool OnKeyPressed(KeyPressedEvent& e);
+
+		void NewScene();
+		void OpenScene();
+		void SaveSceneAs();
 
 	public:
 		OrthographicCameraController m_CameraController;

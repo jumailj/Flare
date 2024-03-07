@@ -36,6 +36,7 @@ SceneCamera::SceneCamera()
 
 	void SceneCamera::RecalculateProjection()
 	{
+		//todo check projection type is right.
 		if (m_ProjectionType == ProjectionType::Perspective)
 		{
 			m_Projection = glm::perspective(m_PerspectiveFOV, m_AspectRatio, m_PerspectiveNear, m_PerspectiveFar);

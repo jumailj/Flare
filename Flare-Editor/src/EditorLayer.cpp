@@ -224,45 +224,15 @@ void EditorLayer::OnImGuiRender()
 						// ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
 						
 						// new file
-						if(ImGui::MenuItem("New", "Ctrl+N"))
-						{
-							m_ActiveScene= CreateRef<Scene>();
-							m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-							m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-
-						}
+						if(ImGui::MenuItem("New", "Ctrl+N")){NewScene();}
 
 						// opening file
-						if(ImGui::MenuItem("Open", "Ctrl+O"))
-						{
-
-							std::string filepath = FileDialogs::OpenFile("fix later"); // return the file path.
-							if(!filepath.empty())
-							{
-								m_ActiveScene = CreateRef<Scene>();
-								m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-								m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-
-								SceneSerializer serializer(m_ActiveScene);
-								serializer.Deserialize(filepath);
-							}
-
-	
-						}
+						if(ImGui::MenuItem("Open", "Ctrl+O")){OpenScene();}
 
 						//saving file
-						if(ImGui::MenuItem("Save As", "Ctrl+Shift+S"))
-						{
-							std::string filepath = FileDialogs::SaveFile("fix later");
-							if(!filepath.empty())
-							{
-								SceneSerializer serializer(m_ActiveScene);
-								serializer.Serialize(filepath);
+						if(ImGui::MenuItem("Save As", "Ctrl+Shift+S")){SaveSceneAs();}
 
-							}
-							
-						}
-
+						//exit program
 						if(ImGui::MenuItem("Exit"))
 						{
 							 Flare::Application::Get().Close();
@@ -319,8 +289,95 @@ void EditorLayer::OnImGuiRender()
 
 	void EditorLayer::OnEvent(Flare::Event& event) 
 	{
-		m_CameraController.OnEvent(event);
+		// m_CameraController.OnEvent(event);
 
+		
+		EventDispatcher dispatcher(event);
+		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+
+
+	}
+
+	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
+	{
+		LOG_INFO("keypresseed event {0}", e.ToString());
+
+		//shortcuts
+		if(e.GetRepeatCount() >0)
+			return false;
+
+		//check if ctrl/shift key is pressed;
+		bool controlPressed = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+		bool shiftPressed = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+
+
+		switch (e.GetKeyCode())
+		{
+			case Key::N:
+			{
+				if(controlPressed)
+					NewScene();
+				
+				break;
+			}
+
+			case Key::O:
+			{
+				if(controlPressed)
+					OpenScene();
+				
+				break;
+			}
+
+			case Key::S:
+			{
+				if(controlPressed && shiftPressed)
+					SaveSceneAs();
+				
+				break;
+			}
+		}
+
+
+
+		return false;
+	}
+
+
+
+	void EditorLayer::NewScene()
+	{
+		m_ActiveScene= CreateRef<Scene>();
+		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+
+	}
+	
+	void EditorLayer::OpenScene()
+	{
+
+		std::string filepath = FileDialogs::OpenFile("fix later"); // return the file path.
+		if(!filepath.empty())
+		{
+			m_ActiveScene = CreateRef<Scene>();
+			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.Deserialize(filepath);
+		}
+
+	}
+
+	void EditorLayer::SaveSceneAs()
+	{
+		std::string filepath = FileDialogs::SaveFile("fix later");
+		if(!filepath.empty())
+		{
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.Serialize(filepath);
+		}
 	}
 
 
