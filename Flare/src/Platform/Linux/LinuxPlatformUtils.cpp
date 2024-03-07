@@ -42,6 +42,7 @@ namespace Flare{
 
     std::string FileDialogs::SaveFile(const char* filter)
     {
+        NFD_Init();
 
         nfdu8char_t *outPath = NULL;
         nfdu8filteritem_t filterList[] = { { "Text Files", "txt,md" }, { "Images", "png,jpg,jpeg,gif" } };
