@@ -4,7 +4,7 @@ workspace "Flare"
     configurations {"Debug", "Release", "Ship"}
     startproject "Sandbox"
 
-    outputdir= "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}" -- Folder Name: Debug/Relese/Ship | Linux | 32x/64x
+    outputdir= "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}" -- Folder Name: Debug/Relese/Ship | Linux | 64x
 
     IncludeDir = {}
     IncludeDir["glfw"] = "Flare/vendor/glfw/include"
@@ -15,13 +15,14 @@ workspace "Flare"
     IncludeDir["v8"] = "Flare/vendor/v8/include"
     IncludeDir["entt"] = "Flare/vendor/entt/include"    
     IncludeDir["yaml-cpp"] = "Flare/vendor/yaml-cpp/include"
+    IncludeDir["nativefiledialog"] = "Flare/vendor/nativefiledialog/src/include"
 
     group "Dependencies"
         include "Flare/vendor/glfw"
         include "Flare/vendor/glad"
         include "Flare/vendor/imgui"
         include "Flare/vendor/yaml-cpp"
-
+        include "Flare/vendor/nativefiledialog"
     group ""
 
 project "Flare" 
@@ -69,6 +70,7 @@ project "Flare"
         "%{IncludeDir.v8}",
         "%{IncludeDir.entt}",
         "%{IncludeDir['yaml-cpp']}", -- [] becaue it's cotain hyphens
+        "%{IncludeDir.nativefiledialog}",
     }
 
     -- externalincludedirs { "../lua/include", "../zlib" }
@@ -78,7 +80,33 @@ project "Flare"
     }
 
     -- links{"glfw", "Xrandr", "Xi", "GLU", "GL", "X11", "dl", "pthread", "stdc++fs" }, [new -ldl -lGL (adding this can cause crashes)]
-    links{ "GL", "glfw", "glad","ImGui" ,"pthread", "v8_monolith","yaml-cpp"} 
+    -- gtk should be installed on Linux
+    links{ 
+        "GL", 
+        "glfw",
+        "glad",
+        "ImGui",
+        "pthread",
+        "v8_monolith",
+        "yaml-cpp",
+        "NativeFileDialog",
+        "gtk-3",
+        "glib-2.0",
+        "gobject-2.0",
+        "gtk-3",
+        "gdk-3",
+        "pangocairo-1.0",
+        "gdk_pixbuf-2.0",
+        "cairo",
+        "pango-1.0",
+        "atk-1.0",
+        "gio-2.0",
+        "gobject-2.0",
+        "glib-2.0",
+        "X11",
+        "pthread",
+        "dl",
+    } 
 
     filter "configurations:Debug"
        defines "FLARE_DEBUG"
@@ -129,6 +157,7 @@ project "Flare"
         "%{IncludeDir.v8}",
         "%{IncludeDir.entt}",
         "%{IncludeDir['yaml-cpp']}", 
+        "%{IncludeDir.nativefiledialog}",
         }
 
         libdirs{
@@ -136,7 +165,32 @@ project "Flare"
         }
    
        -- externalincludedirs { "../lua/include", "../zlib" }
-        links{"Flare", "glfw", "glad", "ImGui", "png","v8_monolith", "yaml-cpp"}  
+        links{
+            "Flare",
+            "glfw",
+            "glad",
+            "ImGui",
+            "png",
+            "v8_monolith",
+            "yaml-cpp",
+            "NativeFileDialog",
+            "gtk-3",
+            "glib-2.0",
+            "gobject-2.0",
+            "gtk-3",
+            "gdk-3",
+            "pangocairo-1.0",
+            "gdk_pixbuf-2.0",
+            "cairo",
+            "pango-1.0",
+            "atk-1.0",
+            "gio-2.0",
+            "gobject-2.0",
+            "glib-2.0",
+            "X11",
+            "pthread",
+            "dl"
+    }  
 
 
        filter "configurations:Debug"
@@ -200,7 +254,8 @@ project "Sandbox"
         "%{IncludeDir.glm}", 
         "%{IncludeDir.glad}",
         "%{IncludeDir.v8}",
-        "%{IncludeDir.entt}"
+        "%{IncludeDir.entt}",
+        "%{IncludeDir.nativefiledialog}",
         }
 
         -- externalincludedirs{
@@ -211,7 +266,31 @@ project "Sandbox"
         }
    
        -- externalincludedirs { "../lua/include", "../zlib" }
-        links{"Flare", "glfw", "glad", "ImGui", "png","v8_monolith"}  
+        links{
+        "Flare",
+        "glfw",
+        "glad",
+        "ImGui",
+        "png",
+        "v8_monolith",
+        "NativeFileDialog",
+        "gtk-3",
+        "glib-2.0",
+        "gobject-2.0",
+        "gtk-3",
+        "gdk-3",
+        "pangocairo-1.0",
+        "gdk_pixbuf-2.0",
+        "cairo",
+        "pango-1.0",
+        "atk-1.0",
+        "gio-2.0",
+        "gobject-2.0",
+        "glib-2.0",
+        "X11",
+        "pthread",
+        "dl"
+    }  
 
 
 --findings.
@@ -245,3 +324,61 @@ project "Sandbox"
 --       dependences like glfw glew imgui are included in flare.
 --       but also included in sandbox, sandbox should link only
 --       flare. no other libs.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------
+
+-- project "NativeFileDialog"
+-- 	kind "StaticLib"
+-- 	language "C++"
+--     staticruntime "on"
+-- 	systemversion "latest"
+-- 	cppdialect "C++17"
+
+-- 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+-- 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+-- 	files
+-- 	{
+--         "src/*.h",
+--         "src/include/*.h",
+--         "src/nfd_common.c",
+--         "src/nfd_gtk.c",
+-- 	}
+
+--     buildoptions {"`pkg-config --cflags gtk+-3.0`"}
+-- 	includedirs {"src/include/"}
+
+-- 	links { "gtk-3", "glib-2.0", "gobject-2.0" } 
+
+
+
+-- 	filter "configurations:Debug"
+-- 		runtime "Debug"
+-- 		symbols "On"
+
+-- 	filter "configurations:Development"
+-- 		runtime "Release"
+-- 		optimize "off"
+
+-- 	filter "configurations:Ship"
+-- 		runtime "Release"
+-- 		optimize "off"

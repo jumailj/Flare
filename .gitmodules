@@ -15,3 +15,6 @@
 [submodule "Flare/vendor/yaml-cpp"]
 	path = Flare/vendor/yaml-cpp
 	url = https://github.com/jumailj/yaml-cpp
+[submodule "Flare/vendor/nativefiledialog"]
+	path = Flare/vendor/nativefiledialog
+	url = https://github.com/jumailj/nativefiledialog-extended
