@@ -6,6 +6,8 @@
 
 #include <Flare/Scene/SceneSerializer.h>
 
+#include <Flare/Utils/PlatformUtils.h>
+
 namespace Flare{
 
 
@@ -221,16 +223,44 @@ void EditorLayer::OnImGuiRender()
 						// which we can't undo at the moment without finer window depth/z control.
 						// ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
 						
-						if(ImGui::MenuItem("Serialize"))
+						// new file
+						if(ImGui::MenuItem("New", "Ctrl+N"))
 						{
-							SceneSerializer serializer(m_ActiveScene);
-							serializer.Serialize("Resource/scenes/Example.flare");
+							m_ActiveScene= CreateRef<Scene>();
+							m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+							m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
 						}
 
-						if(ImGui::MenuItem("deserialize"))
+						// opening file
+						if(ImGui::MenuItem("Open", "Ctrl+O"))
 						{
-							SceneSerializer serializer(m_ActiveScene);
-							serializer.Deserialize("Resource/scenes/Example.flare");
+
+							std::string filepath = FileDialogs::OpenFile("fix later"); // return the file path.
+							if(!filepath.empty())
+							{
+								m_ActiveScene = CreateRef<Scene>();
+								m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+								m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+								SceneSerializer serializer(m_ActiveScene);
+								serializer.Deserialize(filepath);
+							}
+
+	
+						}
+
+						//saving file
+						if(ImGui::MenuItem("Save As", "Ctrl+Shift+S"))
+						{
+							std::string filepath = FileDialogs::SaveFile("fix later");
+							if(!filepath.empty())
+							{
+								SceneSerializer serializer(m_ActiveScene);
+								serializer.Serialize(filepath);
+
+							}
+							
 						}
 
 						if(ImGui::MenuItem("Exit"))

@@ -9,8 +9,6 @@
 
 #include <GLFW/glfw3.h>
 
-#include <nfd.h>
-
 
 extern bool g_ApplicationRunning;
 namespace Flare {
@@ -18,20 +16,7 @@ namespace Flare {
     Application* Application::s_Instance = nullptr;
 
     Application::Application(const std::string&name)
-   {
-
-    NFD_Init();
-
-    nfdchar_t *outPath;
-    nfdfilteritem_t filterItem[2] = { { "Source code", "c,cpp,cc" }, { "Headers", "h,hpp" } };
-    nfdresult_t result = NFD_OpenDialog(&outPath, filterItem, 2, NULL);
-    if (result == NFD_OKAY)
-    {
-        puts("Success!");
-        puts(outPath);
-        NFD_FreePath(outPath);
-    }
-
+   {    
        // points to the current Application Object.
        s_Instance = this;
       

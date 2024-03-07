@@ -18,6 +18,7 @@ namespace Flare{
 	void SceneHierarchyPanel::SetContext(const Ref<Scene>& context)
 	{
 		m_Context = context;
+		m_SelectionContext = {}; // to avoid bugs related to new scene.
 	}
 
 	void SceneHierarchyPanel::OnImGuiRender()
