@@ -16,6 +16,7 @@ workspace "Flare"
     IncludeDir["entt"] = "Flare/vendor/entt/include"    
     IncludeDir["yaml-cpp"] = "Flare/vendor/yaml-cpp/include"
     IncludeDir["nativefiledialog"] = "Flare/vendor/nativefiledialog/src/include"
+    IncludeDir["ImGuizmo"] = "Flare/vendor/ImGuizmo"
 
     group "Dependencies"
         include "Flare/vendor/glfw"
@@ -45,10 +46,16 @@ project "Flare"
         -- "%{prj.name}/**.cpp"
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
+
         "%{prj.name}/vendor/stb_image/stb_image.h",
         "%{prj.name}/vendor/stb_image/stb_image.cpp",
+
         "%{prj.name}/vendor/glm/glm/**.hpp",
-        "%{prj.name}/vendor/glm/glm/**.inl"
+        "%{prj.name}/vendor/glm/glm/**.inl",
+
+        "%{prj.name}/vendor/ImGuizmo/ImGuizmo.h",
+        "%{prj.name}/vendor/ImGuizmo/ImGuizmo.cpp",
+
     }
 
 
@@ -71,6 +78,7 @@ project "Flare"
         "%{IncludeDir.entt}",
         "%{IncludeDir['yaml-cpp']}", -- [] becaue it's cotain hyphens
         "%{IncludeDir.nativefiledialog}",
+        "%{IncludeDir.ImGuizmo}",
     }
 
     -- externalincludedirs { "../lua/include", "../zlib" }
@@ -158,6 +166,7 @@ project "Flare"
         "%{IncludeDir.entt}",
         "%{IncludeDir['yaml-cpp']}", 
         "%{IncludeDir.nativefiledialog}",
+        "%{IncludeDir.ImGuizmo}",
         }
 
         libdirs{
@@ -256,6 +265,7 @@ project "Sandbox"
         "%{IncludeDir.v8}",
         "%{IncludeDir.entt}",
         "%{IncludeDir.nativefiledialog}",
+        "%{IncludeDir.ImGuizmo}",
         }
 
         -- externalincludedirs{
@@ -292,16 +302,6 @@ project "Sandbox"
         "dl"
     }  
 
-
---findings.
-       -- Sanbox neede imgui to be linked.  // checked
-       -- what if i removed imgui from Flare and add it only in Sandbox? 
-       -- it's going to work becasue  we just need to link imgui to sandbox, don't know whant if i add it both flare and sandbox, size increases? // have to check
-       -- removing glad ?? it's also getting linking error
-       -- removing "glfw" ?? it's also getting linking error
-       -- removing "GLU" ?? it's working without glu //good
-       -- removing "GL" ?? it's working wihout gl //good
-
        filter "configurations:Debug"
           defines "FLARE_DEBUG"
           runtime "Debug"
@@ -324,61 +324,3 @@ project "Sandbox"
 --       dependences like glfw glew imgui are included in flare.
 --       but also included in sandbox, sandbox should link only
 --       flare. no other libs.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
----------------------------------------
-
--- project "NativeFileDialog"
--- 	kind "StaticLib"
--- 	language "C++"
---     staticruntime "on"
--- 	systemversion "latest"
--- 	cppdialect "C++17"
-
--- 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
--- 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
--- 	files
--- 	{
---         "src/*.h",
---         "src/include/*.h",
---         "src/nfd_common.c",
---         "src/nfd_gtk.c",
--- 	}
-
---     buildoptions {"`pkg-config --cflags gtk+-3.0`"}
--- 	includedirs {"src/include/"}
-
--- 	links { "gtk-3", "glib-2.0", "gobject-2.0" } 
-
-
-
--- 	filter "configurations:Debug"
--- 		runtime "Debug"
--- 		symbols "On"
-
--- 	filter "configurations:Development"
--- 		runtime "Release"
--- 		optimize "off"
-
--- 	filter "configurations:Ship"
--- 		runtime "Release"
--- 		optimize "off"

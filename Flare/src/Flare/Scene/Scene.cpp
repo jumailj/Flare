@@ -131,7 +131,8 @@ namespace Flare{
 		}
 	}
 
-		void Scene::OnViewportResize(uint32_t width, uint32_t height)
+
+	void Scene::OnViewportResize(uint32_t width, uint32_t height)
 	{
 		m_ViewportWidth = width;
 		m_ViewportHeight = height;
@@ -147,6 +148,26 @@ namespace Flare{
 		}
 
 	}
+
+
+	Entity Scene::GetPrimaryCameraEntity()
+	{
+		auto view  = m_Registry.view<CameraComponent>();
+
+		for(auto entity : view)
+		{
+			// LOG_INFO("find a camera:");
+			const auto& camera = view.get<CameraComponent>(entity);
+			if(camera.Primary)
+				return Entity{entity,this}; // point to this scene.
+		}
+
+		return {};
+	}
+
+
+
+
 
 	template<typename T>
 	void Scene::OnComponentAdded(Entity entity, T& component)

@@ -2,6 +2,7 @@
 #include <Flare/Core/Log.h>
 
 #include <Flare/Scene/Components.h>
+#include <cstring>
 
 #include <imgui.h>
 #include <imgui_internal.h>
@@ -214,7 +215,7 @@ namespace Flare{
 
 			char buffer[256];
 			memset(buffer, 0, sizeof(buffer));
-			strcpy(buffer, tag.c_str());
+			std::strncpy(buffer,tag.c_str(), sizeof(buffer));
 			if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
 			{
 				tag = std::string(buffer);
@@ -231,13 +232,28 @@ namespace Flare{
 		{
 			if (ImGui::MenuItem("Camera"))
 			{
-				m_SelectionContext.AddComponent<CameraComponent>();
+				// check if camera already exist in Entity
+				if(!m_SelectionContext.HasComponent<CameraComponent>())
+				{
+					m_SelectionContext.AddComponent<CameraComponent>();
+				}else {
+					std::string EntityName = m_SelectionContext.GetComponent<TagComponent>().Tag;
+					LOG_WARN("{0} Entity, Already Have Camera Component!", EntityName);
+				}
+			
 				ImGui::CloseCurrentPopup();
 			}
 
 			if (ImGui::MenuItem("Sprite Renderer"))
 			{
-				m_SelectionContext.AddComponent<SpriteRendererComponent>();
+				// check if sprite renderer component already exist in Entity
+				if(!m_SelectionContext.HasComponent<SpriteRendererComponent>())
+				{
+					m_SelectionContext.AddComponent<SpriteRendererComponent>();
+				}else{
+					std::string EntityName = m_SelectionContext.GetComponent<TagComponent>().Tag;
+					LOG_WARN("{0} Entity, Already have Sprite Rendere Component!", EntityName);
+				}
 				ImGui::CloseCurrentPopup();
 			}
 
@@ -248,9 +264,14 @@ namespace Flare{
 
 		DrawComponent<TransformComponent>("Transform", entity, [](auto& component)
 		{
+			//Translation
 			DrawVec3Control("Translation", component.Translation);
+			
+			//Rotation
 			glm::vec3 rotation = glm::degrees(component.Rotation);
 			DrawVec3Control("Rotation", rotation);
+
+			//Scale
 			component.Rotation = glm::radians(rotation);
 			DrawVec3Control("Scale", component.Scale, 1.0f);
 		});

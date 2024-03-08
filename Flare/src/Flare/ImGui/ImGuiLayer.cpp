@@ -8,9 +8,13 @@
 
 #include <Flare/Core/Application.h>
 
+
+
 //temporary;
  #include "GLFW/glfw3.h"
 // #include <glad/glad.h>
+
+#include <ImGuizmo.h>
 
 #define GL_SILENCE_DEPRECATION // not sure it's needed.
 
@@ -96,7 +100,11 @@ namespace Flare
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-			
+
+
+		//initilize imgui guizmo;
+		ImGuizmo::BeginFrame();
+	
 	}
 
 	//working greate;

@@ -1,5 +1,7 @@
 #include "EditorLayer.h"
+
 #include <imgui.h>
+#include <ImGuizmo.h>
 
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -276,15 +278,47 @@ void EditorLayer::OnImGuiRender()
 					ImVec2 viewportPannelSize = ImGui::GetContentRegionAvail();
 					m_ViewportSize = { viewportPannelSize.x, viewportPannelSize.y };
 						
-						// renderimage.
-						uint64_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
-						ImGui::Image(reinterpret_cast<void*>(static_cast<uintptr_t>(textureID)), ImVec2{m_ViewportSize.x, m_ViewportSize.y}, ImVec2{0,1}, ImVec2{1,0});		
-					ImGui::End();
-				ImGui::PopStyleVar();
+					// renderimage.
+					uint64_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
+					ImGui::Image(reinterpret_cast<void*>(static_cast<uintptr_t>(textureID)), ImVec2{m_ViewportSize.x, m_ViewportSize.y}, ImVec2{0,1}, ImVec2{1,0});		
+
+
+
+						// Gizmos
+						Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+						if (selectedEntity)
+						{
+							ImGuizmo::SetOrthographic(false);
+							ImGuizmo::SetDrawlist();
+
+							float windowWidth = (float)ImGui::GetWindowWidth();
+							float windowHeight = (float)ImGui::GetWindowHeight();
+							ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+							LOG_INFO("window width={0}, height = {1} Position x = {2}, y = {3}", windowWidth, windowHeight, ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
+
+							// // Camera
+							 auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
+							 const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+							 const glm::mat4& cameraProjection = camera.GetProjection();
+							 glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+
+							// // Entity transform
+							 auto& tc = selectedEntity.GetComponent<TransformComponent>();
+							 glm::mat4 transform = tc.GetTransform();
+
+
+							 ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+								(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
+
+						}
 
 				ImGui::End();
+				ImGui::PopStyleVar();
+
+			ImGui::End();
 			
-}
+	}
 
 
 	void EditorLayer::OnEvent(Flare::Event& event) 
@@ -300,8 +334,6 @@ void EditorLayer::OnImGuiRender()
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
 	{
-		LOG_INFO("keypresseed event {0}", e.ToString());
-
 		//shortcuts
 		if(e.GetRepeatCount() >0)
 			return false;
@@ -338,8 +370,6 @@ void EditorLayer::OnImGuiRender()
 			}
 		}
 
-
-
 		return false;
 	}
 
@@ -356,7 +386,6 @@ void EditorLayer::OnImGuiRender()
 	
 	void EditorLayer::OpenScene()
 	{
-
 		std::string filepath = FileDialogs::OpenFile("fix later"); // return the file path.
 		if(!filepath.empty())
 		{
