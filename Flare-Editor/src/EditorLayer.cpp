@@ -7,8 +7,14 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 #include <Flare/Scene/SceneSerializer.h>
-
 #include <Flare/Utils/PlatformUtils.h>
+#include <Flare/Math/Math.h>
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/string_cast.hpp>
+
+#include <iostream>
+
 
 namespace Flare{
 
@@ -273,7 +279,7 @@ void EditorLayer::OnImGuiRender()
 
 					m_ViewportFocused = ImGui::IsWindowFocused();
 					m_ViewportHovered = ImGui::IsWindowHovered();
-					Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
+					Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
 
 					ImVec2 viewportPannelSize = ImGui::GetContentRegionAvail();
 					m_ViewportSize = { viewportPannelSize.x, viewportPannelSize.y };
@@ -284,34 +290,57 @@ void EditorLayer::OnImGuiRender()
 
 
 
-						// Gizmos
-						Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
-						if (selectedEntity)
+					// Gizmos
+					Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+					if (selectedEntity && m_GizmoType == -1)
+					{
+						LOG_INFO("guizmo active");
+						ImGuizmo::SetOrthographic(false);
+						ImGuizmo::SetDrawlist();
+
+						float windowWidth = (float)ImGui::GetWindowWidth();
+						float windowHeight = (float)ImGui::GetWindowHeight();
+						ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+						// Camera
+						Entity cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
+						SceneCamera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+						const glm::mat4 cameraProjection = camera.GetProjection();
+						std::string projectionString = glm::to_string(cameraProjection);
+						std::cout << "projection string " << projectionString<<std::endl;
+						// LOG_TRACE("camera project {0)", projectionString.c_str());
+
+
+						glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+
+						// Entity transform
+						auto& tc = selectedEntity.GetComponent<TransformComponent>();
+						glm::mat4 transform = tc.GetTransform();
+
+						// Snapping
+						bool snap = Input::IsKeyPressed(Key::LeftControl);
+						float snapValue = 0.5f; // Snap to 0.5m for translation/scale
+						// Snap to 45 degrees for rotation
+						if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
+							snapValue = 45.0f;
+
+						float snapValues[3] = { snapValue, snapValue, snapValue };
+
+						ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+							(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
+							nullptr, snap ? snapValues : nullptr);
+
+						if (ImGuizmo::IsUsing())
 						{
-							ImGuizmo::SetOrthographic(false);
-							ImGuizmo::SetDrawlist();
+							glm::vec3 translation, rotation, scale;
+							Math::DecomposeTransform(transform, translation, rotation, scale);
 
-							float windowWidth = (float)ImGui::GetWindowWidth();
-							float windowHeight = (float)ImGui::GetWindowHeight();
-							ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
-
-							LOG_INFO("window width={0}, height = {1} Position x = {2}, y = {3}", windowWidth, windowHeight, ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
-
-							// // Camera
-							 auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
-							 const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-							 const glm::mat4& cameraProjection = camera.GetProjection();
-							 glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
-
-							// // Entity transform
-							 auto& tc = selectedEntity.GetComponent<TransformComponent>();
-							 glm::mat4 transform = tc.GetTransform();
-
-
-							 ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
-								(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
-
+							glm::vec3 deltaRotation = rotation - tc.Rotation;
+							tc.Translation = translation;
+							tc.Rotation += deltaRotation;
+							tc.Scale = scale;
 						}
+					}
 
 				ImGui::End();
 				ImGui::PopStyleVar();
@@ -368,7 +397,27 @@ void EditorLayer::OnImGuiRender()
 				
 				break;
 			}
+
+								// Gizmos
+			case Key::Q:
+				m_GizmoType = -1;
+				break;
+			case Key::W:
+				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+				break;
+			case Key::E:
+				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+				break;
+			case Key::R:
+				m_GizmoType = ImGuizmo::OPERATION::SCALE;
+				break;
+
+
 		}
+
+
+
+
 
 		return false;
 	}

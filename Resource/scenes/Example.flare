@@ -32,7 +32,7 @@ Entities:
         PerspectiveNear: 0.00999999978
         PerspectiveFar: 1000
         OrthographicSize: 10
-        OrthographicNear: -1
+        OrthographicNear: -2
         OrthographicFar: 1
       Primary: true
       FixedAspectRatio: false
