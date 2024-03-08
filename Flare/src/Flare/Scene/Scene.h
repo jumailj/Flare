@@ -2,6 +2,7 @@
 
 #include <entt.hpp>
 #include <Flare/Core/Timestep.h>
+#include <Flare/Renderer/EditorCamera.h>
 
 namespace Flare{
 
@@ -19,7 +20,9 @@ namespace Flare{
 		// remove entity from registry
 		void DestoryEntity(Entity entity);
 
-		void OnUpdate(Timestep ts);
+		void OnUpdateEditor(Timestep ts, EditorCamera& camera);
+		void OnUpdateRuntime(Timestep ts);
+
 		void OnViewportResize(uint32_t width, uint32_t height);
 
 		Entity GetPrimaryCameraEntity();

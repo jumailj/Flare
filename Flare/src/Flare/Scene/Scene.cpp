@@ -69,11 +69,28 @@ namespace Flare{
 		m_Registry.destroy(entity);
 	}
 
-
-
-	void Scene::OnUpdate(Timestep ts)
+	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
 	{
-		// group for multipler component
+
+			Renderer2D::BeginScene(camera);
+
+			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+			for (auto entity : group)
+			{
+				const auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+				Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+			}
+
+			Renderer2D::EndScene();
+
+	}
+
+
+
+	void Scene::OnUpdateRuntime(Timestep ts)
+	{
+		// group for multiple component
 		// view for single component
 
 
@@ -105,6 +122,7 @@ namespace Flare{
 				auto [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
 				if(camera.Primary) 
 				{
+					// find if any camera is primary
 					mainCamera = &camera.Camera;
 					cameraTransform = transform.GetTransform();
 					break;

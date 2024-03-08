@@ -3,6 +3,7 @@
 #include <Flare/Core/Flare.h>
 
 #include "Panels/SceneHierarchyPanel.h"
+#include <Flare/Renderer/EditorCamera.h>
 
 namespace Flare{
 
@@ -36,6 +37,8 @@ namespace Flare{
 		Entity m_SquareEntity;
 		Entity m_CameraEntity;
 		Entity m_SecondCamera;
+
+		EditorCamera m_EditorCamera; // added editor camera
 
 		Ref<Framebuffer>m_FrameBuffer;
 		glm::vec2 m_ViewportSize= {0.0f,0.0f};

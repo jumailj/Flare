@@ -36,9 +36,10 @@ void EditorLayer::OnAttach()
 	m_FrameBuffer = Flare::Framebuffer::Create(fbSpec);
 
 	m_CheckTexture = Flare::Texture2D::Create("Resource/check.png");
-	// m_SpriteSheet = Flare::Texture2D::Create("Resource/game/sprteSheet.png");
 
 	m_ActiveScene = CreateRef<Scene>(); // createa a scene;
+
+	m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
 
 #if 0
@@ -114,15 +115,22 @@ void EditorLayer::OnUpdate(Flare::Timestep ts) {
 			(spec.Widht != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
 		{
 			m_FrameBuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-			// m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
+			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
+
+			// set vieport size;
+			m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
 
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
 
 
+		//update
+		if(m_ViewportFocused)
+		{
+			m_CameraController.OnUpdate(ts);
+			m_EditorCamera.OnUpdate(ts);
+		}
 
-		if(m_ViewportFocused){m_CameraController.OnUpdate(ts);}
-		
 
 		//Render 
 		Flare::Renderer2D::ResetStats();
@@ -133,18 +141,10 @@ void EditorLayer::OnUpdate(Flare::Timestep ts) {
 		Flare::RenderCommand::Clear();
 		
 
-
-		// Flare::Renderer2D::BeginScene(m_CameraController.GetCamera());
-
-		// Flare::Renderer2D::DrawQuad({-5.0f, -5.0f, -0.1f}, {10.0f, 10.0f}, m_CheckTexture, 5.0f);
-		// Flare::Renderer2D::DrawQuad({0.0f, 0.0f, 0.0f}, {10,10}, {1.0f, 1.0f, 1.0f, 1.0f});
-		//update scene;
+		//update scene
+		// m_ActiveScene->OnUpdateRuntime(ts);  // ECS
+		m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
 		
-		m_ActiveScene->OnUpdate(ts);  // ECS
-
-
-		//Flare::Renderer2D::EndScene();
-
 		m_FrameBuffer->Unbind();
 			
 	
@@ -302,16 +302,20 @@ void EditorLayer::OnImGuiRender()
 						float windowHeight = (float)ImGui::GetWindowHeight();
 						ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
+/*
 						// Camera
 						Entity cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
 						SceneCamera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
 						const glm::mat4 cameraProjection = camera.GetProjection();
 						std::string projectionString = glm::to_string(cameraProjection);
 						std::cout << "projection string " << projectionString<<std::endl;
-						// LOG_TRACE("camera project {0)", projectionString.c_str());
+						//LOG_TRACE("camera project {0)",values);
+						// glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+*/
+						const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
+						glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
 
 
-						glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
 
 						// Entity transform
 						auto& tc = selectedEntity.GetComponent<TransformComponent>();
@@ -353,6 +357,7 @@ void EditorLayer::OnImGuiRender()
 	void EditorLayer::OnEvent(Flare::Event& event) 
 	{
 		// m_CameraController.OnEvent(event);
+		m_EditorCamera.OnEvent(event);
 
 		
 		EventDispatcher dispatcher(event);

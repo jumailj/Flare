@@ -5,6 +5,7 @@
 #include <Flare/Renderer/Texture.h>
 #include <Flare/Renderer/SubTexture2D.h>
 #include <Flare/Renderer/Camera.h>
+#include <Flare/Renderer/EditorCamera.h>
 
 // super static class, no data storage.
 namespace Flare{
@@ -18,6 +19,7 @@ namespace Flare{
         static void ShutDown();
 
         static void BeginScene(const Camera& camera, const glm::mat4 transform); 
+        static void BeginScene(const EditorCamera& camera);
         static void BeginScene(const OrthographicCamera & camera); // todo remove
         static void EndScene();
         static void Flush();
@@ -53,7 +55,6 @@ namespace Flare{
 		{
 			uint32_t DrawCalls = 0;
 			uint32_t QuadCount = 0;
-
 
 			uint32_t GetTotalVertexCount() {return QuadCount*4;}
 			uint32_t GetTotalIndexCount() {return QuadCount*6;}
