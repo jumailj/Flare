@@ -2,6 +2,7 @@
 
 #include <Flare/Renderer/Framebuffer.h>
 
+/* Memory buffer that contains data for all the pixels in a video frame*/
 namespace Flare
 {
     class OpenGLFrameBuffer: public Framebuffer
