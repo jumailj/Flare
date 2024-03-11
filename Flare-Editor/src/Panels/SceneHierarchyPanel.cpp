@@ -22,6 +22,13 @@ namespace Flare{
 		m_SelectionContext = {}; // to avoid bugs related to new scene.
 	}
 
+	void SceneHierarchyPanel::SetSelectedEntity(Entity entity)
+	{
+		m_SelectionContext = entity;
+	}
+
+
+
 	void SceneHierarchyPanel::OnImGuiRender()
 	{
 		//scne hierarchy
@@ -58,6 +65,8 @@ namespace Flare{
 
 		ImGui::End();
 	}
+
+
 
 	void SceneHierarchyPanel::DrawEntityNode(Entity entity)
 	{

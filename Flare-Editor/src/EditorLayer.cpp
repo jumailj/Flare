@@ -298,91 +298,79 @@ void EditorLayer::OnImGuiRender()
 
 
 				ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0,0));
+
 					ImGui::Begin("Viewport");
+		auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+		auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+		auto viewportOffset = ImGui::GetWindowPos();
+		m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
+		m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
 
-					auto viewportOffset = ImGui::GetCursorPos(); // includes tab bar
+		m_ViewportFocused = ImGui::IsWindowFocused();
+		m_ViewportHovered = ImGui::IsWindowHovered();
+		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
 
-					m_ViewportFocused = ImGui::IsWindowFocused();
-					m_ViewportHovered = ImGui::IsWindowHovered();
-					Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
+		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
-					ImVec2 viewportPannelSize = ImGui::GetContentRegionAvail();
-					m_ViewportSize = { viewportPannelSize.x, viewportPannelSize.y };
-						
-					// renderimage.
-					uint64_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
-					ImGui::Image(reinterpret_cast<void*>(static_cast<uintptr_t>(textureID)), ImVec2{m_ViewportSize.x, m_ViewportSize.y}, ImVec2{0,1}, ImVec2{1,0});		
+		uint64_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
+		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
-					auto windowSize = ImGui::GetWindowSize();
-					ImVec2 minBound = ImGui::GetWindowPos();
-					minBound.x += viewportOffset.x;
-					minBound.y += viewportOffset.y;
+		// Gizmos
+		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+		if (selectedEntity && m_GizmoType == -1) // should be !=
+		{
+			ImGuizmo::SetOrthographic(false);
+			ImGuizmo::SetDrawlist();
 
-					ImVec2 maxBound = { minBound.x + windowSize.x, minBound.y + windowSize.y};
-					m_ViewportBounds[0] = {minBound.x, minBound.y};
-					m_ViewportBounds[1] = {maxBound.x, maxBound.y};
+			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
+
+			// Camera
+			
+			// Runtime camera from entity
+			// auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
+			// const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+			// const glm::mat4& cameraProjection = camera.GetProjection();
+			// glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+
+			// Editor camera
+			const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
+			glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
+
+			// Entity transform
+			auto& tc = selectedEntity.GetComponent<TransformComponent>();
+			glm::mat4 transform = tc.GetTransform();
+
+			// Snapping
+			bool snap = Input::IsKeyPressed(Key::LeftControl);
+			float snapValue = 0.5f; // Snap to 0.5m for translation/scale
+			// Snap to 45 degrees for rotation
+			if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
+				snapValue = 45.0f;
+
+			float snapValues[3] = { snapValue, snapValue, snapValue };
+
+			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
+				nullptr, snap ? snapValues : nullptr);
+
+			if (ImGuizmo::IsUsing())
+			{
+				glm::vec3 translation, rotation, scale;
+				Math::DecomposeTransform(transform, translation, rotation, scale);
+
+				glm::vec3 deltaRotation = rotation - tc.Rotation;
+				tc.Translation = translation;
+				tc.Rotation += deltaRotation;
+				tc.Scale = scale;
+			}
+		}
 
 
-					// Gizmos
-					Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
-					if (selectedEntity && m_GizmoType == -1)
-					{
+		ImGui::End();
+		ImGui::PopStyleVar();
 
-						ImGuizmo::SetOrthographic(false);
-						ImGuizmo::SetDrawlist();
-
-						float windowWidth = (float)ImGui::GetWindowWidth();
-						float windowHeight = (float)ImGui::GetWindowHeight();
-						ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
-
-/*
-						// Camera
-						Entity cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
-						SceneCamera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-						const glm::mat4 cameraProjection = camera.GetProjection();
-						std::string projectionString = glm::to_string(cameraProjection);
-						std::cout << "projection string " << projectionString<<std::endl;
-						//LOG_TRACE("camera project {0)",values);
-						// glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
-*/
-						const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
-						glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
-
-
-
-						// Entity transform
-						auto& tc = selectedEntity.GetComponent<TransformComponent>();
-						glm::mat4 transform = tc.GetTransform();
-
-						// Snapping
-						bool snap = Input::IsKeyPressed(Key::LeftShift);
-						float snapValue = 0.5f; // Snap to 0.5m for translation/scale
-						// Snap to 45 degrees for rotation
-						if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
-							snapValue = 45.0f;
-
-						float snapValues[3] = { snapValue, snapValue, snapValue };
-
-						ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
-							(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
-							nullptr, snap ? snapValues : nullptr);
-
-						if (ImGuizmo::IsUsing())
-						{
-							glm::vec3 translation, rotation, scale;
-							Math::DecomposeTransform(transform, translation, rotation, scale);
-
-							glm::vec3 deltaRotation = rotation - tc.Rotation;
-							tc.Translation = translation;
-							tc.Rotation += deltaRotation;
-							tc.Scale = scale;
-						}
-					}
-
-				ImGui::End();
-				ImGui::PopStyleVar();
-
-			ImGui::End();
+		ImGui::End();
 			
 	}
 
@@ -395,9 +383,21 @@ void EditorLayer::OnImGuiRender()
 		
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
 
 
 	}
+
+	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+	{
+		if(e.GetMouseButton() == Mouse::ButtonLeft)
+		{
+			if(m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftControl))
+			m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
+		}
+		return false;
+	}
+
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
 	{
@@ -467,6 +467,8 @@ void EditorLayer::OnImGuiRender()
 		}
 		return false;
 	}
+
+	
 
 
 
