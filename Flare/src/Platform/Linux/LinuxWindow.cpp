@@ -71,6 +71,8 @@ namespace Flare{
 	   m_Context->Init();
 	   
 	   glfwSetWindowUserPointer(m_Window, &m_Data);
+
+
 	   SetVSync(true);
        
        // set glfw callbacks;(lam)
