@@ -30,10 +30,11 @@ void EditorLayer::OnAttach()
 
 	//framebuffer;
 	Flare::FramebufferSpecification fbSpec;
-	fbSpec.Widht = 1280;
+	fbSpec.Attachments = {FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth};
+	fbSpec.Width = 1280;
 	fbSpec.Height = 720;
-	
 	m_FrameBuffer = Flare::Framebuffer::Create(fbSpec);
+
 
 	m_CheckTexture = Flare::Texture2D::Create("Resource/check.png");
 
@@ -112,7 +113,7 @@ void EditorLayer::OnUpdate(Flare::Timestep ts) {
 
 		if (FramebufferSpecification spec = m_FrameBuffer->GetSpecification();
 			m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && // zero sized framebuffer is invalid
-			(spec.Widht != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
+			(spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
 		{
 			m_FrameBuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
@@ -285,7 +286,7 @@ void EditorLayer::OnImGuiRender()
 					m_ViewportSize = { viewportPannelSize.x, viewportPannelSize.y };
 						
 					// renderimage.
-					uint64_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
+					uint64_t textureID = m_FrameBuffer->GetColorAttachmentRendererID(1);
 					ImGui::Image(reinterpret_cast<void*>(static_cast<uintptr_t>(textureID)), ImVec2{m_ViewportSize.x, m_ViewportSize.y}, ImVec2{0,1}, ImVec2{1,0});		
 
 
@@ -294,7 +295,7 @@ void EditorLayer::OnImGuiRender()
 					Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
 					if (selectedEntity && m_GizmoType == -1)
 					{
-						LOG_INFO("guizmo active");
+
 						ImGuizmo::SetOrthographic(false);
 						ImGuizmo::SetDrawlist();
 
@@ -322,7 +323,7 @@ void EditorLayer::OnImGuiRender()
 						glm::mat4 transform = tc.GetTransform();
 
 						// Snapping
-						bool snap = Input::IsKeyPressed(Key::LeftControl);
+						bool snap = Input::IsKeyPressed(Key::LeftShift);
 						float snapValue = 0.5f; // Snap to 0.5m for translation/scale
 						// Snap to 45 degrees for rotation
 						if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
@@ -403,7 +404,7 @@ void EditorLayer::OnImGuiRender()
 				break;
 			}
 
-								// Gizmos
+			// Gizmos
 			case Key::Q:
 				m_GizmoType = -1;
 				break;
@@ -419,11 +420,6 @@ void EditorLayer::OnImGuiRender()
 
 
 		}
-
-
-
-
-
 		return false;
 	}
 

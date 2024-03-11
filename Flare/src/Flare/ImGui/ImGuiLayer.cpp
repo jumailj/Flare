@@ -44,8 +44,8 @@ namespace Flare
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
-		io.Fonts->AddFontFromFileTTF("Resource/fonts/Open_Sans/static/OpenSans-Bold.ttf", 16);
-		io.FontDefault = io.Fonts->AddFontFromFileTTF("Resource/fonts/Open_Sans/static/OpenSans-Regular.ttf",16);
+		io.Fonts->AddFontFromFileTTF("Resource/fonts/Open_Sans/static/OpenSans-Bold.ttf", 14);
+		io.FontDefault = io.Fonts->AddFontFromFileTTF("Resource/fonts/Open_Sans/static/OpenSans-Regular.ttf",14);
 
 
 		// Setup Dear ImGui style

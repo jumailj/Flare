@@ -12,7 +12,7 @@ namespace Flare
         switch (Renderer::GetAPI())
         {
             case RendererAPI::API::None : LOG_ERROR("RendererAPI::None is currenlty not supported!"); return nullptr;
-            case RendererAPI::API::OpenGL : return CreateRef<OpenGLFrameBuffer>(spec);
+            case RendererAPI::API::OpenGL : return CreateRef<OpenGLFramebuffer>(spec);
         }
 
         LOG_ERROR("[FRAME BUFFER] Unknown RendereAPI");
