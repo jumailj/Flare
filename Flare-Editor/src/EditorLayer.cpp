@@ -135,11 +135,12 @@ void EditorLayer::OnUpdate(Flare::Timestep ts) {
 
 		//Render 
 		Flare::Renderer2D::ResetStats();
-		
 		m_FrameBuffer->Bind();
-
 		Flare::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Flare::RenderCommand::Clear();
+
+		//clear our entity id attachment to -1
+		m_FrameBuffer->ClearAttachment(1,-1);
 		
 
 		//update scene

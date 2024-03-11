@@ -79,6 +79,17 @@ namespace Flare{
 			return false;
 		}
 
+		static GLenum FlareFBTextureFormatToGL(FramebufferTextureFormat format)
+		{
+			switch (format)
+			{
+				case FramebufferTextureFormat::RGBA8 :        return GL_RGBA8;
+				case FramebufferTextureFormat::RED_INTEGER :  return GL_RED_INTEGER;
+			}
+			LOG_ERROR("unknown texture format");
+			return 0;
+		}
+
 	}
 
 	OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification& spec)
@@ -180,6 +191,11 @@ namespace Flare{
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
 		glViewport(0, 0, m_Specification.Width, m_Specification.Height);
+
+		//clearAttachment(1, )
+		int value = -1;
+		glClearTexImage(m_ColorAttachments[1], 0, GL_RED_INTEGER, GL_INT, &value);
+
 	}
 
 	void OpenGLFramebuffer::Unbind()
@@ -212,6 +228,19 @@ namespace Flare{
 		int pixelData;
 		glReadPixels(x, y, 1,1, GL_RED_INTEGER, GL_INT, &pixelData);
 		return pixelData;
+	}
+
+	void OpenGLFramebuffer::ClearAttachment(uint32_t attachmentIndex, int value)
+	{
+		if( attachmentIndex > m_ColorAttachments.size())
+		{
+			LOG_ERROR("index = {0} attachmentindex = {1}",attachmentIndex,m_ColorAttachments.size());
+			LOG_ERROR("index is larger than colorAttachment size");
+		}
+
+		auto& spec = m_ColorAttachmentSpecifications[attachmentIndex];
+		glClearTexImage(m_ColorAttachments[attachmentIndex], 0, Utils::FlareFBTextureFormatToGL(spec.TextureFormat), GL_INT,&value);
+
 	}
 
 }
