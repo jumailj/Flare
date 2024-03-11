@@ -6,6 +6,7 @@
 #include <Flare/Renderer/RenderCommand.h>
 #include <glm/gtc/matrix_transform.hpp>
 
+
 namespace Flare
 {
 
@@ -16,6 +17,9 @@ namespace Flare
 		glm::vec2 TexCoord;
 		float TexIndex;
 		float TilingFactor;
+
+		//editor-only
+		int EntityID = -1;
 	};
 
 	struct Renderer2DData
@@ -56,7 +60,8 @@ namespace Flare
 			{ ShaderDataType::Float4, "a_Color" },
 			{ ShaderDataType::Float2, "a_TexCoord" },
 			{ ShaderDataType::Float, "a_TexIndex" },
-			{ ShaderDataType::Float, "a_TilingFactor" }
+			{ ShaderDataType::Float, "a_TilingFactor" },
+			{ ShaderDataType::Int, "a_EntityID"}
 			});
 
         s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
@@ -221,7 +226,7 @@ namespace Flare
 
 
 	/*main fun*/
-    void Renderer2D::DrawQuad(const glm::mat4 transform, const glm::vec4& color)
+    void Renderer2D::DrawQuad(const glm::mat4 transform, const glm::vec4& color, int entityID)
 	{
 
 		const float texIndex = 0.0f; // White Texture
@@ -236,6 +241,7 @@ namespace Flare
 		s_Data.QuadVertexBufferPtr->TexCoord = { 0.0f, 0.0f };
 		s_Data.QuadVertexBufferPtr->TexIndex = texIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+		s_Data.QuadVertexBufferPtr->EntityID = entityID;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[1];
@@ -243,6 +249,7 @@ namespace Flare
 		s_Data.QuadVertexBufferPtr->TexCoord = { 1.0f, 0.0f };
 		s_Data.QuadVertexBufferPtr->TexIndex = texIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+		s_Data.QuadVertexBufferPtr->EntityID = entityID;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[2];
@@ -250,6 +257,7 @@ namespace Flare
 		s_Data.QuadVertexBufferPtr->TexCoord = { 1.0f, 1.0f };
 		s_Data.QuadVertexBufferPtr->TexIndex = texIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+		s_Data.QuadVertexBufferPtr->EntityID = entityID;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[3];
@@ -257,6 +265,7 @@ namespace Flare
 		s_Data.QuadVertexBufferPtr->TexCoord = { 0.0f, 1.0f };
 		s_Data.QuadVertexBufferPtr->TexIndex = texIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+		s_Data.QuadVertexBufferPtr->EntityID = entityID;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadIndexCount += 6;
@@ -299,7 +308,7 @@ namespace Flare
     }
 
 	/*main function*/
-    void Renderer2D::DrawQuad(const glm::mat4 transform , const Ref<Texture2D>&texture, float tilingFactor, const glm::vec4& tintColor)
+    void Renderer2D::DrawQuad(const glm::mat4 transform , const Ref<Texture2D>&texture, float tilingFactor, const glm::vec4& tintColor, int entityID)
 	{
 		if(s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
 			NextBatch();
@@ -335,6 +344,7 @@ namespace Flare
 		s_Data.QuadVertexBufferPtr->TexCoord = { 0.0f, 0.0f }; 
 		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+		s_Data.QuadVertexBufferPtr->EntityID = entityID;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[1];
@@ -342,6 +352,7 @@ namespace Flare
 		s_Data.QuadVertexBufferPtr->TexCoord = { 1.0f, 0.0f };
 		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+		s_Data.QuadVertexBufferPtr->EntityID = entityID;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[2];
@@ -349,6 +360,7 @@ namespace Flare
 		s_Data.QuadVertexBufferPtr->TexCoord = { 1.0f, 1.0f };
 		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+		s_Data.QuadVertexBufferPtr->EntityID = entityID;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[3];
@@ -356,10 +368,17 @@ namespace Flare
 		s_Data.QuadVertexBufferPtr->TexCoord = { 0.0f, 1.0f };
 		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+		s_Data.QuadVertexBufferPtr->EntityID = entityID;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadIndexCount += 6;
 		s_Data.Stats.QuadCount++;
+	}
+
+
+	void Renderer2D::DrawSprite(const glm::mat4& transfrom, SpriteRendererComponent& src, int entityID)
+	{
+		DrawQuad(transfrom, src.Color, entityID);
 	}
 
 

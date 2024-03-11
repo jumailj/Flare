@@ -1,11 +1,12 @@
 #pragma once
 
 #include <Flare/Renderer/OrthographicCamera.h>
-
 #include <Flare/Renderer/Texture.h>
-#include <Flare/Renderer/SubTexture2D.h>
 #include <Flare/Renderer/Camera.h>
 #include <Flare/Renderer/EditorCamera.h>
+
+#include <Flare/Scene/Components.h>
+
 
 // super static class, no data storage.
 namespace Flare{
@@ -35,9 +36,8 @@ namespace Flare{
         static void DrawQuad(const glm::vec2& position, const glm::vec2&size, const Ref<Texture2D>& texture, float tilingFactor = 1.0f,  const glm::vec4& tintColor = glm::vec4(1.0f));
         static void DrawQuad(const glm::vec3& position, const glm::vec2&size, const Ref<Texture2D>& texture, float tilingFactor = 1.0f,  const glm::vec4& tintColor = glm::vec4(1.0f));
         // draw quad with transform with color
-        static void DrawQuad(const glm::mat4 transform, const glm::vec4& color);
+        static void DrawQuad(const glm::mat4 transform, const glm::vec4& color, int entityID =-1);
        
-
         //rotatable;
         
         //draw quad with color + rotatable
@@ -47,8 +47,10 @@ namespace Flare{
         static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
         static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
         // draw quad with transform with texture
-        static void DrawQuad(const glm::mat4 transform , const Ref<Texture2D>&texture, float tilingFactor= 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
+        static void DrawQuad(const glm::mat4 transform , const Ref<Texture2D>&texture, float tilingFactor= 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f), int entityID = -1);
 
+
+        static void DrawSprite(const glm::mat4& transfrom, SpriteRendererComponent& src, int entityID);
 
         //stats;
 		struct Statistics

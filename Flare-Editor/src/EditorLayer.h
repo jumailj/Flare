@@ -38,6 +38,8 @@ namespace Flare{
 		Entity m_CameraEntity;
 		Entity m_SecondCamera;
 
+		Entity m_HoveredEntity;
+
 		EditorCamera m_EditorCamera; // added editor camera
 
 		Ref<Framebuffer>m_FrameBuffer;

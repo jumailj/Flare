@@ -162,7 +162,7 @@ void EditorLayer::OnUpdate(Flare::Timestep ts) {
 		if(mouseX >= 0 && mouseY >= 0 && mouseX < (int)m_ViewportSize.x && mouseY < (int) m_ViewportSize.y)
 		{
 			int pixeldata = m_FrameBuffer->ReadPixel(1, mouseX, mouseY);
-			LOG_WARN("mouse pos = {0}",pixeldata);
+			m_HoveredEntity = pixeldata == -1 ? Entity() : Entity((entt::entity)pixeldata, m_ActiveScene.get());
 		}
 		
 
@@ -281,6 +281,12 @@ void EditorLayer::OnImGuiRender()
 
 				ImGui::Begin("stats");
 
+				std::string name = "None";
+				if(m_HoveredEntity){
+					name =  m_HoveredEntity.GetComponent<TagComponent>().Tag;
+				}
+				ImGui::Text("Hovered Entity: %s",name.c_str());
+
 				auto stats = Flare::Renderer2D::GetStats();
 				ImGui::Text("Renderer2D Stats:");
 				ImGui::Text("Draw Calls: %d", stats.DrawCalls);
@@ -289,9 +295,6 @@ void EditorLayer::OnImGuiRender()
 				ImGui::Text("indices: %d", stats.GetTotalIndexCount());
 
 				ImGui::End();
-
-
-				
 
 
 				ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0,0));
