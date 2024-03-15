@@ -3,6 +3,7 @@
 #include <Flare/Core/Flare.h>
 
 #include "Panels/SceneHierarchyPanel.h"
+#include "Panels/ContentBrowserPanel.h"
 #include <Flare/Renderer/EditorCamera.h>
 
 namespace Flare{
@@ -52,6 +53,7 @@ namespace Flare{
 		int m_GizmoType = -1;
 
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+		ContentBrowserPanel m_ContentBrowserPanel;
 
 	};
 

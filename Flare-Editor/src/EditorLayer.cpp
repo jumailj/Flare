@@ -284,8 +284,8 @@ void EditorLayer::OnImGuiRender()
 				}
 
 				// new imgui windows;
-
 				m_SceneHierarchyPanel.OnImGuiRender();
+				m_ContentBrowserPanel.OnImGuiRender();
 
 
 				ImGui::Begin("stats");
