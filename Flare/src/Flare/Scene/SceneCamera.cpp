@@ -30,6 +30,7 @@ SceneCamera::SceneCamera()
 
 	void SceneCamera::SetViewportSize(uint32_t width, uint32_t height)
 	{
+		//todo check if with > 0 and height > 0, then assert.
 		m_AspectRatio = (float)width / (float)height;
 		RecalculateProjection();
 	}

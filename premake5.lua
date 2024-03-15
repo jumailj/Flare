@@ -5,6 +5,7 @@ workspace "Flare"
     startproject "Sandbox"
 
     outputdir= "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}" -- Folder Name: Debug/Relese/Ship | Linux | 64x
+    vulkandir= "Flare/vendor/VulkanSDK/1.3.275.0/x86_64" -- vulkan dependencies folder
 
     IncludeDir = {}
     IncludeDir["glfw"] = "Flare/vendor/glfw/include"
@@ -17,6 +18,12 @@ workspace "Flare"
     IncludeDir["yaml-cpp"] = "Flare/vendor/yaml-cpp/include"
     IncludeDir["nativefiledialog"] = "Flare/vendor/nativefiledialog/src/include"
     IncludeDir["ImGuizmo"] = "Flare/vendor/ImGuizmo"
+    IncludeDir["vulkanSDK"] = "%{vulkandir}/include"
+
+
+    LibraryDir = {}
+    LibraryDir["vulkanLib"] = "%{vulkandir}/lib"
+
 
     group "Dependencies"
         include "Flare/vendor/glfw"
@@ -79,23 +86,25 @@ project "Flare"
         "%{IncludeDir['yaml-cpp']}", -- [] becaue it's cotain hyphens
         "%{IncludeDir.nativefiledialog}",
         "%{IncludeDir.ImGuizmo}",
+        "%{IncludeDir.vulkanSDK}",
+
     }
 
     -- externalincludedirs { "../lua/include", "../zlib" }
 
     libdirs{
-        "%{prj.name}/vendor/v8/x86-lib"
+        "Flare/vendor/VulkanSDK/1.3.275.0/x86_64/lib"
     }
 
     -- links{"glfw", "Xrandr", "Xi", "GLU", "GL", "X11", "dl", "pthread", "stdc++fs" }, [new -ldl -lGL (adding this can cause crashes)]
     -- gtk should be installed on Linux
+
     links{ 
         "GL", 
         "glfw",
         "glad",
         "ImGui",
         "pthread",
-        "v8_monolith",
         "yaml-cpp",
         "NativeFileDialog",
         "gtk-3",
@@ -114,6 +123,10 @@ project "Flare"
         "X11",
         "pthread",
         "dl",
+        "shaderc_combined",
+        "spirv-cross-core",
+        "spirv-cross-glsl",
+        
     } 
 
     filter "configurations:Debug"
@@ -167,11 +180,13 @@ project "Flare"
         "%{IncludeDir['yaml-cpp']}", 
         "%{IncludeDir.nativefiledialog}",
         "%{IncludeDir.ImGuizmo}",
+        "%{IncludeDir.vulkanSDK}",
         }
 
         libdirs{
-            "Flare/vendor/v8/x86-lib"
+            "Flare/vendor/VulkanSDK/1.3.275.0/x86_64/lib"
         }
+    
    
        -- externalincludedirs { "../lua/include", "../zlib" }
         links{
@@ -180,7 +195,6 @@ project "Flare"
             "glad",
             "ImGui",
             "png",
-            "v8_monolith",
             "yaml-cpp",
             "NativeFileDialog",
             "gtk-3",
@@ -198,7 +212,10 @@ project "Flare"
             "glib-2.0",
             "X11",
             "pthread",
-            "dl"
+            "dl",
+            "shaderc_combined",
+            "spirv-cross-core",
+            "spirv-cross-glsl",
     }  
 
 
@@ -271,8 +288,9 @@ project "Sandbox"
         -- externalincludedirs{
         --     "%{prj.name}/vendor/v8/x86-lib"
         -- }
+
         libdirs{
-            "Flare/vendor/v8/x86-lib"
+            "Flare/vendor/VulkanSDK/1.3.275.0/x86_64/lib"
         }
    
        -- externalincludedirs { "../lua/include", "../zlib" }
@@ -282,7 +300,6 @@ project "Sandbox"
         "glad",
         "ImGui",
         "png",
-        "v8_monolith",
         "NativeFileDialog",
         "gtk-3",
         "glib-2.0",
@@ -299,7 +316,10 @@ project "Sandbox"
         "glib-2.0",
         "X11",
         "pthread",
-        "dl"
+        "dl",
+        "shaderc_combined",
+        "spirv-cross-core",
+        "spirv-cross-glsl",
     }  
 
        filter "configurations:Debug"
@@ -324,3 +344,8 @@ project "Sandbox"
 --       dependences like glfw glew imgui are included in flare.
 --       but also included in sandbox, sandbox should link only
 --       flare. no other libs.
+
+-- https://vulkan-tutorial.com/Development_environment
+-- install sudo apt install libshaderc-dev
+-- sudo apt-get install spirv-cross
+

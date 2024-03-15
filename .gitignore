@@ -16,6 +16,8 @@
 **.ctagsd/
 **.build-debug/
 
+**Flare/vendor/VulkanSDK/
+
 # compiled  object files
 *.slo
 *.lo

@@ -71,6 +71,7 @@
         "any": "cpp",
         "forward_list": "cpp",
         "optional": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "expected": "cpp"
     }
 }
