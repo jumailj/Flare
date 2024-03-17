@@ -2,9 +2,11 @@
 
 #include "SceneCamera.h"
 #include "ScriptableEntity.h"
+#include <Flare/Renderer/Texture.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
@@ -12,7 +14,7 @@
 
 namespace Flare
 {
-	/*object tag-name*/
+	/*tag Component (default-component for every objects)*/
 	struct TagComponent
 	{
 		std::string Tag;
@@ -23,7 +25,7 @@ namespace Flare
 			: Tag(tag) {}
 	};
 
-	/*object Transfroms*/
+	/*Transfroms component (defautl-component for every objects)*/
 	struct TransformComponent 
 	{
 		glm::vec3 Translation = {0.0f, 0.0f, 0.0f};
@@ -57,6 +59,8 @@ namespace Flare
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color{ 1.0f,1.0f, 1.0f,1.0f };
+		Ref<Texture2D> Texture;
+		float TilingFactor = 1.0f;
 
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
@@ -75,7 +79,7 @@ namespace Flare
 		CameraComponent(const CameraComponent&) = default;
 	};
 
-	/*Native Script*/
+	/*Native Script - currenlty not work*/
 	struct NativeScriptComponent
 	{
 		ScriptableEntity* Instance = nullptr;

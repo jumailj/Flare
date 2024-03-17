@@ -54,3 +54,21 @@ Entities:
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [0.103348807, 0.569620252, 0.197783515, 1]
+  - Entity: 12837192831273
+    TagComponent:
+      Tag: camera
+    TransformComponent:
+      Translation: [0, 0.924666762, 2.99980998]
+      Rotation: [-0.120750919, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -2
+        OrthographicFar: 1
+      Primary: true
+      FixedAspectRatio: false

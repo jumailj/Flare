@@ -98,53 +98,47 @@ namespace Flare{
 		// Update scripts
 		{
 			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+			{
+				// TODO: Move to Scene::OnScenePlay
+				if (!nsc.Instance)
 				{
-					//todo move to scene. on scene play.
-					if (!nsc.Instance)
-					{
-						nsc.Instance = nsc.InstantiateScript();
-						nsc.Instance->m_Entity = Entity{ entity, this };
-						nsc.Instance->OnCreate();
-					}
+					nsc.Instance = nsc.InstantiateScript();
+					nsc.Instance->m_Entity = Entity{ entity, this };
+					nsc.Instance->OnCreate();
+				}
 
-					nsc.Instance->OnUpdate(ts);
-				});
+				nsc.Instance->OnUpdate(ts);
+			});
 		}
-
-
 
 		// Render 2D
 		Camera* mainCamera = nullptr;
 		glm::mat4 cameraTransform;
 		{
 			auto view = m_Registry.view<TransformComponent, CameraComponent>();
-			for (auto entity: view) 
+			for (auto entity : view)
 			{
 				auto [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
-				if(camera.Primary) 
+				
+				if (camera.Primary)
 				{
-					// find if any camera is primary
 					mainCamera = &camera.Camera;
 					cameraTransform = transform.GetTransform();
 					break;
 				}
-				
-				
 			}
 		}
 
-		/*if main camera avaliable ? rendere*/
-		if(mainCamera)
+		if (mainCamera)
 		{
 			Renderer2D::BeginScene(*mainCamera, cameraTransform);
 
 			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 			for (auto entity : group)
 			{
-				const auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-				//Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
-				//Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 			}
 
 			Renderer2D::EndScene();

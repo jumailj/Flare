@@ -72,6 +72,9 @@
         "forward_list": "cpp",
         "optional": "cpp",
         "valarray": "cpp",
-        "expected": "cpp"
+        "expected": "cpp",
+        "shared_mutex": "cpp",
+        "typeindex": "cpp",
+        "locale": "cpp"
     }
 }

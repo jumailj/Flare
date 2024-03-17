@@ -109,8 +109,8 @@ namespace Flare
 
 		// load a glsl shader
         s_Data.TextureShader = Shader::Create("Resource/Texture.glsl");
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
+		// s_Data.TextureShader->Bind();
+		// s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
 
 		// Set all texture slots to 0
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
@@ -132,8 +132,11 @@ namespace Flare
 
 	void Renderer2D::BeginScene(const OrthographicCamera &camera)
     {
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		// s_Data.TextureShader->Bind();
+		// s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		
+		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjectionMatrix();
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
 		StartBatch();
     }
@@ -390,7 +393,11 @@ namespace Flare
 
 	void Renderer2D::DrawSprite(const glm::mat4& transfrom, SpriteRendererComponent& src, int entityID)
 	{
-		DrawQuad(transfrom, src.Color, entityID);
+		if(src.Texture){
+			DrawQuad(transfrom, src.Texture, src.TilingFactor, src.Color, entityID);
+		}else {
+			DrawQuad(transfrom, src.Color, entityID);
+		}
 	}
 
 
