@@ -17,6 +17,8 @@
 **.build-debug/
 
 **Flare/vendor/VulkanSDK/
+**scripts/__pycache__
+**scripts/flare
 
 # compiled  object files
 *.slo
