@@ -19,6 +19,7 @@ workspace "Flare"
     IncludeDir["nativefiledialog"] = "Flare/vendor/nativefiledialog/src/include"
     IncludeDir["ImGuizmo"] = "Flare/vendor/ImGuizmo"
     IncludeDir["vulkanSDK"] = "%{vulkandir}/include"
+    IncludeDir["Box2D"] = "Flare/vendor/Box2D/include"
 
 
     LibraryDir = {}
@@ -31,6 +32,7 @@ workspace "Flare"
         include "Flare/vendor/imgui"
         include "Flare/vendor/yaml-cpp"
         include "Flare/vendor/nativefiledialog"
+        include "Flare/vendor/Box2D"
     group ""
 
 project "Flare" 
@@ -87,7 +89,7 @@ project "Flare"
         "%{IncludeDir.nativefiledialog}",
         "%{IncludeDir.ImGuizmo}",
         "%{IncludeDir.vulkanSDK}",
-
+        "%{IncludeDir['Box2D']}",
     }
 
     -- externalincludedirs { "../lua/include", "../zlib" }
@@ -104,6 +106,7 @@ project "Flare"
         "glfw",
         "glad",
         "ImGui",
+        "Box2D",
         "pthread",
         "yaml-cpp",
         "NativeFileDialog",
@@ -194,6 +197,7 @@ project "Flare"
             "glfw",
             "glad",
             "ImGui",
+            "Box2D",
             "png",
             "yaml-cpp",
             "NativeFileDialog",
@@ -299,6 +303,7 @@ project "Sandbox"
         "glfw",
         "glad",
         "ImGui",
+        "Box2D",
         "png",
         "NativeFileDialog",
         "gtk-3",
@@ -344,8 +349,3 @@ project "Sandbox"
 --       dependences like glfw glew imgui are included in flare.
 --       but also included in sandbox, sandbox should link only
 --       flare. no other libs.
-
--- https://vulkan-tutorial.com/Development_environment
--- install sudo apt install libshaderc-dev
--- sudo apt-get install spirv-cross
-

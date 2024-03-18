@@ -21,3 +21,6 @@
 [submodule "Flare/vendor/ImGuizmo"]
 	path = Flare/vendor/ImGuizmo
 	url = https://github.com/CedricGuillemet/ImGuizmo
+[submodule "Flare/vendor/Box2D"]
+	path = Flare/vendor/Box2D
+	url = git@github.com:jumailj/box2d.git
