@@ -13,6 +13,6 @@ def InstallVulkanSDK():
     print('Downloading {} to {}'.format(VULKAN_SDK_INSTALLER_URL, VULKAN_DOWNLOAD_PATH))
     Utils.DownloadFile(VULKAN_SDK_INSTALLER_URL, VULKAN_DOWNLOAD_PATH)
     print("Done!")
-    print("Extracing Vulkan...")
+    print("Extracting Vulkan...")
     #extract .tar.xz file
     Utils.extract_tar_xz(VULKAN_DOWNLOAD_PATH, VULKAN_SDK_EXE_PATH)
