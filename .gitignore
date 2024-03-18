@@ -16,7 +16,8 @@
 **.ctagsd/
 **.build-debug/
 
-**Flare/vendor/VulkanSDK/
+**Flare/vendor/VulkanSDK/1.3.275.0
+**Flare/vendor/VulkanSDK/VulKanSDK.tar.xz
 **scripts/__pycache__
 **scripts/flare
 
