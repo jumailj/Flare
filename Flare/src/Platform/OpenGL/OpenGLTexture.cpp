@@ -37,7 +37,7 @@ namespace Flare{
     OpenGLTexture2D::OpenGLTexture2D(const std::string& path)
        :m_Path(path)    
     {
-        int widht, height, channels;
+        int width, height, channels;
         
         /*
           in computer graphics the orgin (0,0) is typically located at the bottom left corner of an image.
@@ -48,22 +48,28 @@ namespace Flare{
 		stbi_set_flip_vertically_on_load(1);
 
 
-		stbi_uc* data =  stbi_load(path.c_str(),&widht, &height, &channels, 0 );
+		stbi_uc* data =  stbi_load(path.c_str(),&width, &height, &channels, 0 );
 		if(!data) {
            std::string errMsg = stbi_failure_reason();
-            LOG_ERROR("image not loaded! Reason:{errmsg}");
+            LOG_ERROR("Image not loaded, image path: {0}", path.c_str());
              // std::cerr << "Error loading image: " << stbi_failure_reason() << std::endl;
         }
 
-		m_Width = widht;
+		m_Width = width;
 		m_Height = height;
+        
+        /*once texture is loaded sucessfully*/
+        m_IsLoaded = true;
 
         GLenum internalFormat = 0, dataFormat = 0;
-        //we have two channels in image, RGB and RBG with Alpha.
+        //we have two channels in image, RGB and RGB with Alpha.
+
+        // if channel contain 4, means it's a RGB with Alpha.
 		if (channels == 4) {
 			internalFormat = GL_RGBA8;
 			dataFormat = GL_RGBA;
 		}
+        // if channel cotain 3, means it's a RGB only.
 		else if (channels == 3) {
 			internalFormat = GL_RGB8;
 			dataFormat = GL_RGB;
@@ -72,7 +78,6 @@ namespace Flare{
         // setting internals
         m_InternalFormat = internalFormat;
         m_DataFormat = dataFormat;
-
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 		glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);

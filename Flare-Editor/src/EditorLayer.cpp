@@ -7,8 +7,10 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 #include <Flare/Scene/SceneSerializer.h>
+#include <Flare/Core/Log.h>
 #include <Flare/Utils/PlatformUtils.h>
 #include <Flare/Math/Math.h>
+
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/string_cast.hpp>
@@ -566,25 +568,33 @@ void EditorLayer::OnImGuiRender()
 	
 	void EditorLayer::OpenScene()
 	{
-		std::string filepath = FileDialogs::OpenFile("Hazel Scene (*.hazel)\0*.hazel\0");
+		std::string filepath = FileDialogs::OpenFile("Hazel Scene (*.flare)\0*.flare\0");
 		if (!filepath.empty())
 			OpenScene(filepath);
 	}
 
 	void EditorLayer::OpenScene(const std::filesystem::path& path)
 	{
-		m_ActiveScene = CreateRef<Scene>();
-		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-
-		SceneSerializer serializer(m_ActiveScene);
-		serializer.Deserialize(path.string());
+		if (path.extension().string() != ".flare")
+		{
+			LOG_WARN("Could not load {0} - not a scene file", path.filename().string());
+			return;
+		}
+		
+		Ref<Scene> newScene = CreateRef<Scene>();
+		SceneSerializer serializer(newScene);
+		if (serializer.Deserialize(path.string()))
+		{
+			m_ActiveScene = newScene;
+			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		}
 	}
 
 	void EditorLayer::SaveSceneAs()
 	{
-		std::string filepath = FileDialogs::SaveFile("fix later");
-		if(!filepath.empty())
+		std::string filepath = FileDialogs::SaveFile("Hazel Scene (*.flare)\0*.flare\0");
+		if (!filepath.empty())
 		{
 			SceneSerializer serializer(m_ActiveScene);
 			serializer.Serialize(filepath);
