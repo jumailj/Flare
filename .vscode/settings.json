@@ -75,6 +75,7 @@
         "expected": "cpp",
         "shared_mutex": "cpp",
         "typeindex": "cpp",
-        "locale": "cpp"
+        "locale": "cpp",
+        "csignal": "cpp"
     }
 }

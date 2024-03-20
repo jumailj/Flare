@@ -1,6 +1,7 @@
 #pragma once
 
 #include <entt.hpp>
+#include <Flare/Core/UUID.h>
 #include <Flare/Core/Timestep.h>
 #include <Flare/Renderer/EditorCamera.h>
 
@@ -17,6 +18,7 @@ namespace Flare{
 		~Scene();
 
 		Entity CreateEntity(const std::string& name = std::string());
+		Entity CreateEntityWithUUID(UUID uuid,const std::string& name = std::string());
 		void DestoryEntity(Entity entity);
 
 		void OnRuntimeStart();

@@ -5,6 +5,9 @@
 #include <entt.hpp>
 #include <Flare/Core/Log.h>
 
+#include <Flare/Core/UUID.h>
+#include "Components.h"
+
 namespace Flare{
 
 	class Entity
@@ -47,6 +50,8 @@ namespace Flare{
 		operator uint32_t() const { return (uint32_t)m_EntityHandle; }
 		// to destory entity.
 		operator entt::entity() const {return m_EntityHandle;}
+
+		UUID GetUUID() { return GetComponent<IDComponent>().ID;}
 
 		bool operator==(const Entity& other) const
 		{

@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 #include "Components.h"
+#include "ScriptableEntity.h"
 #include <Flare/Renderer/Renderer2D.h>
 #include <glm/glm.hpp>
 
@@ -38,16 +39,24 @@ namespace Flare{
 
 	Entity Scene::CreateEntity(const std::string& name)
 	{
+		return CreateEntityWithUUID(UUID(), name);
+	}
+
+
+		Entity Scene::CreateEntityWithUUID(UUID uuid,const std::string& name)
+	{
 		Entity entity = { m_Registry.create(), this };
 
-		// add transfromcomponent and tagcomponent when create a new entity.
+		// add transfromcomponent, tagcomponent and idComponent when create a new entity.
+		entity.AddComponent<IDComponent>(uuid);
 		entity.AddComponent<TransformComponent>();
-		auto& tag = entity.AddComponent<TagComponent>();
+		entity.AddComponent<TagComponent>().Tag = name.empty()?"Entity":name;
 
-		tag.Tag = name.empty() ? "Entity" : name;
 		return entity;
 
 	}
+
+
 
 	void Scene::DestoryEntity(Entity entity){
 		m_Registry.destroy(entity);
@@ -249,11 +258,7 @@ namespace Flare{
 		//static_assert(false);
 	}
 
-	template<>
-	void Scene::OnComponentAdded<TransformComponent>(Entity entity, TransformComponent& component)
-	{
-	}
-
+	
 	template<>
 	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component)
 	{

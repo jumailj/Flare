@@ -1,7 +1,8 @@
 #pragma once
 
 #include "SceneCamera.h"
-#include "ScriptableEntity.h"
+// #include "ScriptableEntity.h"
+#include <Flare/Core/UUID.h>
 #include <Flare/Renderer/Texture.h>
 
 #include <glm/glm.hpp>
@@ -12,6 +13,16 @@
 
 namespace Flare
 {
+	/*UUID component*/
+	struct IDComponent
+	{
+		UUID ID;
+
+		IDComponent() = default;
+		IDComponent(const IDComponent&) = default;
+	};
+
+
 	/*tag Component (default-component for every objects)*/
 	struct TagComponent
 	{
@@ -78,6 +89,7 @@ namespace Flare
 	};
 
 	/*Native Script - currenlty not work*/
+	class ScriptableEntity; // forward declartion
 	struct NativeScriptComponent
 	{
 		ScriptableEntity* Instance = nullptr;
