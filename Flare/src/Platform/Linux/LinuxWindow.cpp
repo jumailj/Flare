@@ -45,10 +45,7 @@ namespace Flare{
             // init
             int success = glfwInit();
 
-            if (success) {
-                LOG_TRACE("GLFW init");
-
-            }else {
+            if (!success) {
                 LOG_ERROR("GLFW not init!");
             }
 			glfwSetErrorCallback(GLFWErrorCallback);

@@ -22,7 +22,6 @@ namespace Flare{
         LOG_TRACE("Failed to initialize glad!");
        }else {
       
-         LOG_INFO("glad init");
          LOG_INFO("---------OPENGL INFO---------");
          LOG_INFO("Vendor: {0},", (const char*) glGetString(GL_VENDOR));
          LOG_INFO("Renderer: {0},",(const char*) glGetString(GL_RENDERER));

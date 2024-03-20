@@ -10,8 +10,6 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
-
-
 namespace Flare
 {
 	/*tag Component (default-component for every objects)*/
