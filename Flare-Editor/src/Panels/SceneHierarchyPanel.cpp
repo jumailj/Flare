@@ -35,28 +35,28 @@ namespace Flare{
 	{
 		//scne hierarchy
 		ImGui::Begin("Scene Hierarchy");
+
+		if (m_Context)
+		{
 			m_Context->m_Registry.each([&](auto entityID)
-			{
-				Entity entity{ entityID , m_Context.get() };
-				DrawEntityNode(entity);
-			});
+				{
+					Entity entity{ entityID , m_Context.get() };
+					DrawEntityNode(entity);
+				});
 
-
-			if(ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-			{
+			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
 				m_SelectionContext = {};
-			}
 
-			//right-click on blank space.
-			if( ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems))
+			// Right-click on blank space
+			if (ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems))
 			{
-				if(ImGui::MenuItem("Create Empty Entity"))
-					m_Context->CreateEntity("empty entity");
+				if (ImGui::MenuItem("Create Empty Entity"))
+					m_Context->CreateEntity("Empty Entity");
 
 				ImGui::EndPopup();
 			}
-
-
+		}
+			
 		ImGui::End();
 
 		ImGui::Begin("Properties");
@@ -414,7 +414,7 @@ namespace Flare{
 		DrawComponent<BoxCollider2DComponent>("Box Collider 2D", entity, [](auto& component)
 		{
 			ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset));
-			ImGui::DragFloat2("Size", glm::value_ptr(component.Offset));
+			ImGui::DragFloat2("Size", glm::value_ptr(component.Size));
 			ImGui::DragFloat("Density", &component.Density, 0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);

@@ -20,8 +20,16 @@ namespace Flare{
 		template<typename T, typename... Args>
 		T& AddComponent(Args&&... args)
 		{
-			//HZ_CORE_ASSERT(!HasComponent<T>(), "Entity already has component!");
+			if(HasComponent<T>()){LOG_ERROR("Entity already have Component!");}
 			T& component = m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward<Args>(args)...);
+			m_Scene->OnComponentAdded<T>(*this, component);
+			return component;
+		}
+
+		template<typename T, typename... Args>
+		T& AddOrReplaceComponent(Args&&... args)
+		{
+			T& component = m_Scene->m_Registry.emplace_or_replace<T>(m_EntityHandle, std::forward<Args>(args)...);
 			m_Scene->OnComponentAdded<T>(*this, component);
 			return component;
 		}
@@ -29,7 +37,9 @@ namespace Flare{
 		template<typename T>
 		T& GetComponent()
 		{
-			// HZ_CORE_ASSERT(HasComponent<T>(), "Entity does not have component!");
+			if(!HasComponent<T>()){	LOG_ERROR("Entity does not have Component!");}
+			
+			//possible to crash the program.
 			return m_Scene->m_Registry.get<T>(m_EntityHandle);
 		}
 
@@ -42,7 +52,7 @@ namespace Flare{
 		template<typename T>
 		void RemoveComponent()
 		{
-			// HZ_CORE_ASSERT(HasComponent<T>(), "Entity does not have component!");
+			if(!HasComponent<T>()){LOG_ERROR("Entity does not have Component!");}
 			m_Scene->m_Registry.remove<T>(m_EntityHandle);
 		}
 
@@ -51,7 +61,11 @@ namespace Flare{
 		// to destory entity.
 		operator entt::entity() const {return m_EntityHandle;}
 
+		//get he uuid for the object.
 		UUID GetUUID() { return GetComponent<IDComponent>().ID;}
+		
+		// get the current object tag name;
+		std::string GetName() {return GetComponent<TagComponent>().Tag;}
 
 		bool operator==(const Entity& other) const
 		{
