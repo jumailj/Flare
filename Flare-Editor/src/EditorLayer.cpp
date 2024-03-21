@@ -373,8 +373,9 @@ void EditorLayer::OnImGuiRender()
 
 
 		// Gizmos
+		// Gizmos
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
-		if (selectedEntity && m_GizmoType == -1) // should be !=
+		if (selectedEntity && m_GizmoType != -1)
 		{
 			ImGuizmo::SetOrthographic(false);
 			ImGuizmo::SetDrawlist();
@@ -421,6 +422,7 @@ void EditorLayer::OnImGuiRender()
 				tc.Scale = scale;
 			}
 		}
+
 
 
 		ImGui::End();

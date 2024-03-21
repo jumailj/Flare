@@ -1,6 +1,8 @@
 #pragma once
 
-#include <hash_map>
+// #include <hash_map>
+#include <unordered_map>
+#include <cstdint>
 
 
 namespace Flare
