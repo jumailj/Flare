@@ -294,6 +294,9 @@ void EditorLayer::OnImGuiRender()
 						// opening file
 						if(ImGui::MenuItem("Open", "Ctrl+O")){OpenScene();}
 
+						// save file
+						if(ImGui::MenuItem("save", "Ctrl+S")){SaveScene();}
+
 						//saving file
 						if(ImGui::MenuItem("Save As", "Ctrl+Shift+S")){SaveSceneAs();}
 
