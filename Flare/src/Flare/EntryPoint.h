@@ -26,7 +26,6 @@ namespace Flare{
 
             //TODO initilize Native File Dilog
 
-
             // // cheking for v8
             //   v8::V8::InitializeICUDefaultLocation(argv[0]);
             //   v8::V8::InitializeExternalStartupData(argv[0]);

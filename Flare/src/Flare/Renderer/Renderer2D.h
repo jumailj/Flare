@@ -52,6 +52,9 @@ namespace Flare{
 
         static void DrawSprite(const glm::mat4& transfrom, SpriteRendererComponent& src, int entityID);
 
+        // new circle rendere fuction;
+        static void DrawCircle(const glm::mat4& transfrom, const glm::vec4& color, float thickness = 1.0f, float fade = 0.005f, int entityID = -1);
+
         //stats;
 		struct Statistics
 		{
