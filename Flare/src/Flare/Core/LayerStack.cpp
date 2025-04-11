@@ -1,5 +1,5 @@
 #include "LayerStack.h"
-
+#include <algorithm>
  
 namespace Flare {
 
