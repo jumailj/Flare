@@ -183,7 +183,8 @@ namespace Flare{
 			{
 				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+				   Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+				// Renderer2D::DrawRect(transform.GetTransform(), glm::vec4(1.0f), (int)entity);
 			}
 		}
 
@@ -197,6 +198,19 @@ namespace Flare{
 				Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
 			}
 		}
+
+
+		// draw the line;
+		// glm::vec3 startPoint(0.0f);
+		// glm::vec3 endPoint(5.0f);
+		// Renderer2D::DrawLine(startPoint, endPoint, glm::vec4(1, 0, 1, 1));
+
+		// draw the rectangel;
+		// glm::vec3 rectPos(0.0f);
+		// glm::vec2 rectSize(5.0f);
+		// Renderer2D::DrawRect(rectPos, rectSize, glm::vec4(1, 0, 0, 1));
+
+
 
 		Renderer2D::EndScene();
 	}
