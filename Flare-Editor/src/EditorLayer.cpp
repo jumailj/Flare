@@ -495,10 +495,10 @@ void EditorLayer::OnImGuiRender()
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
 	{
-		//shortcuts
-		if(e.GetRepeatCount() >0)
+		//shorcut
+		if (e.IsRepeat())
 			return false;
-
+			
 		//check if ctrl/shift key is pressed;
 		bool controlPressed = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
 		bool shiftPressed = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
