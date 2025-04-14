@@ -43,3 +43,9 @@ git clone --recursive "url"
 			auto& [transform, mesh] = group.get<TransformComponent, MeshComponent>(entity);
 		}
 #endif
+
+
+//
+sudo apt install libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+sudo apt install libgtk-3-dev
+

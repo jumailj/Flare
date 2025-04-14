@@ -36,7 +36,14 @@ void Sandbox2D::OnUpdate(Flare::Timestep ts) {
 
 		{
 			Flare::Renderer2D::BeginScene(m_CameraController.GetCamera());
+			
 			Flare::Renderer2D::DrawQuad({-5.0f, -5.0f, -0.1f}, {10.0f, 10.0f}, m_CheckTexture, 5.0f);
+
+
+
+			if ( Flare::Input::IsKeyPressed(Flare::Key::A)) {
+				LOG_WARN("hello world");
+			}
 			Flare::Renderer2D::EndScene();
 		}
      
