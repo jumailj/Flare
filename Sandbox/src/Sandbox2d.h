@@ -24,6 +24,10 @@ class Sandbox2D : public Flare::Layer{
 public:
 
 	Flare::Ref<Flare::Texture2D>m_CheckTexture;
+	Flare::Ref<Flare::Texture2D> m_player;
+
 	Flare::OrthographicCameraController m_CameraController;
 	
+	glm::vec3 playerPos = {0.0f, 0.0f, 0.0f};
+
 };

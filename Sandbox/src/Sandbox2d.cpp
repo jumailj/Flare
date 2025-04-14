@@ -6,7 +6,7 @@
 
 
 Sandbox2D::Sandbox2D()
-    :Layer("sandbox2d"), m_CameraController(1280.0f/720.0f, true)
+    :Layer("sandbox2d"), m_CameraController(1280.0f/720.0f, false)
 {
   
 }
@@ -14,6 +14,7 @@ Sandbox2D::Sandbox2D()
 void Sandbox2D::OnAttach() 
 {
 		m_CheckTexture = Flare::Texture2D::Create("Resource/check.png");
+		m_player = Flare::Texture2D::Create("Resource/player.png");
 }
 
 void Sandbox2D::OnDetach() {
@@ -24,7 +25,7 @@ void Sandbox2D::OnDetach() {
 void Sandbox2D::OnUpdate(Flare::Timestep ts) {
     // LOG_WARN("DELTA time: {0}s", ts.GetSeconds());
 
-		m_CameraController.OnUpdate(ts);
+		m_CameraController.OnUpdate(ts); 
 
 		//Render 
 		Flare::Renderer2D::ResetStats();
@@ -35,10 +36,15 @@ void Sandbox2D::OnUpdate(Flare::Timestep ts) {
 
 
 		{
+			// Flare::Renderer2D::BeginScene(m_CameraController.GetCamera());
 			Flare::Renderer2D::BeginScene(m_CameraController.GetCamera());
 			
-			Flare::Renderer2D::DrawQuad({-5.0f, -5.0f, -0.1f}, {10.0f, 10.0f}, m_CheckTexture, 5.0f);
+			// Flare::Renderer2D::DrawQuad({-5.0f, -5.0f, -0.1f}, {10.0f, 10.0f}, m_CheckTexture, 0.0f);
+			Flare::Renderer2D::DrawQuad(playerPos, {1.0f, 1.0f}, m_player, 1.0f);
 
+			if ( Flare::Input::IsKeyPressed(Flare::Key::Up)) {
+				playerPos.y += 5.0f* ts;
+			}
 
 
 			if ( Flare::Input::IsKeyPressed(Flare::Key::A)) {
