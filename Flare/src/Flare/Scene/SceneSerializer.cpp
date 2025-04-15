@@ -307,6 +307,7 @@ namespace Flare{
 		}
 		catch (YAML::ParserException e)
 		{
+			LOG_ERROR("Failed to load .flare file: {0} \n {1}", filepath, e.what());;
 			return false;
 		}
 		

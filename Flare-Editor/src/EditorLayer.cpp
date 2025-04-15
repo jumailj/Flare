@@ -471,8 +471,12 @@ void EditorLayer::OnImGuiRender()
 
 	void EditorLayer::OnEvent(Flare::Event& event) 
 	{
-		// m_CameraController.OnEvent(event);
+		m_CameraController.OnEvent(event);
+		// m_EditorCamera.OnEvent(event);
+
 		m_EditorCamera.OnEvent(event);
+
+
 
 		
 		EventDispatcher dispatcher(event);

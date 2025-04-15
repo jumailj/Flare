@@ -24,6 +24,7 @@ namespace Flare{
 		m_SelectionContext = {}; // to avoid bugs related to new scene.
 	}
 
+
 	void SceneHierarchyPanel::SetSelectedEntity(Entity entity)
 	{
 		m_SelectionContext = entity;
@@ -70,13 +71,15 @@ namespace Flare{
 
 
 
+
+
 	void SceneHierarchyPanel::DrawEntityNode(Entity entity)
 	{
 		auto& tag = entity.GetComponent<TagComponent>().Tag;
 		
 		ImGuiTreeNodeFlags flags = ((m_SelectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 		flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
-		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tag.c_str());
+		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, "%s", tag.c_str());
 		if (ImGui::IsItemClicked())
 		{
 			m_SelectionContext = entity;
@@ -94,7 +97,7 @@ namespace Flare{
 		if (opened)
 		{
 			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
-			bool opened = ImGui::TreeNodeEx((void*)9817239, flags, tag.c_str());
+			bool opened = ImGui::TreeNodeEx((void*)9817239, flags, "%s", tag.c_str());
 			if (opened)
 				ImGui::TreePop();
 			ImGui::TreePop();
@@ -119,7 +122,7 @@ namespace Flare{
 
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, columnWidth);
-		ImGui::Text(label.c_str());
+		ImGui::Text("%s", label.c_str());
 		ImGui::NextColumn();
 
 		ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
@@ -189,7 +192,7 @@ namespace Flare{
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
 			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
 			ImGui::Separator();
-			bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
+			bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, "%s", name.c_str());
 			ImGui::PopStyleVar(
 			);
 			ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
@@ -241,59 +244,14 @@ namespace Flare{
 
 		if (ImGui::BeginPopup("AddComponent"))
 		{
-			if (!m_SelectionContext.HasComponent<CameraComponent>())
-				{
-					if (ImGui::MenuItem("Camera"))
-					{
-						m_SelectionContext.AddComponent<CameraComponent>();
-						ImGui::CloseCurrentPopup();
-					}
-				}
 
-				if (!m_SelectionContext.HasComponent<SpriteRendererComponent>())
-				{
-					if (ImGui::MenuItem("Sprite Renderer"))
-					{
-						m_SelectionContext.AddComponent<SpriteRendererComponent>();
-						ImGui::CloseCurrentPopup();
-					}
-				}
+			DisplayAddComponentEntry<CameraComponent>("Camera");
+			DisplayAddComponentEntry<SpriteRendererComponent>("Sprite Renderer");
+			DisplayAddComponentEntry<CircleRendererComponent>("Circle Renderer");
+			DisplayAddComponentEntry<Rigidbody2DComponent>("Rigidbody 2D");
+			DisplayAddComponentEntry<BoxCollider2DComponent>("Box Collider 2D");
+			DisplayAddComponentEntry<CircleCollider2DComponent>("Circle Collider 2D");
 
-				if (!m_SelectionContext.HasComponent<CircleRendererComponent>())
-				{
-					if (ImGui::MenuItem("Circle Renderer"))
-					{
-						m_SelectionContext.AddComponent<CircleRendererComponent>();
-						ImGui::CloseCurrentPopup();
-					}
-				}
-
-				if (!m_SelectionContext.HasComponent<Rigidbody2DComponent>())
-				{
-					if (ImGui::MenuItem("Rigidbody 2D"))
-					{
-						m_SelectionContext.AddComponent<Rigidbody2DComponent>();
-						ImGui::CloseCurrentPopup();
-					}
-				}
-
-				if (!m_SelectionContext.HasComponent<BoxCollider2DComponent>())
-				{
-					if (ImGui::MenuItem("Box Collider 2D"))
-					{
-						m_SelectionContext.AddComponent<BoxCollider2DComponent>();
-						ImGui::CloseCurrentPopup();
-					}
-				}
-
-				if (!m_SelectionContext.HasComponent<CircleCollider2DComponent>()) 
-				{
-					if (ImGui::MenuItem("Circle Collider 2D"))
-					{
-						m_SelectionContext.AddComponent<CircleCollider2DComponent>();
-						ImGui::CloseCurrentPopup();
-					}
-				}
 			
 			
 			ImGui::EndPopup();
@@ -456,8 +414,19 @@ namespace Flare{
 			ImGui::DragFloat("Restitution Threshold", &component.RestitutionThreshold, 0.01f, 0.0f);
 		});
 
-
-
-
 	}
+
+	template<typename T>
+	void SceneHierarchyPanel::DisplayAddComponentEntry(const std::string& entryName) {
+		if ( !m_SelectionContext.HasComponent<T>()){
+			if(ImGui::MenuItem(entryName.c_str())){
+				m_SelectionContext.AddComponent<T>();
+				ImGui::CloseCurrentPopup();
+			}
+		}
+	}
+
+
+
+
 }

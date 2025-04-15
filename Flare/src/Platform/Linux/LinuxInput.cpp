@@ -11,7 +11,7 @@ namespace Flare{
         // return the current window;
        GLFWwindow* window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
        int state = glfwGetKey(window, static_cast<int32_t>(key));
-       return state==GLFW_PRESS || state == GLFW_REPEAT;
+       return state == GLFW_PRESS;
     }
     
     //mouse 
