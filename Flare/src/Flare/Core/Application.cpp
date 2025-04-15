@@ -1,5 +1,5 @@
 #include "Application.h"
-
+// docheckit out: https://gafferongames.com/
 //#include <v8.h>
 #include "Log.h"
 #include "Core.h"
@@ -24,7 +24,7 @@ namespace Flare {
 
        // set the working directory: 
        if (!m_Specification.WorkingDirectory.empty())
-            std::filesystem::current_path(m_Specification.WorkingDirectory); // what?
+            std::filesystem::current_path(m_Specification.WorkingDirectory); // change the dir();
 
 
 

@@ -29,7 +29,7 @@ Flare::Application* Flare::CreateApplication(Flare::ApplicationCommandLineArgs a
     // Construct ApplicationSpecification with required arguments
     Flare::ApplicationSpecification spec("Sandbox", args);
     spec.WorkingDirectory = "./"; // give it to root dir ( may you can you Flare-editor also);
-    spec.CommandLineArgs = args; // pass the command line args;
+    spec.CommandLineArgs = args; 
     // Pass the ApplicationSpecification object to the Sandbox constructor
     return new Sandbox(spec);
 }

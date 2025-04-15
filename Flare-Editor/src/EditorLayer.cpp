@@ -20,6 +20,143 @@
 
 namespace Flare{
 
+	void SetNightOwlThemeColors()
+	{
+		ImGuiStyle& style = ImGui::GetStyle();
+		ImVec4* colors = style.Colors;
+	
+		// Background
+		colors[ImGuiCol_WindowBg] = ImVec4(0.01f, 0.09f, 0.15f, 1.0f); // #011627
+	
+		// Headers
+		colors[ImGuiCol_Header] = ImVec4(0.12f, 0.20f, 0.28f, 1.0f); // Slightly lighter blue
+		colors[ImGuiCol_HeaderHovered] = ImVec4(0.14f, 0.25f, 0.35f, 1.0f); // Hover effect
+		colors[ImGuiCol_HeaderActive] = ImVec4(0.16f, 0.30f, 0.40f, 1.0f); // Active header
+	
+		// Buttons
+		colors[ImGuiCol_Button] = ImVec4(0.12f, 0.20f, 0.28f, 1.0f); // Button background
+		colors[ImGuiCol_ButtonHovered] = ImVec4(0.14f, 0.25f, 0.35f, 1.0f); // Hover effect
+		colors[ImGuiCol_ButtonActive] = ImVec4(0.16f, 0.30f, 0.40f, 1.0f); // Active button
+	
+		// Frame BG
+		colors[ImGuiCol_FrameBg] = ImVec4(0.08f, 0.16f, 0.24f, 1.0f); // Frame background
+		colors[ImGuiCol_FrameBgHovered] = ImVec4(0.10f, 0.20f, 0.30f, 1.0f); // Hover effect
+		colors[ImGuiCol_FrameBgActive] = ImVec4(0.12f, 0.25f, 0.35f, 1.0f); // Active frame
+	
+		// Tabs
+		colors[ImGuiCol_Tab] = ImVec4(0.08f, 0.16f, 0.24f, 1.0f); // Tab background
+		colors[ImGuiCol_TabHovered] = ImVec4(0.14f, 0.25f, 0.35f, 1.0f); // Hover effect
+		colors[ImGuiCol_TabActive] = ImVec4(0.16f, 0.30f, 0.40f, 1.0f); // Active tab
+		colors[ImGuiCol_TabUnfocused] = ImVec4(0.05f, 0.10f, 0.15f, 1.0f); // Unfocused tab
+		colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.08f, 0.16f, 0.24f, 1.0f); // Active unfocused tab
+	
+		// Title
+		colors[ImGuiCol_TitleBg] = ImVec4(0.01f, 0.09f, 0.15f, 1.0f); // Title background
+		colors[ImGuiCol_TitleBgActive] = ImVec4(0.08f, 0.16f, 0.24f, 1.0f); // Active title
+		colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.01f, 0.09f, 0.15f, 1.0f); // Collapsed title
+	
+		// Scrollbar
+		colors[ImGuiCol_ScrollbarBg] = ImVec4(0.01f, 0.09f, 0.15f, 1.0f); // Scrollbar background
+		colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.12f, 0.20f, 0.28f, 1.0f); // Scrollbar grab
+		colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.14f, 0.25f, 0.35f, 1.0f); // Hover effect
+		colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.16f, 0.30f, 0.40f, 1.0f); // Active scrollbar
+	
+		// Checkmarks
+		colors[ImGuiCol_CheckMark] = ImVec4(0.50f, 0.80f, 0.90f, 1.0f); // Teal
+	
+		// Slider
+		colors[ImGuiCol_SliderGrab] = ImVec4(0.50f, 0.80f, 0.90f, 1.0f); // Teal
+		colors[ImGuiCol_SliderGrabActive] = ImVec4(0.60f, 0.90f, 1.00f, 1.0f); // Active teal
+	
+		// Text
+		colors[ImGuiCol_Text] = ImVec4(0.84f, 0.87f, 0.93f, 1.0f); // Light blue
+		colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.55f, 0.60f, 1.0f); // Disabled text
+	
+		// Separators
+		colors[ImGuiCol_Separator] = ImVec4(0.12f, 0.20f, 0.28f, 1.0f); // Separator
+		colors[ImGuiCol_SeparatorHovered] = ImVec4(0.14f, 0.25f, 0.35f, 1.0f); // Hover effect
+		colors[ImGuiCol_SeparatorActive] = ImVec4(0.16f, 0.30f, 0.40f, 1.0f); // Active separator
+	
+		// Resize Grip
+		colors[ImGuiCol_ResizeGrip] = ImVec4(0.12f, 0.20f, 0.28f, 1.0f); // Resize grip
+		colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.14f, 0.25f, 0.35f, 1.0f); // Hover effect
+		colors[ImGuiCol_ResizeGripActive] = ImVec4(0.16f, 0.30f, 0.40f, 1.0f); // Active resize grip
+	
+		// Popups (including tooltips)
+		colors[ImGuiCol_PopupBg] = ImVec4(0.08f, 0.16f, 0.24f, 1.0f); // Popup background
+	}
+
+
+	void SetGruvboxThemeColors()
+{
+    ImGuiStyle& style = ImGui::GetStyle();
+    ImVec4* colors = style.Colors;
+
+    // Background
+    colors[ImGuiCol_WindowBg] = ImVec4(0.16f, 0.16f, 0.16f, 1.0f); // #282828
+
+    // Headers
+    colors[ImGuiCol_Header] = ImVec4(0.29f, 0.32f, 0.31f, 1.0f); // #4C4C4C
+    colors[ImGuiCol_HeaderHovered] = ImVec4(0.35f, 0.40f, 0.38f, 1.0f); // Hover effect
+    colors[ImGuiCol_HeaderActive] = ImVec4(0.45f, 0.50f, 0.48f, 1.0f); // Active header
+
+    // Buttons
+    colors[ImGuiCol_Button] = ImVec4(0.29f, 0.32f, 0.31f, 1.0f); // Button background
+    colors[ImGuiCol_ButtonHovered] = ImVec4(0.35f, 0.40f, 0.38f, 1.0f); // Hover effect
+    colors[ImGuiCol_ButtonActive] = ImVec4(0.45f, 0.50f, 0.48f, 1.0f); // Active button
+
+    // Frame BG
+    colors[ImGuiCol_FrameBg] = ImVec4(0.20f, 0.20f, 0.20f, 1.0f); // Frame background
+    colors[ImGuiCol_FrameBgHovered] = ImVec4(0.25f, 0.25f, 0.25f, 1.0f); // Hover effect
+    colors[ImGuiCol_FrameBgActive] = ImVec4(0.30f, 0.30f, 0.30f, 1.0f); // Active frame
+
+    // Tabs
+    colors[ImGuiCol_Tab] = ImVec4(0.20f, 0.20f, 0.20f, 1.0f); // Tab background
+    colors[ImGuiCol_TabHovered] = ImVec4(0.35f, 0.40f, 0.38f, 1.0f); // Hover effect
+    colors[ImGuiCol_TabActive] = ImVec4(0.45f, 0.50f, 0.48f, 1.0f); // Active tab
+    colors[ImGuiCol_TabUnfocused] = ImVec4(0.16f, 0.16f, 0.16f, 1.0f); // Unfocused tab
+    colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.20f, 0.20f, 0.20f, 1.0f); // Active unfocused tab
+
+    // Title
+    colors[ImGuiCol_TitleBg] = ImVec4(0.16f, 0.16f, 0.16f, 1.0f); // Title background
+    colors[ImGuiCol_TitleBgActive] = ImVec4(0.20f, 0.20f, 0.20f, 1.0f); // Active title
+    colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.16f, 0.16f, 0.16f, 1.0f); // Collapsed title
+
+    // Scrollbar
+    colors[ImGuiCol_ScrollbarBg] = ImVec4(0.16f, 0.16f, 0.16f, 1.0f); // Scrollbar background
+    colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.29f, 0.32f, 0.31f, 1.0f); // Scrollbar grab
+    colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.35f, 0.40f, 0.38f, 1.0f); // Hover effect
+    colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.45f, 0.50f, 0.48f, 1.0f); // Active scrollbar
+
+    // Checkmarks
+    colors[ImGuiCol_CheckMark] = ImVec4(0.73f, 0.53f, 0.34f, 1.0f); // Yellowish
+
+    // Slider
+    colors[ImGuiCol_SliderGrab] = ImVec4(0.73f, 0.53f, 0.34f, 1.0f); // Yellowish
+    colors[ImGuiCol_SliderGrabActive] = ImVec4(0.83f, 0.63f, 0.44f, 1.0f); // Active yellowish
+
+    // Text
+    colors[ImGuiCol_Text] = ImVec4(0.92f, 0.86f, 0.69f, 1.0f); // Light beige
+    colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.0f); // Disabled text
+
+    // Separators
+    colors[ImGuiCol_Separator] = ImVec4(0.29f, 0.32f, 0.31f, 1.0f); // Separator
+    colors[ImGuiCol_SeparatorHovered] = ImVec4(0.35f, 0.40f, 0.38f, 1.0f); // Hover effect
+    colors[ImGuiCol_SeparatorActive] = ImVec4(0.45f, 0.50f, 0.48f, 1.0f); // Active separator
+
+    // Resize Grip
+    colors[ImGuiCol_ResizeGrip] = ImVec4(0.29f, 0.32f, 0.31f, 1.0f); // Resize grip
+    colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.35f, 0.40f, 0.38f, 1.0f); // Hover effect
+    colors[ImGuiCol_ResizeGripActive] = ImVec4(0.45f, 0.50f, 0.48f, 1.0f); // Active resize grip
+
+    // Popups
+    colors[ImGuiCol_PopupBg] = ImVec4(0.20f, 0.20f, 0.20f, 1.0f); // Popup background
+}
+
+
+
+
+
 	extern const std::filesystem::path g_AssetPath;
 
 
@@ -31,6 +168,9 @@ EditorLayer::EditorLayer()
 
 void EditorLayer::OnAttach() 
 {
+
+	SetGruvboxThemeColors();
+
 
 	//framebuffer;
 	Flare::FramebufferSpecification fbSpec;
@@ -679,6 +819,7 @@ void EditorLayer::OnImGuiRender()
 		if (selectedEntity)
 			m_EditorScene->DuplicateEntity(selectedEntity);
 	}
-	
+
+
 
 }
