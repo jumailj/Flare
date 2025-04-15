@@ -45,11 +45,11 @@ Entities:
     TagComponent:
       Tag: cube 2
     TransformComponent:
-      Translation: [-3.6420567, -0.639134407, -0.0236816406]
-      Rotation: [0, 0, -1.56661463]
+      Translation: [-0.197898149, 1.30261326, -0.0236816406]
+      Rotation: [0, 0, 0]
       Scale: [0.740001202, 0.740001202, 0.74000001]
     SpriteRendererComponent:
-      Color: [0.441860437, 0.711844265, 1, 1]
+      Color: [1, 1, 1, 1]
       TexturePath: Resource/player.png
       TilingFactor: 1
     Rigidbody2DComponent:
@@ -66,12 +66,12 @@ Entities:
     TagComponent:
       Tag: camera
     TransformComponent:
-      Translation: [0, 0, 7.10657072]
+      Translation: [0, 0, 0.100000001]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
       Camera:
-        ProjectionType: 0
+        ProjectionType: 1
         PerspectiveFOV: 0.785398185
         PerspectiveNear: 0.00999999978
         PerspectiveFar: 1000
@@ -120,3 +120,23 @@ Entities:
       Friction: 0.5
       Restitution: 0.340000004
       RestitutionThreshold: 1.20000005
+  - Entity: 11414121374833841216
+    TagComponent:
+      Tag: box-2
+    TransformComponent:
+      Translation: [-0.41250813, 11.5427971, 0]
+      Rotation: [0, 0, 0]
+      Scale: [0.45976311, 7.22410965, 1]
+    SpriteRendererComponent:
+      Color: [0.288684338, 0.248956174, 0.637209296, 1]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      BodyType: Dynamic
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
