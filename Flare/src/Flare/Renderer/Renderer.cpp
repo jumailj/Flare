@@ -15,6 +15,11 @@ namespace Flare{
         Renderer2D::Init();
     }
 
+    void Renderer::Shutdown()
+	{
+		Renderer2D::Shutdown();
+	}
+
     void Renderer::OnWindowResize(uint32_t width, uint32_t height)
     {
       //   LOG_INFO("window resized w:{0}, h:{1}", width, height);

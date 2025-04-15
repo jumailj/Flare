@@ -211,7 +211,7 @@ namespace Flare
 		s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData),0);
 
     }
-    void Renderer2D::ShutDown()
+    void Renderer2D::Shutdown()
     {
         //  delete s_Data;
 		delete[] s_Data.QuadVertexBufferBase;

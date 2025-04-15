@@ -10,19 +10,28 @@
 #include <GLFW/glfw3.h>
 
 
-extern bool g_ApplicationRunning;
+// extern bool g_ApplicationRunning;
 namespace Flare {
     // static pointer to a instance, singleton- behavior
     Application* Application::s_Instance = nullptr;
 
-    Application::Application(const std::string&name)
-   {    
+    Application::Application(const ApplicationSpecification& specification)
+        : m_Specification(specification)
+    {    
        // points to the current Application Object.
        s_Instance = this;
-      
+
+
+       // set the working directory: 
+       if (!m_Specification.WorkingDirectory.empty())
+            std::filesystem::current_path(m_Specification.WorkingDirectory); // what?
+
+
+
+
        // if you didn't pass any argument. then if will used default window (title, width, height).
        // Create New Window;
-       m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(name)));
+       m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(m_Specification.Name)));
        
        // adding eventscallbacks | settignup all events
        m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
@@ -38,6 +47,8 @@ namespace Flare {
     Application::~Application() 
     {
         // used to clearn up the memeory.
+        // Renderer::Shutdown();
+        Renderer::Shutdown();
     }
 
 
@@ -59,10 +70,6 @@ namespace Flare {
 
     void Application::Close(){
         m_Running = false;
-    }
-
-    void Application::OnShutdown() {
-        g_ApplicationRunning = false;
     }
 
 
@@ -113,7 +120,7 @@ namespace Flare {
              m_Window->OnUpdate();
             }
 
-            OnShutdown();
+            // OnShutdown();
     }
       
     

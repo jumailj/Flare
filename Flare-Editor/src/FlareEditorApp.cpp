@@ -2,26 +2,25 @@
 #include <Flare/Core/Flare.h>
 #include "EditorLayer.h"
 
+namespace Flare {
 
-namespace Flare{
+    class FlareEditor : public Application {
 
-    class FlareEditor:public Application{
-
-        public:
-        FlareEditor()
-        :Application("Flare-editor")
+    public:
+        FlareEditor(ApplicationCommandLineArgs args)
+            : Application(ApplicationSpecification{ "Flare Editor", args }) // Pass ApplicationSpecification
         {
             PushLayer(new EditorLayer());
         }
 
         ~FlareEditor() 
         {
-
         }
     };
 
-    Application* CreateApplication(int argc, char** argv) {
-        return new FlareEditor();
+    Application* CreateApplication(ApplicationCommandLineArgs args)
+    {
+        return new FlareEditor(args);
     }
 
 }

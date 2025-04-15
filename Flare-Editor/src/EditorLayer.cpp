@@ -46,73 +46,18 @@ void EditorLayer::OnAttach()
 	
 	m_ActiveScene = CreateRef<Scene>(); // createa a scene;
 
-	// auto commandLineArgs = Application::Get().GetCommandLineArgs();
-	// 	if (commandLineArgs.Count > 1)
-	// 	{
-	// 		auto sceneFilePath = commandLineArgs[1];
-	// 		SceneSerializer serializer(m_ActiveScene);
-	// 		serializer.Deserialize(sceneFilePath);
-	// 	}
+	auto commandLineArgs = Application::Get().GetSpecification().CommandLineArgs;
+		if (commandLineArgs.Count > 1)
+		{
+			auto sceneFilePath = commandLineArgs[1];
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.Deserialize(sceneFilePath);
+		}
 
 
 	m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
+	Renderer2D::SetLineWidth(4.0f);
 
-
-#if 0
-	//entity;
-	auto square = m_ActiveScene->CreateEntity("green square"); // create new entity.
-	square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });  // add sprite rendere to entity.
-	m_SquareEntity = square;
-
-	auto redsquare = m_ActiveScene->CreateEntity("red square"); // create new entity.
-	redsquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });  // add sprite rendere to entity.
-
-
-
-	m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
-	m_CameraEntity.AddComponent<CameraComponent>();
-
-	m_SecondCamera = m_ActiveScene->CreateEntity("Clip-Space Entity");
-	auto cc = m_SecondCamera.AddComponent<CameraComponent>();
-	cc.Primary = false;
-
-	// native scripting...
-
-class CameraController : public ScriptableEntity
-		{
-		public:
-			void OnCreate()
-			{
-				auto& translation = GetComponent<TransformComponent>().Translation;
-				 translation.x = rand() % 10 - 5.0f;
-			}
-
-			void OnDestroy()
-			{
-			}
-
-			void OnUpdate(Timestep ts)
-			{
-				auto& translation = GetComponent<TransformComponent>().Translation;
-				float speed = 5.0f;
-
-				if (Input::IsKeyPressed(Key::A))
-					translation.x -= speed * ts;
-				if (Input::IsKeyPressed(Key::D))
-					translation.x += speed * ts;
-				if (Input::IsKeyPressed(Key::W))
-					translation.y += speed * ts;
-				if (Input::IsKeyPressed(Key::S))
-					translation.y -= speed * ts;
-			}
-		};
-
-		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-
-#endif
-
-		// m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 
 }
 
@@ -456,7 +401,7 @@ void EditorLayer::OnImGuiRender()
 		float size = ImGui::GetWindowHeight() - 4.0f;
 		Ref<Texture2D> icon = m_SceneState == SceneState::Edit ? m_IconPlay : m_IconStop;
 		ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
-		if (ImGui::ImageButton((ImTextureID)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0))
+		if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(icon->GetRendererID())), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0))
 		{
 			if (m_SceneState == SceneState::Edit)
 				OnScenePlay();
@@ -474,8 +419,10 @@ void EditorLayer::OnImGuiRender()
 		m_CameraController.OnEvent(event);
 		// m_EditorCamera.OnEvent(event);
 
-		m_EditorCamera.OnEvent(event);
-
+		if (m_SceneState == SceneState::Edit)
+		{
+			m_EditorCamera.OnEvent(event);
+		}
 
 
 		
@@ -622,6 +569,15 @@ void EditorLayer::OnImGuiRender()
 				}
 			}
 		}
+
+				// Draw selected entity outline 
+				if (Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity())
+				{
+					const TransformComponent& transform = selectedEntity.GetComponent<TransformComponent>();
+					Renderer2D::DrawRect(transform.GetTransform(), glm::vec4(1.0f, 0.5f, 0.0f, 1.0f));
+		
+				}
+
 
 		Renderer2D::EndScene();
 	}
