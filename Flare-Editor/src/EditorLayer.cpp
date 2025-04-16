@@ -745,7 +745,7 @@ void EditorLayer::OnImGuiRender()
 	
 	void EditorLayer::OpenScene()
 	{
-		std::string filepath = FileDialogs::OpenFile("Hazel Scene (*.flare)\0*.flare\0");
+		std::string filepath = FileDialogs::OpenFile("Flare Scene (*.flare)\0*.flare\0");
 		if (!filepath.empty())
 			OpenScene(filepath);
 	}

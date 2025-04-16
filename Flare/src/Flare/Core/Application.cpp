@@ -9,6 +9,8 @@
 
 #include <GLFW/glfw3.h>
 
+#include <Flare/Scripting/ScriptEngine.h>
+
 
 // extern bool g_ApplicationRunning;
 namespace Flare {
@@ -28,7 +30,6 @@ namespace Flare {
 
 
 
-
        // if you didn't pass any argument. then if will used default window (title, width, height).
        // Create New Window;
        m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(m_Specification.Name)));
@@ -38,6 +39,9 @@ namespace Flare {
 
        // init renderer settings[]
        Renderer::Init();
+
+       // init script engine[c#]
+        ScriptEngine::Init();
        
        //create a new imgui layer and push it.
        m_ImGuiLayer = new ImGuiLayer();

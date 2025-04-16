@@ -6,6 +6,7 @@ workspace "Flare"
 
     outputdir= "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}" -- Folder Name: Debug/Relese/Ship | Linux | 64x
     vulkandir= "Flare/vendor/VulkanSDK/1.3.275.0/x86_64" -- vulkan dependencies folder
+    monodir = "Flare/vendor/mono/"
 
     IncludeDir = {}
     IncludeDir["glfw"] = "Flare/vendor/glfw/include"
@@ -20,6 +21,7 @@ workspace "Flare"
     IncludeDir["ImGuizmo"] = "Flare/vendor/ImGuizmo"
     IncludeDir["vulkanSDK"] = "%{vulkandir}/include"
     IncludeDir["Box2D"] = "Flare/vendor/Box2D/include"
+    IncludeDir["mono"] = "%{monodir}/include"
 
 
     LibraryDir = {}
@@ -33,6 +35,7 @@ workspace "Flare"
         include "Flare/vendor/yaml-cpp"
         include "Flare/vendor/nativefiledialog"
         include "Flare/vendor/Box2D"
+        include "Flare-ScriptCore"
     group ""
 
 project "Flare" 
@@ -90,12 +93,14 @@ project "Flare"
         "%{IncludeDir.ImGuizmo}",
         "%{IncludeDir.vulkanSDK}",
         "%{IncludeDir['Box2D']}",
+        "%{IncludeDir.mono}",
     }
 
     -- externalincludedirs { "../lua/include", "../zlib" }
 
     libdirs{
-        "Flare/vendor/VulkanSDK/1.3.275.0/x86_64/lib"
+        "Flare/vendor/VulkanSDK/1.3.275.0/x86_64/lib",
+        "Falre/vendor/mono/lib/Debug/"
     }
 
     -- links{"glfw", "Xrandr", "Xi", "GLU", "GL", "X11", "dl", "pthread", "stdc++fs" }, [new -ldl -lGL (adding this can cause crashes)]
@@ -129,6 +134,21 @@ project "Flare"
         "shaderc_combined",
         "spirv-cross-core",
         "spirv-cross-glsl",
+
+        "monosgen-2.0",
+        "mono-2.0",
+        "mono-native",
+        "dl",
+        "m",
+        "z",
+        -- "mono-2.0",
+
+        -- --mono related
+        -- "mono-native",        -- Matches libmono-native.a
+        -- "MonoPosixHelper",    -- Matches libMonoPosixHelper.a
+        -- "pthread",            -- POSIX threads
+        -- "dl",                 -- Dynamic linking
+        -- "m"                   -- Math 
         
     } 
 
@@ -184,10 +204,12 @@ project "Flare"
         "%{IncludeDir.nativefiledialog}",
         "%{IncludeDir.ImGuizmo}",
         "%{IncludeDir.vulkanSDK}",
+        "%{IncludeDir.mono}",
         }
 
         libdirs{
-            "Flare/vendor/VulkanSDK/1.3.275.0/x86_64/lib"
+            "Flare/vendor/VulkanSDK/1.3.275.0/x86_64/lib",
+            "Falre/vendor/mono/lib/Debug/"
         }
     
    
@@ -220,6 +242,20 @@ project "Flare"
             "shaderc_combined",
             "spirv-cross-core",
             "spirv-cross-glsl",
+
+            "monosgen-2.0",
+            "mono-2.0",
+            "mono-native",
+            "dl",
+            "m",
+            "z",
+
+        -- --mono related
+        -- "mono-native",        -- Matches libmono-native.a
+        -- "MonoPosixHelper",    -- Matches libMonoPosixHelper.a
+        -- "pthread",            -- POSIX threads
+        -- "dl",                 -- Dynamic linking
+        -- "m"                   -- Math 
     }  
 
 
@@ -287,6 +323,7 @@ project "Sandbox"
         "%{IncludeDir.entt}",
         "%{IncludeDir.nativefiledialog}",
         "%{IncludeDir.ImGuizmo}",
+        "%{IncludeDir.mono}",
         }
 
         -- externalincludedirs{
@@ -294,7 +331,8 @@ project "Sandbox"
         -- }
 
         libdirs{
-            "Flare/vendor/VulkanSDK/1.3.275.0/x86_64/lib"
+            "Flare/vendor/VulkanSDK/1.3.275.0/x86_64/lib",
+            "Falre/vendor/mono/lib/Debug/"
         }
    
        -- externalincludedirs { "../lua/include", "../zlib" }
@@ -325,6 +363,20 @@ project "Sandbox"
         "shaderc_combined",
         "spirv-cross-core",
         "spirv-cross-glsl",
+
+        "monosgen-2.0",
+        "mono-2.0",
+        "mono-native",
+        "dl",
+        "m",
+        "z",
+        --mono related
+        -- "mono-native",        -- Matches libmono-native.a
+        -- "MonoPosixHelper",    -- Matches libMonoPosixHelper.a
+        -- "pthread",            -- POSIX threads
+        -- "dl",                 -- Dynamic linking
+        -- "m"                   -- Math library
+
     }  
 
        filter "configurations:Debug"
@@ -349,3 +401,5 @@ project "Sandbox"
 --       dependences like glfw glew imgui are included in flare.
 --       but also included in sandbox, sandbox should link only
 --       flare. no other libs.
+
+

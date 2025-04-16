@@ -5,7 +5,7 @@ import sys
 import Utils
 
 VULKAN_SDK_INSTALLER_URL = 'https://sdk.lunarg.com/sdk/download/1.3.275.0/linux/vulkansdk-linux-x86_64-1.3.275.0.tar.xz'
-HAZEL_VULKAN_VERSION = '1.3.275.0'
+FLARE_VULKAN_VERSION = '1.3.275.0'
 VULKAN_SDK_EXE_PATH = 'Flare/vendor/VulkanSDK/'
 VULKAN_DOWNLOAD_PATH = 'Flare/vendor/VulkanSDK/VulKanSDK.tar.xz'
 

@@ -3,6 +3,15 @@
 #include "Flare/Core/Application.h"
 #include "Flare/Core/Log.h"
 
+
+// #define MONO_STATIC_ONLY
+
+#include <mono/jit/jit.h>
+#include <mono/metadata/assembly.h>
+#include <mono/metadata/debug-helpers.h>
+
+
+
 // #include <v8.h>
 // #include <libplatform/libplatform.h>
 
@@ -20,7 +29,19 @@ int main(int argc, char**argv) {
                 // initilize Logger sigleton
                 Flare::Log::Init();
 
+                //  ---    ---   test code for Mono   ---     ---
+                // mono_set_assemblies_path("Resource/mono/lib");
+                // MonoDomain* domain = mono_jit_init("FlareJITRuntime");
+                // if (!domain) {
+                //     std::cerr << "Failed to initialize Mono runtime!" << std::endl;
+                //     return -1;
+                // } else {
+                //     std::cout << "Mono runtime initialized successfully!" << std::endl;
+                // }
+
                 //TODO initilize Native File Dilog
+
+                /// ---    ----   test code for v8    --     ---
     
                 // // cheking for v8
                 //   v8::V8::InitializeICUDefaultLocation(argv[0]);
