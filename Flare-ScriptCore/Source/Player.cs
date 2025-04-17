@@ -1,22 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+// using System;
+// using System.Collections.Generic;
+// using System.Linq;
+// using System.Text;
+// using System.Threading.Tasks;
 
-namespace Sandbox {
+// namespace Sandbox {
 
-    internal class Player : Entity{
+//     internal class Player : Entity{
 
-        void OnCreate(){
-            Console.WriteLine("Player.Created!");
-        }
+//         void OnCreate(){
+//             Console.WriteLine("Player.Created!");
+//         }
 
-        void OnUpdate(float ts){
-            Console.WriteLine($"Player.Update: {ts}");
+//         void OnUpdate(float ts){
+//             Console.WriteLine($"Player.Update: {ts}");
 
-        }
+//         }
 
-    }
+//     }
 
-}
+// }
