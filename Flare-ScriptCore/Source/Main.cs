@@ -22,6 +22,7 @@ namespace Flare
 		public void PrintInt(int value)
 		{
 			Console.WriteLine($"C# says: {value}");
+;
 		}
 
 		public void PrintInts(int value1, int value2)

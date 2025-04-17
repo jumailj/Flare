@@ -140,16 +140,31 @@ namespace Flare {
         }
 
 
-		// --         ---           --- Rest of the code: 
+		// --         ---           --- Rest of the code:  PrintMessage Function:
 		MonoMethod* printMessageFunc = mono_class_get_method_from_name(monoClass, "PrintMessage", 0);
 		mono_runtime_invoke(printMessageFunc, instance, nullptr, nullptr);
 
-		
+		// --         ---           --- Rest of the code:  PrintInt Function:
+		MonoMethod* printIntFunc = mono_class_get_method_from_name(monoClass, "PrintInt", 1);
+		int value =5;
+		void * param = &value;
+		mono_runtime_invoke(printIntFunc, instance, &param, nullptr);
 
+		// --         ---           --- Rest of the code:  PrintInts Function:
+		MonoMethod* printIntsFunc = mono_class_get_method_from_name(monoClass, "PrintInts", 2);
+		int value2 = 508;
+		void* params[2] = {
+			&value,
+			&value2
+		};
+		mono_runtime_invoke(printIntsFunc, instance, params, nullptr);
 
-
-
-
+        // ---           --             --- Rest of the code:  PrintString Function:
+        MonoString* monoString = mono_string_new(s_Data->AppDomain, "Hello world from c++");
+		MonoMethod* printStringFunc = mono_class_get_method_from_name(monoClass, "PrintCustomMessage", 1);
+        void *printParam = monoString;
+        mono_runtime_invoke(printStringFunc, instance, &printParam, nullptr);
+        // even a a typo issue can be problem. (PrintCaustomMessage) :(
 
     }
 
