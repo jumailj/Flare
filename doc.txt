@@ -312,3 +312,7 @@ And if you've linked all the `.a` files properly, this will run **completely sta
 ---
 
 Want me to give you a **starter C++ + C# example** with build steps for static Mono?
+
+
+
+just install mono.. that's all .

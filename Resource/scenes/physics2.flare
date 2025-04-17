@@ -8,7 +8,8 @@ Entities:
       Rotation: [0, 0, -0.669749618]
       Scale: [2.95132661, 0.521072268, 1]
     SpriteRendererComponent:
-      Color: [0.992980301, 0.995348811, 0.486100584, 1]
+      Color: [1, 0, 0, 1]
+      TexturePath: Resource/game/1 Tiles/Tile_42.png
       TilingFactor: 1
     Rigidbody2DComponent:
       BodyType: Dynamic
