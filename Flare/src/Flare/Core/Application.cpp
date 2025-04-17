@@ -41,7 +41,7 @@ namespace Flare {
        Renderer::Init();
 
        // init script engine[c#]
-        ScriptEngine::Init();
+       ScriptEngine::Init();
        
        //create a new imgui layer and push it.
        m_ImGuiLayer = new ImGuiLayer();

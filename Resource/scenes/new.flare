@@ -1,0 +1,30 @@
+Scene: Untitled
+Entities:
+  - Entity: 2971520119704636395
+    TagComponent:
+      Tag: camera
+    TransformComponent:
+      Translation: [0, 0, 0.699999988]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -2
+        OrthographicFar: 1
+      Primary: true
+      FixedAspectRatio: false
+  - Entity: 11414002155251450220
+    TagComponent:
+      Tag: test
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.893023252, 0.174451068, 0.174451068, 1]
+      TilingFactor: 1
