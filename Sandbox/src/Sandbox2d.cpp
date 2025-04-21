@@ -6,7 +6,7 @@
 
 
 Sandbox2D::Sandbox2D()
-    :Layer("sandbox2d"), m_CameraController(1280.0f/720.0f, false)
+    :Layer("sandbox2d"), m_CameraController(1280.0f/720.0f, true)
 {
   
 }
@@ -41,6 +41,9 @@ void Sandbox2D::OnUpdate(Flare::Timestep ts) {
 			
 			// Flare::Renderer2D::DrawQuad({-5.0f, -5.0f, -0.1f}, {10.0f, 10.0f}, m_CheckTexture, 0.0f);
 			Flare::Renderer2D::DrawQuad(playerPos, {1.0f, 1.0f}, m_player, 1.0f);
+			Flare::Renderer2D::DrawRect({0.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 0.5f, 0.5f, 1.0f});
+
+	
 
 			if ( Flare::Input::IsKeyPressed(Flare::Key::Up)) {
 				playerPos.y += 5.0f* ts;

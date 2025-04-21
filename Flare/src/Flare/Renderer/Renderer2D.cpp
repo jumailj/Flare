@@ -183,8 +183,6 @@ namespace Flare
 
 
 
-
-
 		s_Data.WhiteTexture = Texture2D::Create(1, 1);
 		uint32_t whiteTextureData = 0xffffffff;
 		s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
@@ -197,6 +195,13 @@ namespace Flare
         s_Data.QuadShader = Shader::Create("Resource/Renderer2D_Quad.glsl"); //todo, check the teexture glsl file name.
 		s_Data.CircleShader = Shader::Create("Resource/Renderer2D_Circle.glsl"); //todo, Renderer2d_cirlce file not created.
 		s_Data.LineShader = Shader::Create("Resource/Renderer2D_Line.glsl");
+
+		
+
+
+
+
+
 		// s_Data.QuadShader->Bind();
 		// s_Data.QuadShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
 
@@ -320,6 +325,9 @@ namespace Flare
 		Flush();
 		StartBatch();
 	}
+
+
+
 
 
     // primitives
@@ -594,6 +602,48 @@ namespace Flare
 	}
 
 
+	//todo test code:
+
+	void Renderer2D::DrawCube(const glm::vec3& position, const glm::vec3& size, const glm::vec4& color, int entityID)
+{
+    // Calculate the transform matrices for each face of the cube
+    glm::vec3 halfSize = size * 0.5f;
+
+    // Front face
+    glm::mat4 frontTransform = glm::translate(glm::mat4(1.0f), position + glm::vec3(0.0f, 0.0f, halfSize.z)) *
+                               glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 1.0f));
+    DrawQuad(frontTransform, color, entityID);
+
+    // Back face
+    glm::mat4 backTransform = glm::translate(glm::mat4(1.0f), position - glm::vec3(0.0f, 0.0f, halfSize.z)) *
+                              glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f)) *
+                              glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 1.0f));
+    DrawQuad(backTransform, color, entityID);
+
+    // Left face
+    glm::mat4 leftTransform = glm::translate(glm::mat4(1.0f), position - glm::vec3(halfSize.x, 0.0f, 0.0f)) *
+                              glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f)) *
+                              glm::scale(glm::mat4(1.0f), glm::vec3(size.z, size.y, 1.0f));
+    DrawQuad(leftTransform, color, entityID);
+
+    // Right face
+    glm::mat4 rightTransform = glm::translate(glm::mat4(1.0f), position + glm::vec3(halfSize.x, 0.0f, 0.0f)) *
+                               glm::rotate(glm::mat4(1.0f), glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)) *
+                               glm::scale(glm::mat4(1.0f), glm::vec3(size.z, size.y, 1.0f));
+    DrawQuad(rightTransform, color, entityID);
+
+    // Top face
+    glm::mat4 topTransform = glm::translate(glm::mat4(1.0f), position + glm::vec3(0.0f, halfSize.y, 0.0f)) *
+                             glm::rotate(glm::mat4(1.0f), glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)) *
+                             glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.z, 1.0f));
+    DrawQuad(topTransform, color, entityID);
+
+    // Bottom face
+    glm::mat4 bottomTransform = glm::translate(glm::mat4(1.0f), position - glm::vec3(0.0f, halfSize.y, 0.0f)) *
+                                glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f)) *
+                                glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.z, 1.0f));
+    DrawQuad(bottomTransform, color, entityID);
+}
 
 
 	void Renderer2D::ResetStats() 

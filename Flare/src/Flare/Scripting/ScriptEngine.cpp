@@ -6,8 +6,6 @@
 #include "mono/jit/jit.h"
 #include "mono/metadata/assembly.h"
 #include "mono/metadata/object.h"
-#include "mono/metadata/mono-config.h"
-#include "mono/metadata/debug-helpers.h"
 
 #include <string>
 #include <fstream>
@@ -16,7 +14,6 @@
 
 // mono error on flare::scene::copy , scene.cpp
 // Flare::EditorLayer::OnScenePlay.
-
 
 
 namespace Flare {
@@ -91,10 +88,12 @@ namespace Flare {
 
 				const char* nameSpace = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAMESPACE]);
 				const char* name = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAME]);
+                // MonoClass* monoClass = mono_class_get(s_Data->CoreAssemblyImage, nameSpace, name);
+
+                LOG_INFO("[C# Module]Types: {0}.{1}", nameSpace, name);
+
 			}
 		}
-
-
 
     }
 
@@ -107,6 +106,13 @@ namespace Flare {
         MonoImage* CoreAssemblyImage = nullptr;
 
         ScriptClass EntityClass;
+
+        std::unordered_map<std::string, Ref<ScriptClass>> EntityClasses;
+        std::unordered_map<UUID, Ref<ScriptInstance>> EntityInstances;
+
+        //runtime;
+        Scene* SceneContext = nullptr;
+
     };
 
     static ScriptEngineData* s_Data = nullptr;
@@ -119,41 +125,18 @@ namespace Flare {
 
         InitMono();
         LoadAssembly("Resource/Scripts/Flare-ScriptCore.dll");
+        Utils::PrintAssemblyTypes(s_Data->CoreAssembly); // looks okay.
+
+        LoadAssemblyClasses(s_Data->CoreAssembly);
+
+
+        ScriptGlue::RegisterComponents();
+        
         ScriptGlue::RegisterFunctions();
 
 
         s_Data->EntityClass = ScriptClass("Flare", "Entity");
-        MonoObject* instance = s_Data->EntityClass.Instantiate();
 
-
-        // --         ---           --- Rest of the code:  PrintMessage Function:
-		MonoMethod* printMessageFunc = s_Data->EntityClass.GetMethod( "PrintMessage", 0);
-        s_Data->EntityClass.InvokeMethod(instance, printMessageFunc, nullptr);
-
-
-		// --         ---           --- Rest of the code:  PrintInt Function:
-		MonoMethod* printIntFunc = s_Data->EntityClass.GetMethod("PrintInt", 1); 
-		int value =5;
-		void * param = &value;
-		s_Data->EntityClass.InvokeMethod(instance, printIntFunc, &param);
-
-
-		// --         ---           --- Rest of the code:  PrintInts Function:
-		MonoMethod* printIntsFunc = s_Data->EntityClass.GetMethod("PrintInts", 2); 
-		int value2 = 508;
-		void* params[2] = {
-			&value,
-			&value2
-		};
-        s_Data->EntityClass.InvokeMethod(instance, printIntsFunc, params);
-
-
-
-        // ---           --             --- Rest of the code:  PrintString Function:
-        MonoString* monoString = mono_string_new(s_Data->AppDomain, "Hello world from c++");
-		MonoMethod* printStringFunc = s_Data->EntityClass.GetMethod("PrintCustomMessage", 1);
-        void *stringParam = monoString;
-        s_Data->EntityClass.InvokeMethod(instance,printStringFunc, &stringParam );
 
     }
 
@@ -164,31 +147,9 @@ namespace Flare {
         s_Data = nullptr;
     }
 
-    void ScriptEngine::LoadAssembly(const std::filesystem::path &filepath)
-    {
-
-         // Set the root domain
-         s_Data->AppDomain = mono_domain_create_appdomain(const_cast<char*>("FlareScriptRuntime"), nullptr);
-         if (!s_Data->AppDomain) {
-             LOG_ERROR("Failed to create Mono AppDomain!");
-             return;
-         }
-
-         mono_domain_set(s_Data->AppDomain, true);
- 
- 
-         // Load the C# assembly   Resource/Scripts/Flare-ScriptCore.dll
-         // Make sure to use the correct path to your assembly
-        std::string assemblyPath = filepath;
-        s_Data->CoreAssembly = Utils::LoadMonoAssembly(assemblyPath);  if (!s_Data->CoreAssembly) {LOG_ERROR("Failed to load C# assembly from path: {0}", assemblyPath.c_str());return;}
-
-        // Get the MonoImage from the assembly
-        s_Data->CoreAssemblyImage = mono_assembly_get_image(s_Data->CoreAssembly); if (!s_Data->CoreAssemblyImage) { LOG_ERROR("Faild to get Mono assembly imfrom!"); return;}
-
-    }
-
     void ScriptEngine::InitMono() {
-        mono_config_parse(nullptr); // Load Mono configuration
+
+        // mono_config_parse(nullptr); // Load Mono configuration
         mono_set_assemblies_path("Resource/mono/lib");
 
         MonoDomain* rootDomain = mono_jit_init("FlareJITRuntime");
@@ -212,41 +173,180 @@ namespace Flare {
         }
     }
 
+
+    void ScriptEngine::LoadAssembly(const std::filesystem::path &filepath)
+    {
+
+         // Set the root domain
+         s_Data->AppDomain = mono_domain_create_appdomain(const_cast<char*>("FlareScriptRuntime"), nullptr);
+         if (!s_Data->AppDomain) {
+             LOG_ERROR("Failed to create Mono AppDomain!");
+             return;
+         }
+         mono_domain_set(s_Data->AppDomain, true);
+
+
+         // Load the C# assembly   Resource/Scripts/Flare-ScriptCore.dll
+         // Make sure to use the correct path to your assembly
+        std::string assemblyPath = filepath;
+        s_Data->CoreAssembly = Utils::LoadMonoAssembly(filepath);  if (!s_Data->CoreAssembly) {LOG_ERROR("Failed to load C# assembly from path: {0}", assemblyPath.c_str());return;}
+
+        // Get the MonoImage from the assembly
+        s_Data->CoreAssemblyImage = mono_assembly_get_image(s_Data->CoreAssembly); if (!s_Data->CoreAssemblyImage) { LOG_ERROR("Faild to get Mono assembly imfrom!"); return;}
+
+    }
+
+
+    void ScriptEngine::LoadAssemblyClasses(MonoAssembly* assembly)
+	{
+		s_Data->EntityClasses.clear();
+
+		MonoImage* image = mono_assembly_get_image(assembly);
+		const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(image, MONO_TABLE_TYPEDEF);
+		int32_t numTypes = mono_table_info_get_rows(typeDefinitionsTable);
+		MonoClass* entityClass = mono_class_from_name(image, "Flare", "Entity");
+
+        // LOG_INFO("Loading assembly classes: {0}", numTypes);
+
+		for (int32_t i = 0; i < numTypes; i++)
+		{
+            LOG_INFO("Loading assembly classes: {0}", i);
+
+			uint32_t cols[MONO_TYPEDEF_SIZE];
+			mono_metadata_decode_row(typeDefinitionsTable, i, cols, MONO_TYPEDEF_SIZE);
+
+			const char* nameSpace = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAMESPACE]);
+			const char* name = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAME]);
+			std::string fullName;
+			if (strlen(nameSpace) != 0)
+				fullName = fmt::format("{}.{}", nameSpace, name);
+			else
+				fullName = name;
+
+			MonoClass* monoClass = mono_class_from_name(image, nameSpace, name);
+
+			if (monoClass == entityClass)
+				continue;
+
+			bool isEntity = mono_class_is_subclass_of(monoClass, entityClass, false);
+			if (isEntity)
+				s_Data->EntityClasses[fullName] = CreateRef<ScriptClass>(nameSpace, name);
+		}
+	}
+
+
+
+
+
+    void ScriptEngine::OnRuntimeStart(Scene* scene){
+        s_Data->SceneContext = scene;
+    }
+
+    bool ScriptEngine::EntityClassExists(const std::string& fullClassName) {
+        return s_Data->EntityClasses.find(fullClassName) != s_Data->EntityClasses.end();
+    }
+
+    void ScriptEngine::OnCreateEntity(Entity entity) {
+
+
+		const auto& sc = entity.GetComponent<ScriptComponent>();
+		if (ScriptEngine::EntityClassExists(sc.ClassName))
+		{
+			Ref<ScriptInstance> instance = CreateRef<ScriptInstance>(s_Data->EntityClasses[sc.ClassName], entity);
+			s_Data->EntityInstances[entity.GetUUID()] = instance;
+			instance->InvokeOnCreate();
+		}
+    }
+
+    void ScriptEngine::OnUpdateEntity(Entity entity, Timestep ts) {
+
+        
+        UUID entityUUID = entity.GetUUID();
+        // todo add a assert;
+
+        Ref<ScriptInstance> instance = s_Data->EntityInstances[entityUUID];
+        instance->InvokeOnUpdate(ts);
+    }
+
+    Scene* ScriptEngine::GetSceneContext(){
+        return s_Data->SceneContext;
+    }
+    
+    void ScriptEngine::OnRuntimeStop()
+    {
+        s_Data->SceneContext = nullptr;
+        s_Data->EntityInstances.clear();
+    }
+
+    std::unordered_map<std::string, Ref<ScriptClass>> ScriptEngine::GetEntityClasses() {
+        return s_Data->EntityClasses;
+    }
+    
+
           
-    ScriptClass::ScriptClass(const std::string& classNamespace, const std::string& className)
-    : m_ClassNamespace(classNamespace), m_ClassName(className)
-    {
-        m_MonoClass =  mono_class_from_name(s_Data->CoreAssemblyImage, classNamespace.c_str(), className.c_str()); 
-    }
+	MonoImage* ScriptEngine::GetCoreAssemblyImage()
+	{
+		return s_Data->CoreAssemblyImage;
+	}
 
-    MonoObject* ScriptClass::Instantiate()
-    {
-        return ScriptEngine::InstantiateClass(m_MonoClass);
-    }
+	MonoObject* ScriptEngine::InstantiateClass(MonoClass* monoClass)
+	{
+		MonoObject* instance = mono_object_new(s_Data->AppDomain, monoClass);
+		mono_runtime_object_init(instance);
+		return instance;
+	}
 
-    MonoObject* ScriptEngine::InstantiateClass(MonoClass* monoClass){
+	ScriptClass::ScriptClass(const std::string& classNamespace, const std::string& className)
+		: m_ClassNamespace(classNamespace), m_ClassName(className)
+	{
+		m_MonoClass = mono_class_from_name(s_Data->CoreAssemblyImage, classNamespace.c_str(), className.c_str());
+	}
 
-        MonoObject* instance = mono_object_new(s_Data->AppDomain, monoClass);
+	MonoObject* ScriptClass::Instantiate()
+	{
+		return ScriptEngine::InstantiateClass(m_MonoClass);
+	}
 
-        MonoObject* exception = nullptr; 
-        mono_runtime_object_init(instance);
+	MonoMethod* ScriptClass::GetMethod(const std::string& name, int parameterCount)
+	{
+		return mono_class_get_method_from_name(m_MonoClass, name.c_str(), parameterCount);
+	}
 
-        if (exception) {
-            MonoString* exceptionMessage = mono_object_to_string(exception, nullptr);
-            const char* exceptionCStr = mono_string_to_utf8(exceptionMessage);
-            std::cerr << "Exception occurred during object initialization: " << exceptionCStr << std::endl;
-            mono_free((void*)exceptionCStr);
-        }
-        return instance;
-            
-    }
+	MonoObject* ScriptClass::InvokeMethod(MonoObject* instance, MonoMethod* method, void** params)
+	{
+		return mono_runtime_invoke(method, instance, params, nullptr);
+	}
 
-    MonoMethod* ScriptClass::GetMethod(const std::string& name, int parameterCount){
-        return mono_class_get_method_from_name(m_MonoClass, name.c_str(), parameterCount);
-    }
+	ScriptInstance::ScriptInstance(Ref<ScriptClass> scriptClass, Entity entity)
+		: m_ScriptClass(scriptClass)
+	{
+		m_Instance = scriptClass->Instantiate();
 
-    MonoObject* ScriptClass::InvokeMethod(MonoObject* instance, MonoMethod* method, void** params){
-        return mono_runtime_invoke(method, instance, params, nullptr);
-    }
+		m_Constructor = s_Data->EntityClass.GetMethod(".ctor", 1);
+		m_OnCreateMethod = scriptClass->GetMethod("OnCreate", 0);
+		m_OnUpdateMethod = scriptClass->GetMethod("OnUpdate", 1);
+
+		// Call Entity constructor
+		{
+			UUID entityID = entity.GetUUID();
+			void* param = &entityID;
+			m_ScriptClass->InvokeMethod(m_Instance, m_Constructor, &param);
+		}
+	}
+
+	void ScriptInstance::InvokeOnCreate()
+	{
+		if (m_OnCreateMethod)
+			m_ScriptClass->InvokeMethod(m_Instance, m_OnCreateMethod);
+	}
+
+	void ScriptInstance::InvokeOnUpdate(float ts)
+	{
+		if (m_OnUpdateMethod)
+		{
+			void* param = &ts;
+			m_ScriptClass->InvokeMethod(m_Instance, m_OnUpdateMethod, &param);
+		}
+	}
 
 } // namespace Flare

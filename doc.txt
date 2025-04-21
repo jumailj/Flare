@@ -316,3 +316,39 @@ Want me to give you a **starter C++ + C# example** with build steps for static M
 
 
 just install mono.. that's all .
+
+
+
+### using mono -API
+#if 0
+        MonoObject* instance = s_Data->EntityClass.Instantiate();
+
+        // --         ---           --- Rest of the code:  PrintMessage Function:
+		MonoMethod* printMessageFunc = s_Data->EntityClass.GetMethod( "PrintMessage", 0);
+        s_Data->EntityClass.InvokeMethod(instance, printMessageFunc, nullptr);
+
+
+		// --         ---           --- Rest of the code:  PrintInt Function:
+		MonoMethod* printIntFunc = s_Data->EntityClass.GetMethod("PrintInt", 1); 
+		int value =5;
+		void * param = &value;
+		s_Data->EntityClass.InvokeMethod(instance, printIntFunc, &param);
+
+
+		// --         ---           --- Rest of the code:  PrintInts Function:
+		MonoMethod* printIntsFunc = s_Data->EntityClass.GetMethod("PrintInts", 2); 
+		int value2 = 508;
+		void* params[2] = {
+			&value,
+			&value2
+		};
+        s_Data->EntityClass.InvokeMethod(instance, printIntsFunc, params);
+
+
+
+        // ---           --             --- Rest of the code:  PrintString Function:
+        MonoString* monoString = mono_string_new(s_Data->AppDomain, "Hello world from c++");
+		MonoMethod* printStringFunc = s_Data->EntityClass.GetMethod("PrintCustomMessage", 1);
+        void *stringParam = monoString;
+        s_Data->EntityClass.InvokeMethod(instance,printStringFunc, &stringParam );
+#endif

@@ -240,7 +240,7 @@ EditorLayer::EditorLayer()
 void EditorLayer::OnAttach() 
 {
 
-	SetUnrealEngineThemeColors();
+	SetGruvboxThemeColors();
 
 
 	//framebuffer;
@@ -585,8 +585,6 @@ void EditorLayer::OnImGuiRender()
 			}
 		}
 
-
-
 		ImGui::End();
 		ImGui::PopStyleVar();
 
@@ -636,11 +634,9 @@ void EditorLayer::OnImGuiRender()
 		}
 
 
-		
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(EditorLayer::OnKeyPressed));
 		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
-
 
 	}
 
@@ -797,6 +793,8 @@ void EditorLayer::OnImGuiRender()
 		
 				}
 
+				// test area:
+
 
 		Renderer2D::EndScene();
 	}
@@ -855,7 +853,7 @@ void EditorLayer::OnImGuiRender()
 
 	void EditorLayer::SaveSceneAs()
 	{
-		std::string filepath = FileDialogs::SaveFile("Hazel Scene (*.flare)\0*.flare\0");
+		std::string filepath = FileDialogs::SaveFile("Flare Scene (*.flare)\0*.flare\0");
 		if (!filepath.empty())
 		{
 			SerializeScene(m_ActiveScene, filepath);

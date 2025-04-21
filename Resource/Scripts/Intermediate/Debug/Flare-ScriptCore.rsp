@@ -1,1 +1,9 @@
-Source/Main.cs
+Source/Camera.cs
+Source/Flare/Input.cs
+Source/Flare/InternalCalls.cs
+Source/Flare/KeyCodes.cs
+Source/Flare/Scene/Components.cs
+Source/Flare/Scene/Entity.cs
+Source/Flare/Vector2.cs
+Source/Flare/Vector3.cs
+Source/Player.cs

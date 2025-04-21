@@ -38,6 +38,7 @@ namespace Flare{
         m_Data.Width = props.Width;
         m_Data.Height = props.Height;
 
+
 		// LOG_INFO("CREATING VIDEO {0} ({1}, {2})", props.Title, props.Width, props.Height);
         
         if(!s_GLFWInitialized) 
