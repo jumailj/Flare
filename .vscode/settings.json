@@ -76,9 +76,6 @@
         "shared_mutex": "cpp",
         "typeindex": "cpp",
         "locale": "cpp",
-        "csignal": "cpp",
-        "format": "cpp",
-        "filesystem": "cpp"
-    },
-    "cmake.sourceDirectory": "/home/jumail/development/Flare/Flare/vendor/Box2D/extern/glad"
+        "csignal": "cpp"
+    }
 }

@@ -28,4 +28,9 @@
 *.obj 
 
 
+# scirpts 
+__pycache__/
+venv/
+
+
 Makefile

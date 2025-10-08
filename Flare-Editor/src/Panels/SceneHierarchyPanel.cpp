@@ -2,7 +2,6 @@
 #include <Flare/Core/Log.h>
 
 #include <Flare/Scene/Components.h>
-#include <Flare/Scripting/ScriptEngine.h>
 #include <cstring>
 
 #include <imgui.h>
@@ -106,7 +105,7 @@ namespace Flare{
 
 		if (entityDeleted)
 		{
-			m_Context->DestroyEntity(entity);
+			m_Context->DestoryEntity(entity);
 			if (m_SelectionContext == entity)
 				m_SelectionContext = {};
 		}
@@ -247,7 +246,6 @@ namespace Flare{
 		{
 
 			DisplayAddComponentEntry<CameraComponent>("Camera");
-			DisplayAddComponentEntry<ScriptComponent>("Script");
 			DisplayAddComponentEntry<SpriteRendererComponent>("Sprite Renderer");
 			DisplayAddComponentEntry<CircleRendererComponent>("Circle Renderer");
 			DisplayAddComponentEntry<Rigidbody2DComponent>("Rigidbody 2D");
@@ -333,24 +331,6 @@ namespace Flare{
 				ImGui::Checkbox("Fixed Aspect Ratio", &component.FixedAspectRatio);
 			}
 		});
-
-		DrawComponent<ScriptComponent>("Script", entity, [](auto& component)
-		{
-			bool scriptClassExists = ScriptEngine::EntityClassExists(component.ClassName);
-
-			static char buffer[64];
-			strcpy(buffer, component.ClassName.c_str());
-
-			if (!scriptClassExists)
-				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.2f, 0.3f, 1.0f));
-
-			if (ImGui::InputText("Class", buffer, sizeof(buffer)))
-				component.ClassName = buffer;
-
-			if (!scriptClassExists)
-				ImGui::PopStyleColor();
-		});
-
 
 		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
 		{

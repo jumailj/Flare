@@ -34,6 +34,7 @@ namespace Flare {
 
         ApplicationSpecification(const std::string& name, const ApplicationCommandLineArgs& args)
         : Name(name), CommandLineArgs(args) {}
+
     };
 
 

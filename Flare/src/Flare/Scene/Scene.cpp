@@ -4,7 +4,6 @@
 #include "ScriptableEntity.h"
 #include <Flare/Renderer/Renderer2D.h>
 #include <glm/glm.hpp>
-#include <Flare/Scripting/ScriptEngine.h>
 
 #include "Entity.h"
 
@@ -39,45 +38,28 @@ namespace Flare{
 	{
 	}
 
-	template<typename... Component>
+	template<typename Component>
 	static void CopyComponent(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap)
 	{
-		([&]()
+		auto view = src.view<Component>();
+		for (auto e : view)
 		{
-			auto view = src.view<Component>();
-			for (auto srcEntity : view)
-			{
-				entt::entity dstEntity = enttMap.at(src.get<IDComponent>(srcEntity).ID);
+			UUID uuid = src.get<IDComponent>(e).ID;
+			// HZ_CORE_ASSERT(enttMap.find(uuid) != enttMap.end());
+			entt::entity dstEnttID = enttMap.at(uuid);
 
-				auto& srcComponent = src.get<Component>(srcEntity);
-				dst.emplace_or_replace<Component>(dstEntity, srcComponent);
-			}
-		}(), ...);
+			auto& component = src.get<Component>(e);
+			dst.emplace_or_replace<Component>(dstEnttID, component);
+		}
 	}
 
-
-	template<typename... Component>
-	static void CopyComponent(ComponentGroup<Component...>, entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap)
-	{
-		CopyComponent<Component...>(dst, src, enttMap);
-	}
-
-	// two overloads.
-	template<typename... Component>
+	template<typename Component>
 	static void CopyComponentIfExists(Entity dst, Entity src)
 	{
-		([&]()
-		{
-			if (src.HasComponent<Component>())
-				dst.AddOrReplaceComponent<Component>(src.GetComponent<Component>());
-		}(), ...);
+		if (src.HasComponent<Component>())
+			 dst.AddOrReplaceComponent<Component>(src.GetComponent<Component>());
 	}
 
-	template<typename... Component>
-	static void CopyComponentIfExists(ComponentGroup<Component...>, Entity dst, Entity src)
-	{
-		CopyComponentIfExists<Component...>(dst, src);
-	}
 
 
 	/*scene-copy*/
@@ -103,7 +85,14 @@ namespace Flare{
 		}
 
 		// Copy components (except IDComponent and TagComponent)
-		CopyComponent(AllComponents{}, dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponent<TransformComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponent<SpriteRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponent<CircleRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponent<CameraComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponent<NativeScriptComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponent<Rigidbody2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponent<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponent<CircleCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 
 		return newScene;
 	}
@@ -116,26 +105,23 @@ namespace Flare{
 	}
 
 
-
-
-	Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string& name)
+		Entity Scene::CreateEntityWithUUID(UUID uuid,const std::string& name)
 	{
-		// add transfromcomponent, tagcomponent and idComponent when create a new entity.
 		Entity entity = { m_Registry.create(), this };
+
+		// add transfromcomponent, tagcomponent and idComponent when create a new entity.
 		entity.AddComponent<IDComponent>(uuid);
 		entity.AddComponent<TransformComponent>();
 		entity.AddComponent<TagComponent>().Tag = name.empty()?"Entity":name;
 
-		m_EntityMap[uuid] = entity;
 		return entity;
+
 	}
 
 
 
-	void Scene::DestroyEntity(Entity entity)
-	{
+	void Scene::DestoryEntity(Entity entity){
 		m_Registry.destroy(entity);
-		m_EntityMap.erase(entity.GetUUID());
 	}
 
 
@@ -194,19 +180,11 @@ namespace Flare{
 				body->CreateFixture(&fixtureDef);
 			}
 
-		}
 
-		// scripting.. 
-		{
-			ScriptEngine::OnRuntimeStart(this);
-			// Instantiate all script entities
 
-			auto view = m_Registry.view<ScriptComponent>();
-			for (auto e : view)
-			{
-				Entity entity = { e, this };
-				ScriptEngine::OnCreateEntity(entity);
-			}
+
+
+
 		}
 
 	}
@@ -216,24 +194,62 @@ namespace Flare{
 		delete m_PhysicsWorld;
 		m_PhysicsWorld = nullptr;
 
-		ScriptEngine::OnRuntimeStop();
 	}
+
+
+	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
+	{
+			Renderer2D::BeginScene(camera);
+
+		// Draw sprites
+		{
+			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+			for (auto entity : group)
+			{
+				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+				   Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+				// Renderer2D::DrawRect(transform.GetTransform(), glm::vec4(1.0f), (int)entity);
+			}
+		}
+
+		// Draw circles
+		{
+			auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
+			for (auto entity : view)
+			{
+				auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
+
+				Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
+			}
+		}
+
+
+		// draw the line;
+		// glm::vec3 startPoint(0.0f);
+		// glm::vec3 endPoint(5.0f);
+		// Renderer2D::DrawLine(startPoint, endPoint, glm::vec4(1, 0, 1, 1));
+
+		// draw the rectangel;
+		// glm::vec3 rectPos(0.0f);
+		// glm::vec2 rectSize(5.0f);
+		// Renderer2D::DrawRect(rectPos, rectSize, glm::vec4(1, 0, 0, 1));
+
+
+
+		Renderer2D::EndScene();
+	}
+
 
 
 	void Scene::OnUpdateRuntime(Timestep ts)
 	{
+		// group for multiple component
+		// view for single component
+
 
 		// Update scripts
 		{
-			// C# Entity OnUpdate
-			auto view = m_Registry.view<ScriptComponent>();
-			for (auto e : view)
-			{
-				Entity entity = { e, this };
-				ScriptEngine::OnUpdateEntity(entity, ts);
-			}
-			
-
 			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
 			{
 				// TODO: Move to Scene::OnScenePlay
@@ -248,7 +264,7 @@ namespace Flare{
 			});
 		}
 
-		// Physics
+		//physics 
 		{
 			const int32_t velocityIterations = 6;
 			const int32_t positionIterations = 2;
@@ -263,13 +279,14 @@ namespace Flare{
 				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
 
 				b2Body* body = (b2Body*)rb2d.RuntimeBody;
-
 				const auto& position = body->GetPosition();
 				transform.Translation.x = position.x;
 				transform.Translation.y = position.y;
 				transform.Rotation.z = body->GetAngle();
 			}
 		}
+
+
 
 		// Render 2D
 		Camera* mainCamera = nullptr;
@@ -291,6 +308,7 @@ namespace Flare{
 
 		if (mainCamera)
 		{
+
 			Renderer2D::BeginScene(*mainCamera, cameraTransform);
 
 			// Draw sprites
@@ -316,16 +334,8 @@ namespace Flare{
 			}
 
 			Renderer2D::EndScene();
+			
 		}
-
-	}
-
-	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
-	{
-
-		//render scene:
-		RenderScene(camera);
-		
 	}
 
 
@@ -346,73 +356,43 @@ namespace Flare{
 
 	}
 
+	void Scene::DuplicateEntity(Entity entity)
+	{
+		std::string name = entity.GetName();
+		Entity newEntity = CreateEntity(name);
+
+		CopyComponentIfExists<TransformComponent>(newEntity, entity);
+		CopyComponentIfExists<SpriteRendererComponent>(newEntity, entity);
+		CopyComponentIfExists<CircleRendererComponent>(newEntity, entity);
+		CopyComponentIfExists<CameraComponent>(newEntity, entity);
+		CopyComponentIfExists<NativeScriptComponent>(newEntity, entity);
+		CopyComponentIfExists<Rigidbody2DComponent>(newEntity, entity);
+		CopyComponentIfExists<BoxCollider2DComponent>(newEntity, entity);
+		CopyComponentIfExists<CircleCollider2DComponent>(newEntity, entity);
+	}
+
+
 	Entity Scene::GetPrimaryCameraEntity()
 	{
-		auto view = m_Registry.view<CameraComponent>();
-		for (auto entity : view)
+		auto view  = m_Registry.view<CameraComponent>();
+
+		for(auto entity : view)
 		{
+			// LOG_INFO("find a camera:");
 			const auto& camera = view.get<CameraComponent>(entity);
-			if (camera.Primary)
-				return Entity{entity, this};
+			if(camera.Primary)
+				return Entity{entity,this}; // point to this scene.
 		}
+
 		return {};
 	}
 
-
-	void Scene::DuplicateEntity(Entity entity)
-	{
-		Entity newEntity = CreateEntity(entity.GetName());
-		CopyComponentIfExists(AllComponents{}, newEntity, entity);
-	}
-
-
-	Entity Scene::GetEntityByUUID(UUID uuid) 
-	{
-		if(m_EntityMap.find(uuid) != m_EntityMap.end())
-		{
-			return { m_EntityMap.at(uuid), this };
-		}
-		else
-		{
-			LOG_ERROR("Entity with UUID {0} not found", uuid);
-			return {};
-		}
-	}
-
-	void Scene::RenderScene(EditorCamera& camera)
-	{
-		Renderer2D::BeginScene(camera);
-
-		// Draw sprites
-		{
-			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-			for (auto entity : group)
-			{
-				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-
-				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
-			}
-		}
-
-		// Draw circles
-		{
-			auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
-			for (auto entity : view)
-			{
-				auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
-
-				Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
-			}
-		}
-
-		Renderer2D::EndScene();
-	}
 
 
 	template<typename T>
 	void Scene::OnComponentAdded(Entity entity, T& component)
 	{
-		static_assert(sizeof(T) == 0);
+		// static_assert(false);
 	}
 
 	template<>
@@ -430,11 +410,6 @@ namespace Flare{
 	{
 		if (m_ViewportWidth > 0 && m_ViewportHeight > 0)
 			component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
-	}
-
-	template<>
-	void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component)
-	{
 	}
 
 	template<>

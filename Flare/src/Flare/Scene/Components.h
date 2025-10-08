@@ -99,18 +99,8 @@ namespace Flare
 		CameraComponent(const CameraComponent&) = default;
 	};
 
-	struct ScriptComponent
-	{
-		std::string ClassName;
-
-		ScriptComponent() = default;
-		ScriptComponent(const ScriptComponent&) = default;
-	};
-
-
 	/*Native Script - currenlty not work*/
 	class ScriptableEntity; // forward declartion
-
 	struct NativeScriptComponent
 	{
 		ScriptableEntity* Instance = nullptr;
@@ -176,16 +166,5 @@ namespace Flare
 		CircleCollider2DComponent() = default;
 		CircleCollider2DComponent(const CircleCollider2DComponent&) = default;
 	};
-
-	template<typename... Component>
-	struct ComponentGroup
-	{
-	};
-
-	using AllComponents = 
-		ComponentGroup<TransformComponent, SpriteRendererComponent,
-			CircleRendererComponent, CameraComponent, ScriptComponent,
-			NativeScriptComponent, Rigidbody2DComponent, BoxCollider2DComponent,
-			CircleCollider2DComponent>;
 
 }
