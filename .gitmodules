@@ -24,3 +24,9 @@
 [submodule "Flare/vendor/Box2D"]
 	path = Flare/vendor/Box2D
 	url = git@github.com:jumailj/box2d.git
+[submodule "Flarevendormsdf-atlas-gen"]
+	path = Flarevendormsdf-atlas-gen
+	url = git@github.com:jumailj/msdf-atlas-gen.git
+[submodule "Flare/vendor/msdf-atlas-gen"]
+	path = Flare/vendor/msdf-atlas-gen
+	url = git@github.com:jumailj/msdf-atlas-gen.git

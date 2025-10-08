@@ -10,6 +10,7 @@
 #include <Flare/Core/Log.h>
 #include <Flare/Utils/PlatformUtils.h>
 #include <Flare/Math/Math.h>
+#include <Flare/Renderer/Font.h>
 
 
 #define GLM_ENABLE_EXPERIMENTAL
@@ -163,6 +164,7 @@ namespace Flare{
 EditorLayer::EditorLayer()
     :Layer("EditorLayer"), m_CameraController(1280.0f/720.0f, true)
 {
+	Flare::Font font("Resource/fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf");
   
 }
 

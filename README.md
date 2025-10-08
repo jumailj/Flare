@@ -10,6 +10,12 @@ apt-get intall libxcursor-dev libxcursor-dev libxcursor-dev libxcursor-dev
 ```
 git clone --recursive git@github.com:jumailj/Flare.git
 ```
+
+
+```
+run scripts
+```
+
 ```
 ./premake5 gmake
 ```

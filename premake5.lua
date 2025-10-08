@@ -20,6 +20,8 @@ workspace "Flare"
     IncludeDir["ImGuizmo"] = "Flare/vendor/ImGuizmo"
     IncludeDir["vulkanSDK"] = "%{vulkandir}/include"
     IncludeDir["Box2D"] = "Flare/vendor/Box2D/include"
+    IncludeDir["msdfgen"] = "Flare/vendor/msdf-atlas-gen/msdfgen"
+    IncludeDir["msdf-atlas-gen"] = "Flare/vendor/msdf-atlas-gen/msdf-atlas-gen"
 
 
     LibraryDir = {}
@@ -33,6 +35,7 @@ workspace "Flare"
         include "Flare/vendor/yaml-cpp"
         include "Flare/vendor/nativefiledialog"
         include "Flare/vendor/Box2D"
+        include "Flare/vendor/msdf-atlas-gen"
     group ""
 
 project "Flare" 
@@ -90,6 +93,8 @@ project "Flare"
         "%{IncludeDir.ImGuizmo}",
         "%{IncludeDir.vulkanSDK}",
         "%{IncludeDir['Box2D']}",
+        "%{IncludeDir['msdfgen']}",
+        "%{IncludeDir['msdf-atlas-gen']}",
     }
 
     -- externalincludedirs { "../lua/include", "../zlib" }
@@ -129,6 +134,10 @@ project "Flare"
         "shaderc_combined",
         "spirv-cross-core",
         "spirv-cross-glsl",
+
+        "msdf-atlas-gen",
+        "msdfgen",
+        "freetype"
         
     } 
 
@@ -184,6 +193,8 @@ project "Flare"
         "%{IncludeDir.nativefiledialog}",
         "%{IncludeDir.ImGuizmo}",
         "%{IncludeDir.vulkanSDK}",
+        "%{IncludeDir['msdfgen']}",
+        "%{IncludeDir['msdf-atlas-gen']}",
         }
 
         libdirs{
@@ -220,6 +231,10 @@ project "Flare"
             "shaderc_combined",
             "spirv-cross-core",
             "spirv-cross-glsl",
+
+            "msdf-atlas-gen",
+            "msdfgen",
+            "freetype"
     }  
 
 
@@ -287,6 +302,8 @@ project "Sandbox"
         "%{IncludeDir.entt}",
         "%{IncludeDir.nativefiledialog}",
         "%{IncludeDir.ImGuizmo}",
+        "%{IncludeDir['msdfgen']}",
+        "%{IncludeDir['msdf-atlas-gen']}",
         }
 
         -- externalincludedirs{
@@ -325,6 +342,10 @@ project "Sandbox"
         "shaderc_combined",
         "spirv-cross-core",
         "spirv-cross-glsl",
+
+        "msdf-atlas-gen",
+        "msdfgen",
+        "freetype"
     }  
 
        filter "configurations:Debug"

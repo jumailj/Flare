@@ -63,6 +63,22 @@ namespace Flare{
        }
        LOG_TRACE("Window Created {0} [{1}, {2}]", props.Title, props.Width, props.Height);
        
+	   // Log the video mode the window is (likely) using. If the window is fullscreen
+	   // glfwGetWindowMonitor will return a monitor; for windowed mode we fallback to primary.
+	   if (m_Window) {
+		   GLFWmonitor* windowMonitor = glfwGetWindowMonitor(m_Window);
+		   if (!windowMonitor)
+			   windowMonitor = glfwGetPrimaryMonitor();
+
+		   if (windowMonitor) {
+			   const GLFWvidmode* wmode = glfwGetVideoMode(windowMonitor);
+			   if (wmode) {
+				   LOG_INFO("Window running on: {0}x{1} @{2}Hz", wmode->width, wmode->height, wmode->refreshRate);
+			   }
+		   }
+	   }
+
+       
 	   // getting context, with current windo, init glad.
 	   m_Context = new OpenGLContext(m_Window);
 	   m_Context->Init();
@@ -70,6 +86,7 @@ namespace Flare{
 	   glfwSetWindowUserPointer(m_Window, &m_Data);
 
 
+	   // enable the vsync.(refresh rage).
 	   SetVSync(true);
        
        // set glfw callbacks;(lam)
