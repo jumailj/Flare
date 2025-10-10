@@ -9,6 +9,39 @@
 
 namespace Flare{
 
+
+
+    namespace Utils {
+
+        static GLenum FlareImageFormatToGLDataFormat(ImageFormat format) 
+        {
+
+            switch (format) 
+            {
+                case ImageFormat::RGB8: return GL_RGB;
+                case ImageFormat::RGBA8: return GL_RGBA; 
+            }
+
+            LOG_ERROR("Unknown image format");
+            return 0;
+            
+        }
+
+        static GLenum FlareImageFormatToGLInternalFormat(ImageFormat format) 
+        {
+            switch (format) 
+            {
+                case ImageFormat::RGB8: return GL_RGB;
+                case ImageFormat::RGBA8: return GL_RGBA; 
+            }
+
+            LOG_ERROR("Unknown image format");
+            return 0;
+        }
+
+    }
+
+
     bool fileExists(const std::string& filename) {
     std::ifstream file(filename);
     return file.good(); // Returns true if the file exists and is readable
@@ -31,6 +64,30 @@ namespace Flare{
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     }
+
+
+
+        /*generate texture with TextureSpecification*/
+    OpenGLTexture2D::OpenGLTexture2D(const TextureSpecification& specification) 
+        :m_Specification(specification), m_Width(m_Specification.Width), m_Height(m_Specification.Height)
+    {
+        m_InternalFormat = Utils::FlareImageFormatToGLInternalFormat(m_Specification.Format);
+        m_DataFormat = Utils::FlareImageFormatToGLDataFormat(m_Specification.Format);
+
+        glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
+        glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
+
+        glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINE);
+        glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    }
+
+
+
+
 
 
     /* load texture from path */

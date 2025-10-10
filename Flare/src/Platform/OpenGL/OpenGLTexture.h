@@ -9,7 +9,9 @@ namespace Flare{
     {
     public:
         OpenGLTexture2D(const std::string& path);
+        OpenGLTexture2D(const TextureSpecification& specification);
         OpenGLTexture2D(uint32_t width, uint32_t height);
+
         virtual ~OpenGLTexture2D();
 
         virtual uint32_t GetWidth() const override{return m_Width;}
@@ -32,6 +34,8 @@ namespace Flare{
 		}
 
     private:
+        TextureSpecification m_Specification;
+
         std::string m_Path;
         bool m_IsLoaded = false;
         uint32_t m_Width, m_Height;

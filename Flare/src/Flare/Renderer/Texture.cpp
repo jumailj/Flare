@@ -2,9 +2,23 @@
 
 #include "Renderer.h"
 #include <Platform/OpenGL/OpenGLTexture.h>
+#include <Flare/Renderer/Renderer.h>
 
 
 namespace Flare{
+
+    Ref<Texture2D> Texture2D::Create(const TextureSpecification& specification) 
+    {
+        switch (Renderer::GetAPI())
+        {
+
+            case RendererAPI::API::None : LOG_ERROR("RendererAPI::None is currenlty not supported!"); return nullptr;
+            case RendererAPI::API::OpenGL : return CreateRef<OpenGLTexture2D>(specification);
+        }
+
+        return nullptr;
+
+    }
 
     Ref<Texture2D> Texture2D::Create(uint32_t widht, uint32_t height) 
     {
