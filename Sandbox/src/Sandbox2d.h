@@ -30,4 +30,6 @@ public:
 	
 	glm::vec3 playerPos = {0.0f, 0.0f, 0.0f};
 
+	float rotation = 0.0f;
+
 };

@@ -49,9 +49,12 @@ void Sandbox2D::OnUpdate(Flare::Timestep ts) {
 
 			for (int x =1;  x< 10; x++) {
 				for (int y = 1; y < 10; y++) {
-					Flare::Renderer2D::DrawQuad({x, y}, {1.0f, 1.0f}, m_player, 1.0f );
+					// Flare::Renderer2D::DrawRotatedQuad({x, y}, 2.8f, {1.0f, 1.0f}, m_player, 1.0f );
+					Flare::Renderer2D::DrawRotatedQuad({x,y}, {1.0f, 1.0f}, rotation, m_player, 1);
 				}
 			}
+
+			rotation++;
 
 
 

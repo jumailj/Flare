@@ -159,12 +159,13 @@ namespace Flare{
 
 
 	extern const std::filesystem::path g_AssetPath;
+	static Ref<Font> s_Font;
 
 
 EditorLayer::EditorLayer()
     :Layer("EditorLayer"), m_CameraController(1280.0f/720.0f, true)
 {
-	Flare::Font font("Resource/fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf");
+	s_Font = Font::GetDefault();
   
 }
 
@@ -429,6 +430,14 @@ void EditorLayer::OnImGuiRender()
 
 				ImGui::Begin("Settings");
 				ImGui::Checkbox("Show physics colliders", &m_ShowPhysicsColliders);
+
+
+				//show fonts: 
+				ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(s_Font->GetAtlasTexture()->GetRendererID())),
+							ImVec2(512.0f, 512.0f), ImVec2(0, 1), ImVec2(1, 0));
+
+
+
 				ImGui::End();
 
 
@@ -747,7 +756,7 @@ void EditorLayer::OnImGuiRender()
 	
 	void EditorLayer::OpenScene()
 	{
-		std::string filepath = FileDialogs::OpenFile("Hazel Scene (*.flare)\0*.flare\0");
+		std::string filepath = FileDialogs::OpenFile("Flare Scene (*.flare)\0*.flare\0");
 		if (!filepath.empty())
 			OpenScene(filepath);
 	}
@@ -786,7 +795,7 @@ void EditorLayer::OnImGuiRender()
 
 	void EditorLayer::SaveSceneAs()
 	{
-		std::string filepath = FileDialogs::SaveFile("Hazel Scene (*.flare)\0*.flare\0");
+		std::string filepath = FileDialogs::SaveFile("Flare Scene (*.flare)\0*.flare\0");
 		if (!filepath.empty())
 		{
 			SerializeScene(m_ActiveScene, filepath);

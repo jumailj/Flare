@@ -14,6 +14,8 @@ namespace Flare{
 
         virtual ~OpenGLTexture2D();
 
+        virtual const TextureSpecification& GetSpecification() const override {return m_Specification;}
+
         virtual uint32_t GetWidth() const override{return m_Width;}
         virtual uint32_t GetHeight() const override{return m_Height;}
         virtual uint32_t GetRendererID() const override{return m_RendererID;}

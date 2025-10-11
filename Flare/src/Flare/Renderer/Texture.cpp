@@ -16,6 +16,7 @@ namespace Flare{
             case RendererAPI::API::OpenGL : return CreateRef<OpenGLTexture2D>(specification);
         }
 
+        LOG_ERROR("unknown RendererAPI!");
         return nullptr;
 
     }
@@ -29,6 +30,7 @@ namespace Flare{
             case RendererAPI::API::OpenGL : return CreateRef<OpenGLTexture2D>(widht,height);
         }
 
+        LOG_ERROR("unknown RendererAPI!");
         return nullptr;
 
     }
@@ -41,7 +43,7 @@ namespace Flare{
             case RendererAPI::API::OpenGL : return CreateRef<OpenGLTexture2D>(path);
         }
 
-        LOG_ERROR("[VERTEX ARRAY] Unknown RendereAPI");
+        LOG_ERROR("unknown RendererAPI!");
         return nullptr;
 
     }

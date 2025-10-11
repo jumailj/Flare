@@ -235,8 +235,11 @@ namespace Flare{
 		// glm::vec2 rectSize(5.0f);
 		// Renderer2D::DrawRect(rectPos, rectSize, glm::vec4(1, 0, 0, 1));
 
+		// Test text rendering in editor mode - position it clearly in view
 
+		Renderer2D::DrawString("Jumail", Font::GetDefault(), glm::mat4(1.0f), glm::vec4(1.0f));
 
+		
 		Renderer2D::EndScene();
 	}
 
@@ -332,6 +335,7 @@ namespace Flare{
 					Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
 				}
 			}
+
 
 			Renderer2D::EndScene();
 			

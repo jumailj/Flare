@@ -31,6 +31,9 @@ namespace Flare{
 
     public:
         virtual~Texture() = default;
+
+        virtual const TextureSpecification& GetSpecification() const = 0;
+
         virtual uint32_t GetWidth() const = 0;
         virtual uint32_t GetHeight() const = 0;
         virtual uint32_t GetRendererID() const = 0;

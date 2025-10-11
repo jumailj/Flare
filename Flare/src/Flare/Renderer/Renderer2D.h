@@ -4,7 +4,7 @@
 #include <Flare/Renderer/Texture.h>
 #include <Flare/Renderer/Camera.h>
 #include <Flare/Renderer/EditorCamera.h>
-
+#include "Flare/Renderer/Font.h"
 #include <Flare/Scene/Components.h>
 
 
@@ -60,6 +60,10 @@ namespace Flare{
 		static void DrawLine(const glm::vec3& p0, glm::vec3& p1, const glm::vec4& color, int entityID = -1);
 		static void DrawRect(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, int entityID = -1);
 		static void DrawRect(const glm::mat4& transform, const glm::vec4& color, int entityID = -1);
+
+        // draw text;
+        static void DrawString(const std::string& string, Ref<Font> font, const glm::mat4& transform, const glm::vec4& color);
+
 
 
 		static float GetLineWidth();
