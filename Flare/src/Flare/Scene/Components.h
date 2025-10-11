@@ -4,6 +4,7 @@
 // #include "ScriptableEntity.h"
 #include <Flare/Core/UUID.h>
 #include <Flare/Renderer/Texture.h>
+#include <Flare/Renderer/Font.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -117,6 +118,19 @@ namespace Flare
 		}
 	};
 
+	
+	struct TextComponent
+	{
+		std::string TextString;
+		Ref<Font> FontAsset = Font::GetDefault();
+		glm::vec4 Color{ 1.0f };
+		float Kerning = 0.0f;
+		float LineSpacing = 0.0f;
+
+		TextComponent() =default;
+		TextComponent(const TextComponent&) = default;
+	};
+
 
 	/****************************PHYSICS-COMPONENTES*****************************************/
 
@@ -166,5 +180,9 @@ namespace Flare
 		CircleCollider2DComponent() = default;
 		CircleCollider2DComponent(const CircleCollider2DComponent&) = default;
 	};
+
+
+
+
 
 }

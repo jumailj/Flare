@@ -643,97 +643,122 @@ namespace Flare
 		}
 	}
 
-	void Renderer2D::DrawString(const std::string& string, Ref<Font> font, const glm::mat4& transform, const glm::vec4& color)
-	{
-		const auto& fontGeometry = font->GetMSDFData()->FontGeometry;
-		const auto& metrics = fontGeometry.getMetrics();
-		Ref<Texture2D> fontAtlas = font->GetAtlasTexture();
-
-		s_Data.FontAtlasTexture = fontAtlas;
-
-		double x = 0.0;
-		double fsScale = 1.0 / (metrics.ascenderY - metrics.descenderY);
-		double y = 0.0;
-		float lineHeightOffset = 0.0f;
-		
-		for (size_t i = 0; i < string.size(); i++)
+	void Renderer2D::DrawString(const std::string& string, Ref<Font> font, const glm::mat4& transform, const TextParams& textParams, int entityID)
 		{
-			char character = string[i];
-			if (character == '\r')
-				continue;
+			const auto& fontGeometry = font->GetMSDFData()->FontGeometry;
+			const auto& metrics = fontGeometry.getMetrics();
+			Ref<Texture2D> fontAtlas = font->GetAtlasTexture();
 
-			if (character == '\n')
+			s_Data.FontAtlasTexture = fontAtlas;
+
+			double x = 0.0;
+			double fsScale = 1.0 / (metrics.ascenderY - metrics.descenderY);
+			double y = 0.0;
+
+			const float spaceGlyphAdvance = fontGeometry.getGlyph(' ')->getAdvance();
+			
+			for (size_t i = 0; i < string.size(); i++)
 			{
-				x = 0;
-				y -= fsScale * metrics.lineHeight + lineHeightOffset;
-				continue;
-			}
-			auto glyph = fontGeometry.getGlyph(character);
-			if (!glyph)
-				glyph = fontGeometry.getGlyph('?');
-			if (!glyph)
-				return;
+				char character = string[i];
+				if (character == '\r')
+					continue;
 
-			if (character == '\t')
-				glyph = fontGeometry.getGlyph(' ');
+				if (character == '\n')
+				{
+					x = 0;
+					y -= fsScale * metrics.lineHeight + textParams.LineSpacing;
+					continue;
+				}
 
-			double al, ab, ar, at;
-			glyph->getQuadAtlasBounds(al, ab, ar, at);
-			glm::vec2 texCoordMin((float)al, (float)ab);
-			glm::vec2 texCoordMax((float)ar, (float)at);
+				if (character == ' ')
+				{
+					float advance = spaceGlyphAdvance;
+					if (i < string.size() - 1)
+					{
+						char nextCharacter = string[i + 1];
+						double dAdvance;
+						fontGeometry.getAdvance(dAdvance, character, nextCharacter);
+						advance = (float)dAdvance;
+					}
 
-			double pl, pb, pr, pt;
-			glyph->getQuadPlaneBounds(pl, pb, pr, pt);
-			glm::vec2 quadMin((float)pl, (float)pb);
-			glm::vec2 quadMax((float)pr, (float)pt);
+					x += fsScale * advance + textParams.Kerning;
+					continue;
+				}
 
-			quadMin *= fsScale, quadMax *= fsScale;
-			quadMin += glm::vec2(x, y);
-			quadMax += glm::vec2(x, y);
+				if (character == '\t')
+				{
+					// NOTE(Yan): is this right?
+					x += 4.0f * (fsScale * spaceGlyphAdvance + textParams.Kerning);
+					continue;
+				}
 
-			float texelWidth = 1.0f / fontAtlas->GetWidth();
-			float texelHeight = 1.0f / fontAtlas->GetHeight();
-			texCoordMin *= glm::vec2(texelWidth, texelHeight);
-			texCoordMax *= glm::vec2(texelWidth, texelHeight);
+				auto glyph = fontGeometry.getGlyph(character);
+				if (!glyph)
+					glyph = fontGeometry.getGlyph('?');
+				if (!glyph)
+					return;
 
-			// render here
-			s_Data.TextVertexBufferPtr->Position = transform * glm::vec4(quadMin, 0.0f, 1.0f);
-			s_Data.TextVertexBufferPtr->Color = color;
-			s_Data.TextVertexBufferPtr->TexCoord = texCoordMin;
-			s_Data.TextVertexBufferPtr->EntityID = 0; // TODO
-			s_Data.TextVertexBufferPtr++;
+				double al, ab, ar, at;
+				glyph->getQuadAtlasBounds(al, ab, ar, at);
+				glm::vec2 texCoordMin((float)al, (float)ab);
+				glm::vec2 texCoordMax((float)ar, (float)at);
 
-			s_Data.TextVertexBufferPtr->Position = transform * glm::vec4(quadMin.x, quadMax.y, 0.0f, 1.0f);
-			s_Data.TextVertexBufferPtr->Color = color;
-			s_Data.TextVertexBufferPtr->TexCoord = { texCoordMin.x, texCoordMax.y };
-			s_Data.TextVertexBufferPtr->EntityID = 0; // TODO
-			s_Data.TextVertexBufferPtr++;
+				double pl, pb, pr, pt;
+				glyph->getQuadPlaneBounds(pl, pb, pr, pt);
+				glm::vec2 quadMin((float)pl, (float)pb);
+				glm::vec2 quadMax((float)pr, (float)pt);
 
-			s_Data.TextVertexBufferPtr->Position = transform * glm::vec4(quadMax, 0.0f, 1.0f);
-			s_Data.TextVertexBufferPtr->Color = color;
-			s_Data.TextVertexBufferPtr->TexCoord = texCoordMax;
-			s_Data.TextVertexBufferPtr->EntityID = 0; // TODO
-			s_Data.TextVertexBufferPtr++;
+				quadMin *= fsScale, quadMax *= fsScale;
+				quadMin += glm::vec2(x, y);
+				quadMax += glm::vec2(x, y);
 
-			s_Data.TextVertexBufferPtr->Position = transform * glm::vec4(quadMax.x, quadMin.y, 0.0f, 1.0f);
-			s_Data.TextVertexBufferPtr->Color = color;
-			s_Data.TextVertexBufferPtr->TexCoord = { texCoordMax.x, texCoordMin.y };
-			s_Data.TextVertexBufferPtr->EntityID = 0; // TODO
-			s_Data.TextVertexBufferPtr++;
+				float texelWidth = 1.0f / fontAtlas->GetWidth();
+				float texelHeight = 1.0f / fontAtlas->GetHeight();
+				texCoordMin *= glm::vec2(texelWidth, texelHeight);
+				texCoordMax *= glm::vec2(texelWidth, texelHeight);
 
-			s_Data.TextIndexCount += 6;
-			s_Data.Stats.QuadCount++;
+				// render here
+				s_Data.TextVertexBufferPtr->Position = transform * glm::vec4(quadMin, 0.0f, 1.0f);
+				s_Data.TextVertexBufferPtr->Color = textParams.Color;
+				s_Data.TextVertexBufferPtr->TexCoord = texCoordMin;
+				s_Data.TextVertexBufferPtr->EntityID = entityID;
+				s_Data.TextVertexBufferPtr++;
 
-			if (i < string.size() - 1)
-			{
-				double advance = glyph->getAdvance();
-				char nextCharacter = string[i + 1];
-				fontGeometry.getAdvance(advance, character, nextCharacter);
+				s_Data.TextVertexBufferPtr->Position = transform * glm::vec4(quadMin.x, quadMax.y, 0.0f, 1.0f);
+				s_Data.TextVertexBufferPtr->Color = textParams.Color;
+				s_Data.TextVertexBufferPtr->TexCoord = { texCoordMin.x, texCoordMax.y };
+				s_Data.TextVertexBufferPtr->EntityID = entityID;
+				s_Data.TextVertexBufferPtr++;
 
-				float kerningOffset = 0.0f;
-				x += fsScale * advance + kerningOffset;
+				s_Data.TextVertexBufferPtr->Position = transform * glm::vec4(quadMax, 0.0f, 1.0f);
+				s_Data.TextVertexBufferPtr->Color = textParams.Color;
+				s_Data.TextVertexBufferPtr->TexCoord = texCoordMax;
+				s_Data.TextVertexBufferPtr->EntityID = entityID;
+				s_Data.TextVertexBufferPtr++;
+
+				s_Data.TextVertexBufferPtr->Position = transform * glm::vec4(quadMax.x, quadMin.y, 0.0f, 1.0f);
+				s_Data.TextVertexBufferPtr->Color = textParams.Color;
+				s_Data.TextVertexBufferPtr->TexCoord = { texCoordMax.x, texCoordMin.y };
+				s_Data.TextVertexBufferPtr->EntityID = entityID;
+				s_Data.TextVertexBufferPtr++;
+
+				s_Data.TextIndexCount += 6;
+				s_Data.Stats.QuadCount++;
+
+				if (i < string.size() - 1)
+				{
+					double advance = glyph->getAdvance();
+					char nextCharacter = string[i + 1];
+					fontGeometry.getAdvance(advance, character, nextCharacter);
+
+					x += fsScale * advance + textParams.Kerning;
+				}
 			}
 		}
+
+	void Renderer2D::DrawString(const std::string& string, const glm::mat4& transform, const TextComponent& component, int entityID)
+	{
+		DrawString(string, component.FontAsset, transform, { component.Color, component.Kerning, component.LineSpacing }, entityID);
 	}
 
 
@@ -746,7 +771,6 @@ namespace Flare
 	{
 		s_Data.LineWidth = width;
 	}
-
 
 
 

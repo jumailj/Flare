@@ -58,14 +58,17 @@ void main()
     float screenPxDistance = screenPxRange()*(sd - 0.5);
     float opacity = clamp(screenPxDistance + 0.5, 0.0, 1.0);
     
-    if (opacity == 0.0)
-        discard;
+    // Don't discard pixels early - this can interfere with entity picking
+    // if (opacity == 0.0)
+    //     discard;
 
     vec4 bgColor = vec4(0.0);
     o_Color = mix(bgColor, v_Color, opacity);
     
-    if (o_Color.a == 0.0)
+    // Only discard if completely transparent after mixing
+    if (o_Color.a < 0.01)
         discard;
     
+    // Always output entity ID for mouse picking, even for transparent pixels
     o_EntityID = v_EntityID;
 }
