@@ -24,6 +24,7 @@
 #include <Flare/Renderer/Renderer.h>
 #include <Flare/Renderer/Renderer2D.h>
 #include <Flare/Renderer/RenderCommand.h>
+#include <Flare/Renderer/Font.h>
 
 #include <Flare/Renderer/Buffer.h>
 #include <Flare/Renderer/Shader.h>

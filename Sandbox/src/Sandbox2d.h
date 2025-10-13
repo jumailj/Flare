@@ -25,6 +25,8 @@ public:
 
 	Flare::Ref<Flare::Texture2D>m_CheckTexture;
 	Flare::Ref<Flare::Texture2D> m_player;
+	Flare::Ref<Flare::Font> m_Font;
+
 
 	Flare::OrthographicCameraController m_CameraController;
 	

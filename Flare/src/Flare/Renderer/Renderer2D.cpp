@@ -13,7 +13,6 @@
 
 namespace Flare
 {
-
 	struct QuadVertex
 	{
 		glm::vec3 Position;
@@ -47,7 +46,6 @@ namespace Flare
 		int EntityID;
 	};
 
-
 	struct TextVertex
 	{
 		glm::vec3 Position;
@@ -59,7 +57,6 @@ namespace Flare
 		// Editor-only
 		int EntityID;
 	};
-
 
 
 	struct Renderer2DData
@@ -89,7 +86,6 @@ namespace Flare
 		Ref<VertexArray> TextVertexArray;
 		Ref<VertexBuffer> TextVertexBuffer;
 		Ref<Shader> TextShader;
-
 
 /**************************************************************************** */
 
@@ -375,7 +371,6 @@ namespace Flare
 			s_Data.Stats.DrawCalls++;
 		}
 
-
     }
 
 	void Renderer2D::NextBatch()
@@ -420,7 +415,6 @@ namespace Flare
 
 		DrawQuad(transform,color); // send transform with rotiton dat to Drawquad.
     }
-
 
 	/*main fun*/
     void Renderer2D::DrawQuad(const glm::mat4 transform, const glm::vec4& color, int entityID)
@@ -489,7 +483,6 @@ namespace Flare
 		DrawQuad(transform, texture, tilingFactor, tintColor);
     }
 
-
     void Renderer2D::DrawRotatedQuad(const glm::vec2 &position, const glm::vec2 &size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor )
     {
         DrawRotatedQuad({position.x, position.y, 0.0f}, size, rotation, texture, tilingFactor);
@@ -504,7 +497,7 @@ namespace Flare
 		DrawQuad(transform, texture, tilingFactor, tintColor);
     }
 
-	/*main function*/
+	/*main function for draw quard.*/
     void Renderer2D::DrawQuad(const glm::mat4 transform , const Ref<Texture2D>&texture, float tilingFactor, const glm::vec4& tintColor, int entityID)
 	{
 		if(s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
@@ -572,6 +565,7 @@ namespace Flare
 		s_Data.Stats.QuadCount++;
 	}
 
+	/*main function for Draw Circle*/
 	void Renderer2D::DrawCircle(const glm::mat4& transform, const glm::vec4& color, float thickness /*= 1.0f*/, float fade /*= 0.005f*/, int entityID /*= -1*/)
 	{
 		// TODO: implement for circles
@@ -760,7 +754,6 @@ namespace Flare
 	{
 		DrawString(string, component.FontAsset, transform, { component.Color, component.Kerning, component.LineSpacing }, entityID);
 	}
-
 
 	float Renderer2D::GetLineWidth()
 	{
