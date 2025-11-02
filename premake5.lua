@@ -22,6 +22,7 @@ workspace "Flare"
     IncludeDir["Box2D"] = "Flare/vendor/Box2D/include"
     IncludeDir["msdfgen"] = "Flare/vendor/msdf-atlas-gen/msdfgen"
     IncludeDir["msdf-atlas-gen"] = "Flare/vendor/msdf-atlas-gen/msdf-atlas-gen"
+    IncludeDir["cpp_httplib"] = "Flare/vendor/cpp_httplib"
 
 
     LibraryDir = {}
@@ -95,6 +96,7 @@ project "Flare"
         "%{IncludeDir['Box2D']}",
         "%{IncludeDir['msdfgen']}",
         "%{IncludeDir['msdf-atlas-gen']}",
+        "%{IncludeDir['cpp_httplib']}",
     }
 
     -- externalincludedirs { "../lua/include", "../zlib" }
@@ -195,6 +197,7 @@ project "Flare"
         "%{IncludeDir.vulkanSDK}",
         "%{IncludeDir['msdfgen']}",
         "%{IncludeDir['msdf-atlas-gen']}",
+        "%{IncludeDir['cpp_httplib']}",
         }
 
         libdirs{
@@ -304,6 +307,7 @@ project "Sandbox"
         "%{IncludeDir.ImGuizmo}",
         "%{IncludeDir['msdfgen']}",
         "%{IncludeDir['msdf-atlas-gen']}",
+        "%{IncludeDir['cpp_httplib']}",
         }
 
         -- externalincludedirs{

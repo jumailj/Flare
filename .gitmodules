@@ -30,3 +30,6 @@
 [submodule "Flare/vendor/msdf-atlas-gen"]
 	path = Flare/vendor/msdf-atlas-gen
 	url = git@github.com:jumailj/msdf-atlas-gen.git
+[submodule "Flare/vendor/cpp_httplib"]
+	path = Flare/vendor/cpp_httplib
+	url = git@github.com:yhirose/cpp-httplib.git
